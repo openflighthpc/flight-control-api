@@ -1,0 +1,15 @@
+# This is the global configuration file
+
+# the environment the application running on
+#
+env: development 
+
+# set the port the application listening on
+#
+# the priority of this option is: app environment config > global config > cli config > default, which means:
+#   - if the port is defined in the config file for the corresponding environment, the option enabled here will be ignored.
+#   - if the option is enabled here, the -p option appended in the CLI command will be ignored when starting the application from the console.
+#   - if the port is specified nowhere, a default port will be used, which generally should be 4567.
+# if 0 is given as the value for this option, the application will listen on a random availabe port
+#
+#port: 6501

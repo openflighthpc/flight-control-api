@@ -1,0 +1,10 @@
+# This is the global configuration file
+
+# set the port the application listening on
+#
+# the priority of this option is: app environment config > global config > cli config > default, which means:
+#   - if the port is enabled here, those specified elsewhere will all be ignored
+#   - if the port is specified nowhere, a default port will be used, which generally should be 4567.
+# if 0 is given as the value for this option, the application will listen on a random availabe port
+# 
+#port: 6502
