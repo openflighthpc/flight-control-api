@@ -19,8 +19,12 @@ class Config
     @@env ||= self.global_config['env']
   end
 
+  def self.env_path
+    @@env_path ||= self.global_config[self.env + '_config_path'] || File.join(self.root_dir, 'etc', self.env + '.yml')
+  end
+
   def self.env_config
-    @@env_config ||= YAML.safe_load(File.read(File.join(self.root_dir, 'etc', self.env + '.yml'))) || self.global_config
+    @@env_config ||= YAML.safe_load(File.read(self.env_path)) || self.global_config
   end
 
   def self.port

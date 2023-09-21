@@ -7,4 +7,4 @@
 #   - if the port is specified nowhere, a default port will be used, which generally should be 4567.
 # if 0 is given as the value for this option, the application will listen on a random availabe port
 # 
-#port: 6502
+port: 6502
