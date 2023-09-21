@@ -85,6 +85,32 @@ It could be found in the above example file that some options can be set by both
 
 The above approaches are recommended for configuring this application and should be sufficient to accommodate different scenarios. However, there might be other configuration approaches delivered alongside the underlying components of this application. Please note that they are not officially tested and might cause unexpected error.
 
+# REST API
+
+## Ping test
+
+### Request
+
+```
+curl http://localhost:4567/ping
+```
+
+### Response
+
+```200 OK```
+
+## Get a list of providers
+
+### Request
+```
+curl http://localhost:4567/providers/
+```
+
+### Response
+```
+TODO
+```
+
 # Troubleshooting
 
 This section collects some potential errors that may be raised while running this application, along with the corresponding solutions.
