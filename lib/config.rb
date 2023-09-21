@@ -6,8 +6,12 @@ class Config
     @@root ||= File.expand_path(File.join(__dir__, '..'))
   end
 
+  def self.global_config_path
+    @@global_config_path ||= File.join(self.root_dir, 'etc', 'config.yml')
+  end
+
   def self.global_config
-    @@global_config ||= YAML.safe_load(File.read(File.join(self.root_dir, 'etc', 'config.yml'))) || {}
+    @@global_config ||= File.file?(self.global_config_path) ? YAML.safe_load(File.read(self.global_config_path)) : {}
   end
 
   def self.env
@@ -15,12 +19,12 @@ class Config
     @@env ||= self.global_config['env'] || ENV['APP_ENV'] || 'development'
   end
 
-  def self.env_path
-    @@env_path ||= self.global_config[self.env + '_config_path'] || File.join(self.root_dir, 'etc', self.env + '.yml')
+  def self.env_config_path
+    @@env_config_path ||= self.global_config[self.env + '_config_path'] || File.join(self.root_dir, 'etc', self.env + '.yml')
   end
 
   def self.env_config
-    @@env_config ||= YAML.safe_load(File.read(self.env_path)) || {}
+    @@env_config ||= File.file?(self.env_config_path) ? YAML.safe_load(File.read(self.env_config_path)) : {}
   end
 
   def self.port
