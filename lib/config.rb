@@ -16,7 +16,8 @@ class Config
   end
 
   def self.env
-    @@env ||= self.global_config['env']
+    # should never return nil
+    @@env ||= self.global_config['env'] || ENV['APP_ENV'] || 'development'
   end
 
   def self.env_path
