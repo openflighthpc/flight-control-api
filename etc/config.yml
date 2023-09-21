@@ -1,8 +1,10 @@
 # This is the global configuration file
-
-# the environment the application running on.
 #
-env: development
+# the priority of this option is: global config > ENV['APP_ENV'] > default, which means:
+#  - if the option is enabled here, the system environment variable will be igored, including the APP_ENV='some environment' setting prepend in the CLI command.
+#  - if neither the option is enabled nor the 'APP_ENV' system environment variable is set, a default environment will be used, which is development environment.
+#
+#env: production
 
 # the absolute path to the config files for different environments.
 # 
