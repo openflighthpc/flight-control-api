@@ -1,9 +1,37 @@
-# flight-control-api
+# Flight Control API
 REST API to handle provider-agnostic cloud requests
+
+# Overview
+
+Flight Control API exists to collect a set of common cloud data-points together into a provider-agnostic API.
+
+Projects in Flight Control regularly ask questions such as:
+
+- Which instances are currently running?
+- Which instances are _not_ running?
+- How much has this instance cost me between these two dates?
+- What is the current/historic CPU utilisation of this instance?
+- How much does it cost per hour to run an instance of type `<type>`?
+
+All of these questions have completely different approaches and answers depending on which cloud provider you're using. The goal of Flight Control API is to abstract these provider-specific approaches behind an interface that treats all projects the same.
+
+# Setup
+
+- Clone this repository
+- Ensure the Ruby version specified in `.ruby-version` is installed with your favourite Ruby version manager
+- If running in production:
+  - Set `APP_ENV` environment variable to `production`
+- Run `bundle install`
 
 # Configuration
 
 The configuration of this application consists of two parts: one is environment variables configuration, and the other is YAML file configuration. This section will explain the specifics of these two configuration approaches.
+
+# Operation
+
+The application is designed to work out of the box. Customisation options are available in [etc/config.yaml](etc/config.yaml).
+
+Run the application with `ruby app.rb`. Access the application at `http://localhost:4567`:
 
 ## Environment Configuration
 
@@ -81,5 +109,13 @@ This error may occur at the server startup, which could be caused by an existing
 ```
 To resolve this issue, please keep at least one line uncommented in the YAML file. As a recommendation, a minimal YAML file can have the following content:
 ```
-develop:
-```
+
+# Copyright and License
+
+Eclipse Public License 2.0, see LICENSE.txt for details.
+
+Copyright (C) 2023-present Alces Flight Ltd.
+
+This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/legal/epl-2.0, or alternative license terms made available by Alces Flight Ltd - please direct inquiries about licensing to licensing@alces-flight.com.
+
+Flight Control API is distributed in the hope that it will be useful, but WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. See the Eclipse Public License 2.0 for more details.
