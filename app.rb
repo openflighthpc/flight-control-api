@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/config_file'
 require_relative 'lib/config'
 
 set :environment, Config.env
