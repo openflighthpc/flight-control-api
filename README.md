@@ -29,13 +29,13 @@ This means that the application is now running in the production server. And the
 
 ### Option: development_config_path & production_config_path
 
-Except for the global configuration, other configuration files can be placed under a customized path, which is specified by the `<environment>_config_path` option. Here the term "<environment>" should be changed to specific environment names. For example:
+Except for the global configuration, other configuration files can be placed under a customized path, which is specified by the `<environment>_config_path` option. Here the term "&lt;environment&gt;" should be changed to specific environment names. For example:
 
 ```
 development_config_path: /path/to/development.yml
 ```
 
-It is strongly recommended to use the absolute path as the value. If the option is not enabled, the application will by default try to find `etc/<environment>.yml`. which is the same path as the global configuration file. Again, the "<environment>" here means the specific environment names.
+It is strongly recommended to use the absolute path as the value. If the option is not enabled, the application will by default try to find `etc/<environment>.yml`. which is the same path as the global configuration file. Again, the "&lt;environment&gt;" here means the specific environment names.
 
 ### Option: port
 
