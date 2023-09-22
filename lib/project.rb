@@ -12,8 +12,8 @@ class Project
     # return @credentials == credentials
   end
 
-  def show_active_instances(credentials)
-  # TODO fetch list of active instances
+  def list_instances
+  # TODO fetch list of instances and their status
   # return instance list
   end
 
