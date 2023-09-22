@@ -13,18 +13,18 @@ class Project
   end
 
   def list_instances
-  # TODO fetch list of instances and their status
-  # return instance list
+    # TODO fetch list of instances and their status
+    # return instance list
   end
 
   def start_instance(instance_id)
     # TODO send some commands to start the instance
-    # return something?
+    # return a boolean indicating whether the instance successfully started
   end
 
   def stop_instance(instance_id)
-    #TODO send some commands to stop the instance
-    # return something?
+    # TODO send some commands to stop the instance
+    # return a boolean indicating whether the instance successfully stopped
   end
 
 end
