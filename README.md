@@ -7,7 +7,7 @@ This application uses YAML files to manage configurations. One of those files is
 
 ## Global Configuration
 
-The global configuration is written in `etc/config.yml`. Along with the following configuration instructions, a [Global Configuration Example](https://github.com/openflighthpc/flight-control-api/blob/dev/sinatra-init-test/etc/config.yml) is also given.
+The global configuration is written in `etc/config.yml`. Along with the following configuration instructions, a [Global Configuration Example](etc/config.yml) is also given.
 
 ### Option: env
 
@@ -45,7 +45,7 @@ This option is to set the port the application listening on. It accepts an integ
 port: 4567
 ```
 
-There are several places this parameter can be set. Please see [Global Configuration Example](https://github.com/openflighthpc/flight-control-api/blob/dev/sinatra-init-test/etc/config.yml.ex) for detailed descriptions.
+There are several places this parameter can be set. Please see [Global Configuration Example](etc/config.yml.ex) for detailed descriptions.
 
 ## Environment Specific Configuration
 
@@ -54,4 +54,4 @@ The environment-specific configuration files are used to customize the configura
 Since the functionalities of the available options have been discussed in the [Global Configuration Section](https://github.com/openflighthpc/flight-control-api#Global-Configuration), the following is a list of options that supported by environment specific configuration:
 - port
 
-An [Example Configuration File](https://github.com/openflighthpc/flight-control-api/blob/dev/sinatra-init-test/etc/environment.yml.ex) has been provided.
+An [Example Configuration File](etc/environment.yml.ex) has been provided.
