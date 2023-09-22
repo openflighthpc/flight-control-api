@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'sinatra/config_file'
-require_relative 'lib/config'
 
 config_file ENV['CONFIG_PATH'] || 'etc/config.yml'
 
