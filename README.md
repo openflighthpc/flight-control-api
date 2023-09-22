@@ -3,55 +3,67 @@ REST API to handle provider-agnostic cloud requests
 
 # Configuration
 
-This application uses YAML files to manage configurations. One of those files is `etc/config.yml`, which is the global configuration for the application. In addition to that, tje configuration can also be customized through individual configuration files for each specific running environment, such as development and production environments. This Section will start from the global `etc/config.yml`, and then discuss environment-specific configuration as well as explain the correlation between the global configuration and the specific environment configurations.
+The configuration of this application consists of two parts: one is environment variables configuration, and the other is YAML file configuration. This section will explain the specifics of these two configuration approaches.
 
-## Global Configuration
+## Environment Configuration
 
-The global configuration is written in `etc/config.yml`. Along with the following configuration instructions, a [Global Configuration Example](etc/config.yml) is also given.
-
-### Option: env
-
-By default, as a Sinatra server, this application will be launched in the development environment. There are two ways to change this environment: set the `APP_ENV` environment variable or enable the `env` option in the global configuration. The option set in the global configuration has a higher priority than the `APP_ENV` environment variable. So once it is set, the environment variable will be ignored. The following statement provides an example of setting the environment to production:
+Some configuration options of this application are managed by environment variables. The statement below provides an example of setting environment variables while launching the application using CLI commands on a Linux system:
 
 ```
-env: production
+MY_OPTION=MY_VALUE ruby app.rb
 ```
 
-With the above configuration, you should be able to see the following line when running the application:
+The details of available options are listed in the coming sections.
+
+### APP_ENV
+
+`APP_ENV` is used to specify the environment in which the application will run. For instance, to launch the server in the production environment:
 
 ```
-# ...
-*  Environment: production
-# ...
+APP_ENV=production ruby app.rb
 ```
 
-This means that the application is now running in the production server. And the corresponding environment-specific configurations will also be applied.
+In this case, the server will run in the production server, and the relevant production configurations customized in the [YAML configuration file](https://github.com/openflighthpc/flight-control-api#YAML-Configuration) will be enabled.
 
-### Option: development_config_path & production_config_path
+If this option is not given, as a Sinatra server, this application will be launched in the development environment by default.
 
-Except for the global configuration, other configuration files can be placed under a customized path, which is specified by the `<environment>_config_path` option. Here the term "&lt;environment&gt;" should be changed to specific environment names. For example:
+### CONFIG_PATH
 
-```
-development_config_path: /path/to/development.yml
-```
-
-It is strongly recommended to use the absolute path as the value. If the option is not enabled, the application will by default try to find `etc/<environment>.yml`. which is the same path as the global configuration file. Again, the "&lt;environment&gt;" here means the specific environment names.
-
-### Option: port
-
-This option is to set the port the application listening on. If the option is not given, it will generally be set to `4567` by default. See [Sinatra docs](https://sinatrarb.com/configuration.html) for more info.
+`CONFIG_PATH` is used to specify the path to the [YAML configuration file](https://github.com/openflighthpc/flight-control-api#YAML-Configuration). It is strongly recommended to use the absolute path as the value, as demonstrated below:
 
 ```
-port: 4567
+CONFIG_PATH=/path/to/config.yml ruby app.rb
 ```
 
-There are several places this parameter can be set. Please see [Global Configuration Example](etc/config.yml.ex) for detailed descriptions.
+## YAML Configuration
 
-## Environment Specific Configuration
+This application uses `Sinatra::ConfigFile` to read configurations from the YAML configuration file. As mentioned before, the path to the file can be set by the environment variable. Otherwise, the application will try to find and read the `etc/config.yml` if the path is not given.
 
-The environment-specific configuration files are used to customize the configurations for different environments. If the option is enable in both environment-specific configuration and global configuration, the environment-specific one will generally has a higher priority so that the global one will be ignored.
+In addition to the [Sinatra Config File Documentation](https://sinatrarb.com/contrib/config_file), an [example of the configuration file](etc/config.yml.ex) along with the instructions is also provided.
 
-Since the functionalities of the available options have been discussed in the [Global Configuration Section](https://github.com/openflighthpc/flight-control-api#Global-Configuration), the following is a list of options that supported by environment specific configuration:
-- port
+# Troubleshooting
 
-An [Example Configuration File](etc/environment.yml.ex) has been provided.
+This section collects some potential errors that may be raised while running this application, along with the corresponding solutions.
+
+## config_file.rb:148:in 'config_for_env': undefined method 'each_with_object'
+
+This error may occur at the server startup, which could be caused by an existing but empty YAML configuration file. The complete error message may be displayed in the following form:
+```
+/path/to/sinatra-contrib-3.1.0/lib/sinatra/config_file.rb:148:in `config_for_env': undefined method `each_with_object' for false:FalseClass (NoMethodError)
+
+      hash.each_with_object(IndifferentHash[]) do |(k, v), acc|
+          ^^^^^^^^^^^^^^^^^
+        from C:/Ruby32-x64/lib/ruby/gems/3.2.0/gems/sinatra-contrib-3.1.0/lib/sinatra/config_file.rb:127:in `block (3 levels) in config_file'
+        from <internal:dir>:220:in `glob'
+        from C:/Ruby32-x64/lib/ruby/gems/3.2.0/gems/sinatra-contrib-3.1.0/lib/sinatra/config_file.rb:121:in `block (2 levels) in config_file'
+        from C:/Ruby32-x64/lib/ruby/gems/3.2.0/gems/sinatra-contrib-3.1.0/lib/sinatra/config_file.rb:120:in `each'
+        from C:/Ruby32-x64/lib/ruby/gems/3.2.0/gems/sinatra-contrib-3.1.0/lib/sinatra/config_file.rb:120:in `block in config_file'
+        from C:/Ruby32-x64/lib/ruby/gems/3.2.0/gems/sinatra-contrib-3.1.0/lib/sinatra/config_file.rb:119:in `chdir'
+        from C:/Ruby32-x64/lib/ruby/gems/3.2.0/gems/sinatra-contrib-3.1.0/lib/sinatra/config_file.rb:119:in `config_file'
+        from C:/Ruby32-x64/lib/ruby/gems/3.2.0/gems/sinatra-3.1.0/lib/sinatra/base.rb:2039:in `block (2 levels) in delegate'
+        from app.rb:4:in `<main>'
+```
+To resolve this issue, please keep at least one line uncommented in the YAML file. As a recommendation, a minimal YAML file can have the following content:
+```
+develop:
+```
