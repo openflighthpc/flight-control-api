@@ -39,7 +39,7 @@ It is strongly recommended to use the absolute path as the value. If the option 
 
 ### Option: port
 
-This option is to set the port the application listening on. It accepts an integer between 1024 and 65535, representing the available port number. By default, a Sinatra server will listening on the port 4567 without a specified port. In addition, it can also be set to 0, which will result in the application randomly choosing an available port. In this case, the port number will be unpredictable befor startup.
+This option is to set the port the application listening on. If the option is not given, it will generally be set to `4567` by default. See [Sinatra docs](https://sinatrarb.com/configuration.html) for more info.
 
 ```
 port: 4567
