@@ -11,6 +11,7 @@
 development:        # Warning! If you want to comment out all the options to disable them, please at least leave this line uncommented.
 #   bind: 0.0.0.0   # The IP address to which the server will bind.
 #   port: 4567      # The port the server will be listening on.
+#   provider_path: # Path where provider metadata is stored
 #   log:            # The logging-related options.
 #     path: log/app.log # The path to the log file.
 #     level: info       # The logging level.
@@ -20,6 +21,7 @@ development:        # Warning! If you want to comment out all the options to dis
 # production:
 #   bind: 0.0.0.0
 #   port: 4567
+#   provider_path:
 #   log:
 #     path: log/app.log
 #     level: info
@@ -29,6 +31,7 @@ development:        # Warning! If you want to comment out all the options to dis
 # test:
 #   bind: 0.0.0.0
 #   port: 4567
+#   provider_path:
 #   log:
 #     path: log/app.log
 #     level: info
