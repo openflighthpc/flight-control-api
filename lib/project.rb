@@ -7,9 +7,9 @@ class Project
     @credentials = credentials
   end
 
-  def verify_credential(credentials)
+  def verify_credential
     # TODO credential verification implementation
-    # return @credentials == credentials
+    # return a boolean indicating if the is 
   end
 
   def list_instances
