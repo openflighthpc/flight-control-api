@@ -1,11 +1,18 @@
 class Project
 
-  def verify_credential(credential)
-    # TODO credential verification implementation
-    # return @credential == credential
+  attr_reader type, credentials
+
+  def initialize(type, credentials)
+    @type = type
+    @credentials = credentials
   end
 
-  def show_active_instances()
+  def verify_credential(credentials)
+    # TODO credential verification implementation
+    # return @credentials == credentials
+  end
+
+  def show_active_instances(credentials)
   # TODO fetch list of active instances
   # return instance list
   end
