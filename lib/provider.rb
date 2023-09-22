@@ -1,9 +1,10 @@
-require "yaml"
+# frozen_string_literal: true
+
+require 'yaml'
 
 require_relative 'config'
 
 class Provider
-
   class << self
     def all
       @providers ||= [].tap do |a|
@@ -18,8 +19,9 @@ class Provider
     end
 
     def [](search)
-      provider = all.find{ |p| p.name == search }
+      provider = all.find { |p| p.name == search }
       raise "Provider '#{search}' not found" unless provider
+
       provider
     end
 
@@ -31,12 +33,11 @@ class Provider
       !!all.find { |p| p.name == search }
     end
   end
-  
+
   attr_reader :name, :dir
-  
+
   def initialize(md, dir)
     @name = md['name']
     @dir = dir
   end
-  
 end
