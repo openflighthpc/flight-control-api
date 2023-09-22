@@ -1,6 +1,6 @@
 class Project
 
-  attr_reader type, credentials
+  attr_reader :type, :credentials
 
   def initialize(type, credentials)
     @type = type
