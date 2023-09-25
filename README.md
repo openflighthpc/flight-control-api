@@ -51,7 +51,7 @@ This application uses `Sinatra::ConfigFile` to read configurations from the YAML
 
 In addition to the [Sinatra Config File Documentation](https://sinatrarb.com/contrib/config_file), an [example of the configuration file](etc/config.yml.ex) along with the instructions is also provided.
 
-It could be found in the above example file that some options can be set by both environment variables and YAML configuration file. In this case, the values of the environment vairables will be applied.
+It could be found in the above example file that some options can be set by both environment variables and YAML configuration file. In this case, the values of the environment variables will be applied.
 
 ## Addition
 
