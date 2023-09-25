@@ -73,6 +73,24 @@ BIND=127.0.0.1 PORT=8888 ruby app.rb
 
 If these two variables are not given, the application will listen on `127.0.0.1:4567` for development environment and `0.0.0.0:4567` for production environment as the Sinatra default settings.
 
+### LOG_PATH & LOG_LEVEL
+
+By default, this application will print the log texts to the console. These two environment variables can be used to change the default behavior of the logger. See the following demonstration:
+
+```
+LOG_PATH=/path/to/app.log LOG_LEVEL=error app ruby.rb
+```
+
+With the above configuration, the texts will no longer be output to the console but written in the `/path/to/app.log` file.
+
+For the logging level, this application use the `logger` as the logging management tool, which supports the following levels:
+
+- debug
+- info
+- warn
+- error
+- fatal
+
 ## YAML Configuration
 
 This application uses `Sinatra::ConfigFile` to read configurations from the YAML configuration file. As mentioned before, the path to the file can be set by the environment variable. Otherwise, the application will try to find and read the `etc/config.yml` if the path is not given.
