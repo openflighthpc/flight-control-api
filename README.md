@@ -33,7 +33,6 @@ Run the application with `ruby app.rb`. Access the application at `http://localh
 
 The configuration of this application consists of two parts: one is environment variables configuration, and the other is YAML file configuration. This section will explain the specifics of these two configuration approaches.
 
-
 ## Environment Configuration
 
 Some configuration options of this application are managed by environment variables. The statement below provides an example of setting environment variables while launching the application using CLI commands on a Linux system:
@@ -135,6 +134,8 @@ This error may occur at the server startup, which could be caused by an existing
         from app.rb:4:in `<main>'
 ```
 To resolve this issue, please keep at least one line uncommented in the YAML file. As a recommendation, a minimal YAML file can have the following content:
+```
+develop:
 ```
 
 # Copyright and License
