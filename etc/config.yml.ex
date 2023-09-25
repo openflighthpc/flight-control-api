@@ -6,17 +6,20 @@
 # To enable an option, modify the value of the option to be enabled,
 # and remove the '# ' comment symbol before it.
 
-# The following are the available options for the development environment
+# The following are the available options for the development environment.
 # 
 development:    # Warining! If you want to comment out all the options to disable them, please at least leave this line uncommented.
-#   port: 4567  # The port the server will be listening on
+#   bind: 0.0.0.0  # The IP address to which the server will bind.
+#   port: 4567  # The port the server will be listening on.
 
-# The following are the available options for the production environment
+# The following are the available options for the production environment.
 # 
 # production:
+#   bind: 0.0.0.0
 #   port: 4567
 
-# The following are the available options for the test environment
+# The following are the available options for the test environment.
 # 
 # test:
+#   bind: 0.0.0.0
 #   port: 4567
