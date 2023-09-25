@@ -35,11 +35,27 @@ If this option is not given, as a Sinatra server, this application will be launc
 CONFIG_PATH=/path/to/config.yml ruby app.rb
 ```
 
+### BIND & PORT
+
+`BIND` and `PORT` are used to specify the IP address and the port the application will be listening on. For example, to set the application to listen on `127.0.0.1:8888`:
+
+```
+BIND=127.0.0.1 PORT=8888 ruby app.rb
+```
+
+If these two variables are not given, the application will listen on `0.0.0.0:4567` as the Sinatra default settings.
+
 ## YAML Configuration
 
 This application uses `Sinatra::ConfigFile` to read configurations from the YAML configuration file. As mentioned before, the path to the file can be set by the environment variable. Otherwise, the application will try to find and read the `etc/config.yml` if the path is not given.
 
 In addition to the [Sinatra Config File Documentation](https://sinatrarb.com/contrib/config_file), an [example of the configuration file](etc/config.yml.ex) along with the instructions is also provided.
+
+It could be found in the above example file that some options can be set by both environment variables and YAML configuration file. In this case, the values of the environment vairables will be applied.
+
+## Addition
+
+The above approaches are recommended for configuring this application and should be sufficient to accommodate different scenarios. However, there might be other configuration approaches delivered alongside the underlying components of this application. Please note that they are not officially tested and might cause unexpected error.
 
 # Troubleshooting
 
