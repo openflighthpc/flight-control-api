@@ -14,11 +14,11 @@ if settings.respond_to?(:log)
 end
 LOGGER = Logger.new(ENV['LOG_PATH'] || STDOUT)
 log_levels = {
-  'debug': Logger::DEBUG,
-  'info': Logger::INFO, 
-  'warn': Logger::WARN,
-  'error': Logger::ERROR,
-  'fatal': Logger::FATAL
+  'debug' => Logger::DEBUG,
+  'info' => Logger::INFO, 
+  'warn' => Logger::WARN,
+  'error' => Logger::ERROR,
+  'fatal' => Logger::FATAL
 }
 LOGGER.level = log_levels[ENV['LOG_LEVEL']] if ENV['LOG_LEVEL']
 disable :logging
