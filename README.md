@@ -23,15 +23,16 @@ All of these questions have completely different approaches and answers dependin
   - Set `APP_ENV` environment variable to `production`
 - Run `bundle install`
 
+# Operation
+
+The application is designed to work out of the box. Customisation options are available in [etc/config.yaml.ex](etc/config.yaml.ex).
+
+Run the application with `ruby app.rb`. Access the application at `http://localhost:4567`:
+
 # Configuration
 
 The configuration of this application consists of two parts: one is environment variables configuration, and the other is YAML file configuration. This section will explain the specifics of these two configuration approaches.
 
-# Operation
-
-The application is designed to work out of the box. Customisation options are available in [etc/config.yaml](etc/config.yaml).
-
-Run the application with `ruby app.rb`. Access the application at `http://localhost:4567`:
 
 ## Environment Configuration
 
