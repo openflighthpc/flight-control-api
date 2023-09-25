@@ -8,21 +8,16 @@ class Provider
   class << self
     def all
       @providers ||= [].tap do |a|
-        Config.provider_paths.each do |p|
-          Dir[File.join(p, '*')].each do |d|
-            md = YAML.load_file(File.join(d, 'metadata.yaml'))
-            a << Provider.new(md, d)
-          end
+        Dir[File.join(Config.provider_path, '*')].each do |d|
+          md = YAML.load_file(File.join(d, 'metadata.yaml'))
+          a << Provider.new(md, d)
         end
         a.sort_by(&:name)
       end
     end
 
     def [](search)
-      provider = all.find { |p| p.name == search }
-      raise "Provider '#{search}' not found" unless provider
-
-      provider
+      all.find { |p| p.name == search }
     end
 
     def each(&block)
@@ -30,7 +25,7 @@ class Provider
     end
 
     def exists?(search)
-      !!all.find { |p| p.name == search }
+      !all.find { |p| p.name == search }.nil?
     end
   end
 
