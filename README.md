@@ -43,7 +43,7 @@ CONFIG_PATH=/path/to/config.yml ruby app.rb
 BIND=127.0.0.1 PORT=8888 ruby app.rb
 ```
 
-If these two variables are not given, the application will listen on `0.0.0.0:4567` as the Sinatra default settings.
+If these two variables are not given, the application will listen on `127.0.0.1:4567` for development environment and `0.0.0.0:4567` for production environment as the Sinatra default settings.
 
 ## YAML Configuration
 
