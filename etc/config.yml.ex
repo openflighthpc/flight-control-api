@@ -8,7 +8,7 @@
 
 # The following are the available options for the development environment.
 # 
-development:    # Warining! If you want to comment out all the options to disable them, please at least leave this line uncommented.
+development:    # Warning! If you want to comment out all the options to disable them, please at least leave this line uncommented.
 #   bind: 0.0.0.0  # The IP address to which the server will bind.
 #   port: 4567  # The port the server will be listening on.
 
