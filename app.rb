@@ -8,9 +8,9 @@ set :bind, ENV['BIND'] if ENV['BIND']
 set :port, ENV['PORT'] if ENV['PORT']
 
 # initialize logger
-if settings.respond_to?(:logging)
-  ENV['LOG_PATH'] ||= settings.logging['path']
-  ENV['LOG_LEVEL'] ||= settings.logging['level']
+if settings.respond_to?(:log)
+  ENV['LOG_PATH'] ||= settings.log['path']
+  ENV['LOG_LEVEL'] ||= settings.log['level']
 end
 LOGGER = Logger.new(ENV['LOG_PATH'] || STDOUT)
 log_levels = {
