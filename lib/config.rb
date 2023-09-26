@@ -1,22 +1,13 @@
 require 'yaml'
-require 'tty-config'
 
 class Config
 
-  def self.root_dir
-    @root ||= File.expand_path(File.join(__dir__, '..'))
-  end
+  attr_reader :provider_path
 
-  def self.global_config_path
-    @global_config_path ||= File.join(self.root_dir, 'etc', 'config.yml')
-  end
-
-  def self.global_config
-    @global_config ||= File.file?(self.global_config_path) ? YAML.safe_load(File.read(self.global_config_path)) : {}
-  end
-  
-  def self.provider_path
-    @provider_path ||= self.global_config['provider_path'] || []
+  def initialize
+    config_path = File.expand_path(File.join(__dir__, '..', 'etc', 'config.yml'))
+    config = File.file?(config_path) ? YAML.safe_load(File.read(config_path)) : {}
+    @provider_path = config['provider_path']
   end
 
 end
