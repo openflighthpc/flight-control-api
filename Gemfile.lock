@@ -60,7 +60,6 @@ DEPENDENCIES
   rubocop
   sinatra (= 3.1.0)
   sinatra-contrib (= 3.1.0)
-  tty-config
 
 RUBY VERSION
    ruby 3.2.2p53

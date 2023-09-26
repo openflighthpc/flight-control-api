@@ -8,7 +8,7 @@ class Provider
   class << self
     def all
       @providers ||= [].tap do |a|
-        Dir[File.join(Config.provider_path, '*')].each do |d|
+        Dir[File.join(self.config.provider_path, '*')].each do |d|
           md = YAML.load_file(File.join(d, 'metadata.yaml'))
           a << Provider.new(md, d)
         end
@@ -26,6 +26,10 @@ class Provider
 
     def exists?(search)
       !all.find { |p| p.id == search }.nil?
+    end
+    
+    def config
+      @config ||= Config.new
     end
   end
 
