@@ -12,12 +12,12 @@ class Provider
           md = YAML.load_file(File.join(d, 'metadata.yaml'))
           a << Provider.new(md, d)
         end
-        a.sort_by(&:name)
+        a.sort_by(&:id)
       end
     end
 
     def [](search)
-      all.find { |p| p.name == search }
+      all.find { |p| p.id == search }
     end
 
     def each(&block)
@@ -25,14 +25,14 @@ class Provider
     end
 
     def exists?(search)
-      !all.find { |p| p.name == search }.nil?
+      !all.find { |p| p.id == search }.nil?
     end
   end
 
-  attr_reader :name, :dir
+  attr_reader :id, :dir
 
   def initialize(md, dir)
-    @name = md['name']
+    @id = File.basename(dir)
     @dir = dir
   end
 end
