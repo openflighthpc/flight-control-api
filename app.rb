@@ -20,6 +20,7 @@ log_levels = {
   'error' => Logger::ERROR,
   'fatal' => Logger::FATAL
 }
+raise "Invalid log level" if ENV['LOG_LEVEL'] && !log_levels.key?(ENV['LOG_LEVEL'])
 LOGGER.level = log_levels[ENV['LOG_LEVEL']] if ENV['LOG_LEVEL']
 disable :logging
 use Rack::CommonLogger, LOGGER
