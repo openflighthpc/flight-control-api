@@ -35,3 +35,8 @@ set :logger, LOGGER
 get '/ping' do
   'OK'
 end
+
+# list providers
+get '/providers' do
+  # TODO return providers
+end
