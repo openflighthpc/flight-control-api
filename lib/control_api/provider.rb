@@ -57,6 +57,10 @@ class Provider
     File.join(dir, 'prepare.sh')
   end
 
+  def prepared?
+    YAML.load_file(File.join(dir, 'state.yaml'))['prepared'] || false
+  end
+
   def run_env
     FileUtils.mkdir_p(File.join(dir, 'run_env/')).first
   end
