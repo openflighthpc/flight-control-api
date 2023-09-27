@@ -25,7 +25,7 @@ class Provider
     end
 
     def exists?(search)
-      !all.find { |p| p.id == search }.nil?
+      !self[search].nil?
     end
     
     def config
