@@ -33,7 +33,7 @@ class Project
   private
 
   def provider_exists?(provider_id)
-    Provider.exists?[provider_id]
+    Provider.exists?(provider_id)
   end
 
 end
