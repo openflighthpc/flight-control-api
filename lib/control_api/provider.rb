@@ -29,7 +29,7 @@ class Provider
     def exists?(provider_id)
       !self[provider_id].nil?
     end
-    
+
     def config
       @config ||= Config.new
     end
@@ -37,15 +37,15 @@ class Provider
 
   def prepare
     raise "No prepare script available for '#{id}'" unless File.exist?(prepare_command)
-    log_name = "#{log_dir}/#{id}-prepare-#{Time.now.to_i}.log"
 
+    log_name = "#{log_dir}/#{id}-prepare-#{Time.now.to_i}.log"
     Open3.popen2e(
       prepare_command,
       chdir: run_env
-    )  do |stdin, stdout_stderr, wait_thr|
+    ) do |_, stdout_stderr, wait_thr|
       Thread.new do
-        stdout_stderr.each do |l|
-          File.open(log_name, "a+") { |f| f.write l}
+        stdout_stderr.each do |log|
+          File.open(log_name, 'a+') { |f| f.write log }
         end
       end
       wait_thr.value
