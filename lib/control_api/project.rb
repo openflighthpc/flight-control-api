@@ -31,8 +31,8 @@ class Project
 
   private
 
-  def valid_provider?(provider)
-    Provider.all;
+  def provider_exists?(provider)
+    Provider.exists?[]
   end
 
 end
