@@ -3,7 +3,7 @@ require 'sinatra/config_file'
 require "sinatra/custom_logger"
 require 'logger'
 
-config_file ENV['CONFIG_PATH'] || 'etc/config.yml'
+config_file ENV['CONFIG_PATH'] || File.join(__dir__, 'etc/config.yml')
 
 configure do
   set :bind, ENV['BIND'] if ENV['BIND']
