@@ -1,9 +1,9 @@
 class Project
 
-  attr_reader :type, :credentials
+  attr_reader :provider, :credentials
 
-  def initialize(type, credentials)
-    @type = type
+  def initialize(provider, credentials)
+    @provider = provider
     @credentials = credentials
   end
 
