@@ -5,7 +5,7 @@ class Project
   attr_reader :provider, :credentials
 
   def initialize(provider_id, credentials)
-    raise 'invalid provider id given' unless provider_exists[provider_id]
+    raise 'invalid provider id given' unless provider_exists?(provider_id)
     @provider = provider_id
     @credentials = credentials
   end
