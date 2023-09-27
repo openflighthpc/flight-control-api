@@ -1,3 +1,5 @@
-require_relative 'project'
-require_relative 'provider'
-require_relative 'config'
+# frozen_string_literal: true
+
+Dir[File.join(__dir__, 'control_api', '*.rb')].each do |file|
+  require_relative file
+end
