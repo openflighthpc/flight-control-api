@@ -4,8 +4,13 @@ require "sinatra/custom_logger"
 require 'logger'
 
 config_file ENV['CONFIG_PATH'] || 'etc/config.yml'
-set :bind, ENV['BIND'] if ENV['BIND']
-set :port, ENV['PORT'] if ENV['PORT']
+
+configure do
+  set :bind, ENV['BIND'] if ENV['BIND']
+  set :port, ENV['PORT'] if ENV['PORT']
+  
+  set :backend_config, Config.setup_singleton(provider_path: settings.provider_path)
+end
 
 # initialize logger
 if settings.respond_to?(:log)
