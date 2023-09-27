@@ -2,11 +2,11 @@ require_relative 'provider'
 
 class Project
 
-  attr_reader :provider, :credentials
+  attr_reader :provider_id, :credentials
 
   def initialize(provider_id, credentials)
     raise 'invalid provider id given' unless provider_exists?(provider_id)
-    @provider = provider_id
+    @provider_id = provider_id
     @credentials = credentials
   end
 
@@ -35,5 +35,4 @@ class Project
   def provider_exists?(provider_id)
     Provider.exists?(provider_id)
   end
-
 end
