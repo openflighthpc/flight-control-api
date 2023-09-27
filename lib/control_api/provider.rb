@@ -16,8 +16,8 @@ class Provider
       end
     end
 
-    def [](search)
-      all.find { |p| p.id == search }
+    def [](provider_id)
+      all.find { |p| p.id == provider_id }
     end
 
     def each(&block)
