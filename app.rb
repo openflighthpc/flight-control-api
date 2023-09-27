@@ -2,7 +2,6 @@ require 'sinatra'
 require 'sinatra/config_file'
 require "sinatra/custom_logger"
 require 'logger'
-
 require_relative './lib/control_api'
 
 config_file ENV['CONFIG_PATH'] || 'etc/config.yml'
