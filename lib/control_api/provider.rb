@@ -50,6 +50,7 @@ class Provider
       end
       wait_thr.value
     end
+    File.write(File.join(dir, 'state.yaml'), { 'prepared' => true }.to_yaml)
   end
 
   def prepare_command
