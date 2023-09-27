@@ -24,8 +24,8 @@ class Provider
       all.each(&block)
     end
 
-    def exists?(search)
-      !self[search].nil?
+    def exists?(provider_id)
+      !self[provider_id].nil?
     end
     
     def config
