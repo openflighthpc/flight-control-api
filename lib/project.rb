@@ -1,3 +1,5 @@
+require_relative 'provider'
+
 class Project
 
   attr_reader :provider, :credentials
@@ -25,6 +27,12 @@ class Project
   def stop_instance(instance_id)
     # TODO send some commands to stop the instance
     # return a boolean indicating whether the instance successfully stopped
+  end
+
+  private
+
+  def valid_provider?(provider)
+    Provider.all;
   end
 
 end
