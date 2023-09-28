@@ -71,6 +71,27 @@ class Provider
   def log_dir
     FileUtils.mkdir_p(File.join(dir, 'log/')).first
   end
+  
+  def run_action(action, creds: {})
+    script = File.join(dir, 'actions', action)
+
+    raise "That action is not available for '#{id}'" unless File.exist?(script)
+    if File.exist?(script)
+      stdout, stderr, status = Open3.capture3(
+        creds,
+        script,
+        chdir: run_env
+      )
+
+      unless status.success?
+        log_name = File.join(log_dir,"#{id}-#{File.basename(script, File.extname(script))}-#{Time.now.to_i}.log")
+        File.open(log_name, 'a+') { |f| f.write stderr }
+        raise "Error running action. See #{log_name} for details."
+      end
+
+      return stdout
+    end
+  end
 
   attr_reader :id, :dir
 
