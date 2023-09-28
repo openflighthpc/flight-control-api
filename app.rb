@@ -41,7 +41,10 @@ end
 
 # list providers
 get '/providers' do
-  Provider.all.each do |provider|
-    
+  providers = [].tap do |ps| 
+    Provider.all.each do |provider|
+      ps << provider.to_hash
+    end
   end
+  providers.to_json
 end
