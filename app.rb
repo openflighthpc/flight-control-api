@@ -55,6 +55,4 @@ namespace '/providers' do
     return Provider[id].to_hash.to_json if Provider[id]
     404
   end
-  providers.to_json
-end
 
