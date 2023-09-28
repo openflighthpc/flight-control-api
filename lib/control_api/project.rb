@@ -5,9 +5,10 @@ class Project
   attr_reader :provider_id, :credentials
 
   def initialize(provider_id, credentials)
-    raise "invalid provider id \"#{provider_id}\" given" unless provider_exists?
     @provider_id = provider_id
     @credentials = credentials
+    raise "Invalid provider id \"#{provider_id}\" given" unless provider_exists?
+    raise "Missing credential fields" unless valid_credential_fields?
   end
 
   def verify_credential
@@ -41,7 +42,6 @@ class Project
   # @return [boolean] The validation result.
   #
   def valid_credential_fields?
-    return false unless Provider.exists?(provider_id)
     credential_fields = @credentials.each_key
     Provider[@provider].required_credentials.each do |required_credential|
       return false unless credentials_fields.include?(required_credential)
