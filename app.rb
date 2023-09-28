@@ -58,4 +58,3 @@ namespace '/providers' do
   providers.to_json
 end
 
-
