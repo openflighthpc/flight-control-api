@@ -11,7 +11,7 @@ configure do
   set :bind, ENV['BIND'] if ENV['BIND']
   set :port, ENV['PORT'] if ENV['PORT']
   
-  set :backend_config, Config.setup_singleton(provider_path: settings.respond_to?(:provider_path) ? settings.provider_path : nil)
+  set :backend_config, Config.setup_singleton(provider_path: ENV['PROVIDER_PATH'] || (settings.respond_to?(:provider_path) ? settings.provider_path : nil))
 end
 
 # initialize logger
