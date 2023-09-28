@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'fileutils'
+require 'json'
 require 'open3'
 require 'yaml'
 
@@ -39,7 +40,7 @@ class Provider
   def prepare
     raise "No prepare script available for '#{id}'" unless File.exist?(prepare_command)
 
-    log_name = "#{log_dir}/#{id}-prepare-#{Time.now.to_i}.log"
+    log_name = File.join(log_dir, "#{id}-prepare-#{Time.now.to_i}.log")
     Open3.popen2e(
       { 'RUN_ENV' => run_env },
       prepare_command,
@@ -53,6 +54,15 @@ class Provider
       wait_thr.value
     end
     File.write(File.join(dir, 'state.yaml'), { 'prepared' => true }.to_yaml)
+  end
+
+  def list_instances(creds: {})
+    instances = JSON.load(run_action('list_instances.sh', creds: creds))
+    [].tap do |a|
+      instances.each do |name, data|
+        a << {name => data}
+      end
+    end
   end
 
   def prepare_command

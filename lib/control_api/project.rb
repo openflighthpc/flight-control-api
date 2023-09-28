@@ -16,8 +16,7 @@ class Project
   end
 
   def list_instances
-    # TODO fetch list of instances and their status
-    # return instance list
+    type.list_instances
   end
 
   def start_instance(instance_id)
