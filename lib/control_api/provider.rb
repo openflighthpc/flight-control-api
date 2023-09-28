@@ -103,11 +103,12 @@ class Provider
     end
   end
 
-  attr_reader :id, :dir
+  attr_reader :id, :dir, :required_credentials
 
   def initialize(md, dir)
     @id = File.basename(dir)
     @dir = dir
+    @required_credentials = md['required_credentials']
   end
 
   def to_hash
