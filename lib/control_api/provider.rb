@@ -40,9 +40,9 @@ class Provider
     @dir = dir
   end
 
-  def to_json
+  def to_hash
     {
       id: @id
-    }.to_json
+    }
   end
 end
