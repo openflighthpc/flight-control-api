@@ -39,4 +39,10 @@ class Provider
     @id = File.basename(dir)
     @dir = dir
   end
+
+  def to_json
+    {
+      id: @id
+    }.to_json
+  end
 end
