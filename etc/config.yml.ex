@@ -21,9 +21,9 @@ development:        # Warning! If you want to comment out all the options to dis
 # production:
 #   bind: 0.0.0.0
 #   port: 4567
-#   provider_path:
+#   provider_path: /path/to/etc/providers
 #   log:
-#     path: log/app.log
+#     path: path/to/log/app.log
 #     level: info
 
 # The following are the available options for the test environment.
@@ -31,7 +31,7 @@ development:        # Warning! If you want to comment out all the options to dis
 # test:
 #   bind: 0.0.0.0
 #   port: 4567
-#   provider_path:
+#   provider_path: /path/to/etc/providers
 #   log:
-#     path: log/app.log
+#     path: path/to/log/app.log
 #     level: info
