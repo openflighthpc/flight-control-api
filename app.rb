@@ -56,3 +56,21 @@ namespace '/providers' do
     404
   end
 end
+
+# list providers
+get '/providers' do
+  providers = [].tap do |ps| 
+    Provider.all.each do |provider|
+      ps << provider.to_hash
+    end
+  end
+  providers.to_json
+end
+
+
+# list providers
+get '/providers/:id' do
+  id = params['id']
+  return Provider[id].to_hash.to_json if Provider[id]
+  404
+end
