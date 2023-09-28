@@ -56,13 +56,3 @@ namespace '/providers' do
     404
   end
 end
-
-  # get specific provider
-  get '/:id' do
-    id = params['id']
-    return Provider[id].to_hash.to_json if Provider[id]
-    404
-  end
-end
-
-
