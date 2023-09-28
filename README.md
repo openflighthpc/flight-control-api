@@ -91,6 +91,14 @@ For the logging level, this application use the `logger` as the logging manageme
 - error
 - fatal
 
+### PROVIDER_PATH
+
+By default, this application will load providers from `etc/providers`. This path can be changed by the `PROVIDER_PATH` environment variable.
+
+```
+LOG_PATH=/path/to/providers app ruby.rb
+```
+
 ## YAML Configuration
 
 This application uses `Sinatra::ConfigFile` to read configurations from the YAML configuration file. As mentioned before, the path to the file can be set by the environment variable. Otherwise, the application will try to find and read the `etc/config.yml` if the path is not given.
@@ -104,6 +112,8 @@ It could be found in the above example file that some options can be set by both
 The above approaches are recommended for configuring this application and should be sufficient to accommodate different scenarios. However, there might be other configuration approaches delivered alongside the underlying components of this application. Please note that they are not officially tested and might cause unexpected error.
 
 # REST API
+
+
 
 ## Ping test
 
