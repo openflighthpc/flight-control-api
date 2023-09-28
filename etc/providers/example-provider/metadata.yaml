@@ -1,2 +1,5 @@
 ---
 # Insert metadata here
+required_credentials:
+  - credential_1
+  - credential_2
