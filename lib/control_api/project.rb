@@ -33,5 +33,17 @@ class Project
 
   def provider_exists?(provider_id)
     Provider.exists?(provider_id)
+  
+  # This method is used to verify if the given credentials contains
+  # enough fields that required by the provider.
+  #
+  # @return [boolean] The validation result.
+  #
+  def valid_credential_fields?
+    return false unless Provider[@provider]
+    credential_fields = @credentials.each_key
+    Provider[@provider].required_credentials.each do |required_credential|
+      return false unless credentials_fields.include?(required_credential)
+    end
   end
 end
