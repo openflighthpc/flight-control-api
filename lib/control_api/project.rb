@@ -33,6 +33,7 @@ class Project
 
   def provider_exists?(provider_id)
     Provider.exists?(provider_id)
+  end
   
   # This method is used to verify if the given credentials contains
   # enough fields that required by the provider.
