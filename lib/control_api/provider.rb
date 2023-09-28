@@ -16,16 +16,16 @@ class Provider
       end
     end
 
-    def [](search)
-      all.find { |p| p.id == search }
+    def [](provider_id)
+      all.find { |p| p.id == provider_id }
     end
 
     def each(&block)
       all.each(&block)
     end
 
-    def exists?(search)
-      !all.find { |p| p.id == search }.nil?
+    def exists?(provider_id)
+      !self[provider_id].nil?
     end
     
     def config
