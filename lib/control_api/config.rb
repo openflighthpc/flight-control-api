@@ -7,7 +7,7 @@ class Config
   end
 
   def self.fetch(key)
-    return unless @singleton
+    setup_singleton(provider_path: nil) unless @singleton
     @singleton.send(key)
   end
 
