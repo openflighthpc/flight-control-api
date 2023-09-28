@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/config_file'
 require "sinatra/custom_logger"
 require 'logger'
+require_relative 'lib/provider'
 
 config_file ENV['CONFIG_PATH'] || 'etc/config.yml'
 
@@ -9,7 +10,7 @@ configure do
   set :bind, ENV['BIND'] if ENV['BIND']
   set :port, ENV['PORT'] if ENV['PORT']
   
-  set :backend_config, Config.setup_singleton(provider_path: settings.provider_path)
+  set :backend_config, Config.setup_singleton(provider_path: settings.respond_to?(:provider_path) ? settings.provider_path : nil)
 end
 
 # initialize logger
@@ -38,5 +39,7 @@ end
 
 # list providers
 get '/providers' do
-  # TODO return providers
+  Provider.all.each do |provider|
+    
+  end
 end
