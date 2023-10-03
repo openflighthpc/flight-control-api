@@ -164,7 +164,7 @@ List the information of all the available providers
 
 ## Fetch Provider
 
-Fetch the information of a specivic provider by id.
+Fetch the information of a specific provider by id.
 
 ### Path
 
