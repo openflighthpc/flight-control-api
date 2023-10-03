@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/config_file'
 require "sinatra/custom_logger"
+require "sinatra/namespace"
 require 'logger'
 require_relative './lib/control_api'
 
@@ -10,7 +11,7 @@ configure do
   set :bind, ENV['BIND'] if ENV['BIND']
   set :port, ENV['PORT'] if ENV['PORT']
   
-  set :backend_config, Config.setup_singleton(provider_path: settings.provider_path)
+  set :backend_config, Config.setup_singleton(provider_path: ENV['PROVIDER_PATH'] || (settings.respond_to?(:provider_path) ? settings.provider_path : nil))
 end
 
 # initialize logger
@@ -35,4 +36,18 @@ set :logger, LOGGER
 # rest apis
 get '/ping' do
   'OK'
+end
+
+namespace '/providers' do
+  # get providers list
+  get do
+    Provider.all.map(&:to_hash).to_json
+  end
+
+  # get specific provider
+  get '/:id' do
+    id = params['id']
+    return Provider[id].to_hash.to_json if Provider[id]
+    404
+  end
 end

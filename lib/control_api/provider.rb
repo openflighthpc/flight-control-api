@@ -39,4 +39,10 @@ class Provider
     @id = File.basename(dir)
     @dir = dir
   end
+
+  def to_hash
+    {
+      id: @id
+    }
+  end
 end

@@ -23,6 +23,14 @@ All of these questions have completely different approaches and answers dependin
   - Set `APP_ENV` environment variable to `production`
 - Run `bundle install`
 
+# Components
+
+External components, including external scripts and description files, can be added to this application. This section explain the purposes and usage of each component.
+
+## Provider
+
+The providers can be regarded as a set of folders representing cloud service providers, where each folder corresponds to one cloud service provider. The folder names of these providers will be loaded by Flight Control as provider ids. Each folder contains a YAML file named 'metadata.yaml' to describe the attributes of that cloud service provider. The metadata files of different cloud service providers should have the same structure, i.e. same attributes. By default, Flight Control takes [etc/providers](etc/providers) as the default path to search for the available providers, in which an example provider folder containing the metadata.yaml is given as a template.
+
 # Operation
 
 The application is designed to work out of the box. Customisation options are available in [etc/config.yaml.ex](etc/config.yaml.ex).
@@ -91,6 +99,14 @@ For the logging level, this application use the `logger` as the logging manageme
 - error
 - fatal
 
+### PROVIDER_PATH
+
+By default, this application will load providers from `etc/providers`. This path can be changed by the `PROVIDER_PATH` environment variable.
+
+```
+PROVIDER_PATH=/path/to/providers app ruby.rb
+```
+
 ## YAML Configuration
 
 This application uses `Sinatra::ConfigFile` to read configurations from the YAML configuration file. As mentioned before, the path to the file can be set by the environment variable. Otherwise, the application will try to find and read the `etc/config.yml` if the path is not given.
@@ -105,28 +121,65 @@ The above approaches are recommended for configuring this application and should
 
 # REST API
 
+To use this application, simply access the REST API paths listed below through your web browser.
+
 ## Ping test
 
-### Request
+Testing the connection to the server.
+
+### Path
 
 ```
-curl http://localhost:4567/ping
+/ping
 ```
 
-### Response
+### GET
 
-```200 OK```
-
-## Get a list of providers
-
-### Request
 ```
-curl http://localhost:4567/providers/
+- 200: Connection testing is successful
+   - content-type: text/plain
+   - content: OK
 ```
 
-### Response
+## List Providers
+
+List the information of all the available providers
+
+### Path
+
 ```
-TODO
+/providers
+```
+
+### GET
+
+```
+- 200: Successfully fetched the providers list
+  - content-type: application/json
+  - content:
+      - id: provider-1-id
+      - id: provider-2-id
+      - id: provider-n-id
+```
+
+## Fetch Provider
+
+Fetch the information of a specific provider by id.
+
+### Path
+
+```
+/providers/{provider-id}
+```
+
+### GET
+
+```
+- 200: Successfully fetched the provider information
+  - content-type: application/json
+  - content:
+      id: provider-id
+- 404: The requested provider does not exist
 ```
 
 # Troubleshooting
