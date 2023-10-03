@@ -58,7 +58,8 @@ class Provider
   end
 
   def prepared?
-    YAML.load_file(File.join(dir, 'state.yaml'))['prepared'] || false
+    statefile = File.join(dir, 'state.yaml')
+    File.exist?(statefile) ? YAML.load_file(statefile)['prepared'] : false
   end
 
   def run_env
