@@ -41,12 +41,7 @@ end
 namespace '/providers' do
   # get providers list
   get do
-    providers = [].tap do |ps| 
-      Provider.all.each do |provider|
-        ps << provider.to_hash
-      end
-    end
-    providers.to_json
+    Provider.all.map(&:to_hash).to_json
   end
 
   # get specific provider
