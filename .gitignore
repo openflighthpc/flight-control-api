@@ -12,6 +12,7 @@
 /etc/config.yml
 /etc/providers/*/log/
 /etc/providers/*/run_env/
+/etc/providers/*/state.yaml
 
 # Used by dotenv library to load environment variables.
 # .env
