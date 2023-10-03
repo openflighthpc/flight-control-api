@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/custom_logger'
+require 'sinatra/namespace'
 require 'logger'
 
 require_relative './lib/control_api'
@@ -39,4 +40,18 @@ set :logger, LOGGER
 # rest apis
 get '/ping' do
   'OK'
+end
+
+namespace '/providers' do
+  # get providers list
+  get do
+    Provider.all.map(&:to_hash).to_json
+  end
+
+  # get specific provider
+  get '/:id' do
+    id = params['id']
+    return Provider[id].to_hash.to_json if Provider[id]
+    404
+  end
 end
