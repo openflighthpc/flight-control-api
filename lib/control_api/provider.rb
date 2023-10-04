@@ -41,6 +41,7 @@ class Provider
 
     log_name = "#{log_dir}/#{id}-prepare-#{Time.now.to_i}.log"
     Open3.popen2e(
+      { 'RUN_ENV' => run_env },
       prepare_command,
       chdir: run_env
     ) do |_, stdout_stderr, wait_thr|
