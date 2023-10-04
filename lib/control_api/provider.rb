@@ -11,6 +11,7 @@ class Provider
     def all
       @providers ||= [].tap do |a|
         Dir[File.join(Config.fetch(:provider_path), '*')].each do |d|
+          d = File.expand_path(d, Config.root)
           md = YAML.load_file(File.join(d, 'metadata.yaml'))
           a << Provider.new(md, d)
         end

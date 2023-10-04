@@ -42,7 +42,11 @@ class Config
     end
 
     def config
-      @config ||= read_from_file('etc/config.yml')
+      @config ||= read_from_file(File.join(Config.root, 'etc/config.yml'))
+    end
+
+    def root
+      Sinatra::Application.root
     end
 
     def environment
