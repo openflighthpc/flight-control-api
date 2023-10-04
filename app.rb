@@ -7,6 +7,7 @@ require_relative './lib/control_api'
 
 # Set up recognised environments
 set :environments, %w[test production development]
+set :root, File.dirname(__FILE__)
 
 configure do
   set :bind, ENV['BIND'] || Config.fetch(:bind)
