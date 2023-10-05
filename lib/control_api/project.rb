@@ -8,7 +8,7 @@ class Project
     @provider_id = provider_id
     @credentials = credentials
     raise "Invalid provider id \"#{provider_id}\" given" unless provider_exists?
-    raise "Missing credential fields" unless valid_credential_fields?
+    raise "The following required credentials are missing: #{missing_credentials.join(", ")}" unless missing_credentials.any?
   end
 
   def verify_credential
@@ -35,16 +35,8 @@ class Project
   def provider_exists?
     Provider.exists?(@provider_id)
   end
-  
-  # This method is used to verify if the given credentials contains
-  # enough fields that required by the provider.
-  #
-  # @return [boolean] The validation result.
-  #
-  def valid_credential_fields?
-    credential_fields = @credentials.each_key
-    Provider[@provider].required_credentials.each do |required_credential|
-      return false unless credentials_fields.include?(required_credential)
-    end
+
+  def missing_credentials
+    Provider[@provider_id].required_credentials - (@credentials.keys)
   end
 end
