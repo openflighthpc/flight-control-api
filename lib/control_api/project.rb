@@ -8,7 +8,7 @@ class Project
     @provider_id = provider_id
     @credentials = credentials
     raise "Invalid provider id \"#{provider_id}\" given" unless provider_exists?
-    raise "The following required credentials are missing: #{missing_credentials.join(", ")}" unless missing_credentials.any?
+    raise "The following required credentials are missing: #{missing_credentials.join(", ")}" unless !missing_credentials.any?
   end
 
   def verify_credential
