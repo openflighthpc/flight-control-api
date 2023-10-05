@@ -57,7 +57,7 @@ class Provider
   end
 
   def list_instances(creds: {})
-    instances = JSON.load(run_action('list_instances.sh', creds: creds))
+    instances = JSON.parse(run_action('list_instances.sh', creds: creds))
     [].tap do |a|
       instances.each do |name, data|
         a << {name => data}
