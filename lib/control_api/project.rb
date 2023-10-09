@@ -4,11 +4,12 @@ class Project
 
   attr_reader :provider_id, :credentials, :scope
 
-  def initialize(provider_id, credentials)
+  def initialize(provider_id, credentials, scope = nil)
     @provider_id = provider_id
     @credentials = credentials
     raise "Invalid provider id \"#{provider_id}\" given" unless provider_exists?
     raise "The following required credentials are missing: #{missing_credentials.join(", ")}" unless !missing_credentials.any?
+    @scope = scope
   end
 
   def verify_credential
