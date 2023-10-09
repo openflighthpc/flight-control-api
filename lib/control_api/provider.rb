@@ -56,8 +56,8 @@ class Provider
     File.write(File.join(dir, 'state.yaml'), { 'prepared' => true }.to_yaml)
   end
 
-  def list_instances(creds: {})
-    instances = JSON.parse(run_action('list_instances.sh', creds: creds))
+  def list_instances(creds: {}, scope:)
+    instances = JSON.parse(run_action('list_instances.sh', creds: creds, scope: scope))
     [].tap do |a|
       instances.each do |name, data|
         a << {name => data}
@@ -82,7 +82,7 @@ class Provider
     FileUtils.mkdir_p(File.join(dir, 'log/')).first
   end
 
-  def run_action(action, creds: {}, scope)
+  def run_action(action, creds: {}, scope:)
     script = File.join(dir, 'actions', action)
 
     raise "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
