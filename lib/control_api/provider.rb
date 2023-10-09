@@ -82,13 +82,16 @@ class Provider
     FileUtils.mkdir_p(File.join(dir, 'log/')).first
   end
 
-  def run_action(action, creds: {})
+  def run_action(action, creds: {}, scope)
     script = File.join(dir, 'actions', action)
 
     raise "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
     if File.exist?(script)
       stdout, stderr, status = Open3.capture3(
-        { 'RUN_ENV' => run_env }.merge(creds),
+        {
+          'RUN_ENV' => run_env,
+          'SCOPE' => scope,
+        }.merge(creds),
         script,
         chdir: run_env
       )

@@ -18,7 +18,7 @@ class Project
   end
 
   def list_instances
-    type.list_instances(credentials: @credentials)
+    Provider[@provider_id].list_instances(credentials: @credentials)
   end
 
   def start_instance(instance_id)
