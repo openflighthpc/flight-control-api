@@ -10,8 +10,16 @@ set :environments, %w[test production development]
 set :root, File.dirname(__FILE__)
 
 configure do
-  set :bind, ENV['BIND'] || Config.fetch(:bind)
-  set :port, ENV['PORT'] || Config.fetch(:port)
+  def bind
+    ENV['BIND'] || Config.fetch(:bind)
+  end
+
+  def port
+    ENV['PORT'] || Config.fetch(:port)
+  end
+
+  set :bind, bind if bind
+  set :port, port if port
 end
 
 # initialize logger

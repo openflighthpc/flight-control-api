@@ -41,8 +41,18 @@ class Config
       config.dig(*keys.map(&:to_s))
     end
 
+    def provider_path
+      self.fetch(:provider_path) || File.join(Config.root, 'etc/providers')
+    end
+
     def config
-      @config ||= read_from_file(File.join(Config.root, 'etc/config.yml'))
+      return {} unless File.file?(config_path)
+
+      @config ||= read_from_file(config_path)
+    end
+
+    def config_path
+      File.join(Config.root, 'etc/config.yml')
     end
 
     def root
