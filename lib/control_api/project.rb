@@ -2,7 +2,7 @@ require_relative 'provider'
 
 class Project
 
-  attr_reader :provider_id, :credentials
+  attr_reader :provider_id, :credentials, :filter_level, :scope
 
   def initialize(provider_id, credentials)
     @provider_id = provider_id
