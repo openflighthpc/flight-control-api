@@ -1,1 +1,2 @@
-echo '{"instance1":{"cost":10,"energy":5},"instance2":{"cost":12,"energy":7},"instance3":{"cost":30,"energy":15}}'
+# List instances for a given project, along with their tags. Output is JSON data.
+echo '{"instance1": ["tag1","tag2"], "instance2": ["tag1","tag3"]}'
