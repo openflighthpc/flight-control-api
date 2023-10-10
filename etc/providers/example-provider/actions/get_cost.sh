@@ -1,2 +1,3 @@
 # Get cost of instance(s) between two dates, as a float
-echo '1.78'
+random_val=$RANDOM%1001
+echo "$((random_val / 100)).$(printf "%02d" $((random_val % 100)))"
