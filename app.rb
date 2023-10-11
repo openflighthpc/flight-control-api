@@ -67,7 +67,7 @@ namespace '/providers' do
   # verify credentials
   post '/:id/validate_credentials' do
     begin
-      return 401 unless Project.new(params['id'], params['credentials']).valid_credentials?
+      return 401 unless Project.new(params['id'], JSON.parse(params['credentials'])).valid_credentials?
     rescue
       return 401
     end
