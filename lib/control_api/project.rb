@@ -12,9 +12,8 @@ class Project
     @scope = scope
   end
 
-  def verify_credential
-    # TODO credential verification implementation
-    # return a boolean indicating if the is 
+  def valid_credentials?
+    Provider[@provider_id].valid_credentials?(creds: @credentials)
   end
 
   def list_instances
