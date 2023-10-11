@@ -137,8 +137,8 @@ Testing the connection to the server.
 
 ```
 - 200: Connection testing is successful
-   - content-type: text/plain
-   - content: OK
+   content-type: text/plain
+   content: OK
 ```
 
 ## List Providers
@@ -155,11 +155,11 @@ List the information of all the available providers
 
 ```
 - 200: Successfully fetched the providers list
-  - content-type: application/json
-  - content:
-      - id: provider-1-id
-      - id: provider-2-id
-      - id: provider-n-id
+  content-type: application/json
+  content:
+    - id: provider-1-id
+    - id: provider-2-id
+    - id: provider-n-id
 ```
 
 ## Fetch Provider
@@ -176,10 +176,35 @@ Fetch the information of a specific provider by id.
 
 ```
 - 200: Successfully fetched the provider information
-  - content-type: application/json
-  - content:
-      id: provider-id
+  content-type: application/json
+  content:
+  id: provider-id
 - 404: The requested provider does not exist
+```
+
+## Validate Credentials
+
+Verify the credential of the project.
+
+### Path
+
+```
+/providers/{provider-id}/validate_credentials
+```
+
+### POST
+
+```
+requestBody:
+  content-type: application/json
+  content:
+    credentials:
+      type: json
+responses:
+  - 200: The given credentials are valid
+    content-type: text/plain
+    content: OK
+  - 401: Invalid result
 ```
 
 # Troubleshooting
