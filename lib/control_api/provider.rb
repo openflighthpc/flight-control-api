@@ -57,12 +57,7 @@ class Provider
   end
 
   def list_instances(creds: {}, scope:)
-    instances = JSON.parse(run_action('list_instances.sh', creds: creds, scope: scope))
-    [].tap do |a|
-      instances.each do |name, data|
-        a << {name => data}
-      end
-    end
+    JSON.parse(run_action('list_instances.sh', creds: creds, scope: scope))
   end
 
   def prepare_command
