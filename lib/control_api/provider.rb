@@ -89,7 +89,7 @@ class Provider
   def run_action(action, creds: {}, scope:)
     script = File.join(dir, 'actions', action)
 
-    raise "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
+    raise ArgumentError, "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
     if File.exist?(script)
       stdout, stderr, status = Open3.capture3(
         {
