@@ -62,7 +62,7 @@ class Provider
 
   def valid_credentials?(creds:)
     begin
-      run_action('authorise_credentials.sh', creds: creds)
+      run_action('authorise_credentials.sh', creds: creds, scope: nil)
       return true
     rescue RuntimeError => e
     end
@@ -91,14 +91,11 @@ class Provider
 
     raise ArgumentError, "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
     if File.exist?(script)
-      stdout, stderr, status = Open3.capture3(
-        {
-          'RUN_ENV' => run_env,
-          'SCOPE' => scope,
-        }.merge(creds),
-        script,
-        chdir: run_env
-      )
+
+      script_env = { 'RUN_ENV' => run_env }
+      script_env.merge(creds)
+      script_env.merge({ 'SCOPE' => scope }) if scope
+      stdout, stderr, status = Open3.capture3(script_env, script, chdir: run_env)
 
       unless status.success?
         log_name = File.join(log_dir,"#{id}-#{File.basename(script, File.extname(script))}-#{Time.now.to_i}.log")
