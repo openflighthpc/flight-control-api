@@ -61,13 +61,11 @@ class Provider
   end
 
   def valid_credentials?(creds:)
-    unless
     begin
       run_action('authorise_credentials.sh', creds: creds)
       return true
     rescue RuntimeError => e
     end
-
     false
   end
 
