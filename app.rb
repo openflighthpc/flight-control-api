@@ -63,4 +63,14 @@ namespace '/providers' do
     return Provider[id].to_hash.to_json if Provider[id]
     404
   end
+
+  # verify credentials
+  post '/:id/validate_credentials' do
+    begin
+      return 401 unless Project.new(params['id'], params['credentials']).valid_credentials?
+    rescue
+      return 401
+    end
+    'OK'
+  end
 end
