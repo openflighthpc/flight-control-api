@@ -93,8 +93,8 @@ class Provider
     if File.exist?(script)
 
       script_env = { 'RUN_ENV' => run_env }
-      script_env.merge(creds)
-      script_env.merge({ 'SCOPE' => scope }) if scope
+      script_env.merge!(creds)
+      script_env.merge!({ 'SCOPE' => scope }) if scope
       stdout, stderr, status = Open3.capture3(script_env, script, chdir: run_env)
 
       unless status.success?
