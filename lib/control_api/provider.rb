@@ -69,6 +69,14 @@ class Provider
     false
   end
 
+  def start_instance(instance_id, creds: {}, scope:)
+    env = {
+      'INSTANCE_ID' => instance_id
+    }
+
+    run_action('start_instance.sh', creds: creds, scope: scope, env: env)
+  end
+
   def prepare_command
     File.join(dir, 'prepare.sh')
   end
