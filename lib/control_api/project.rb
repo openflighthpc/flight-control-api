@@ -17,10 +17,11 @@ class Project
   end
 
   def list_instances
-    Provider[@provider_id].list_instances(creds: @credentials, scope: @scope)
+    provider.list_instances(creds: @credentials, scope: @scope)
   end
 
   def start_instance(instance_id)
+    provider.start_instance(instance_id, creds: @credentials, scope: @scope)
     # TODO send some commands to start the instance
     # return a boolean indicating whether the instance successfully started
   end
@@ -32,11 +33,15 @@ class Project
 
   private
 
+  def provider
+    @provider ||= Provider[@provider_id]
+  end
+
   def provider_exists?
     Provider.exists?(@provider_id)
   end
 
   def missing_credentials
-    Provider[@provider_id].required_credentials - (@credentials.keys)
+    provider.required_credentials - (@credentials.keys)
   end
 end
