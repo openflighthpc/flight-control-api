@@ -69,20 +69,20 @@ class Provider
     false
   end
 
-  def start_instance(instance_id, creds: {}, scope:)
+  def start_instance(instance_id, scope, creds: {})
     env = {
       'INSTANCE_ID' => instance_id
     }
 
-    run_action('start_instance.sh', creds: creds, scope: scope, env: env)
+    run_action('start_instance.sh', creds:, scope:, env:)
   end
 
-  def stop_instance(instance_id, creds: {}, scope:)
+  def stop_instance(instance_id, scope:, creds: {})
     env = {
       'INSTANCE_ID' => instance_id
     }
 
-    run_action('stop_instance.sh', creds: creds, scope: scope, env: env)
+    run_action('stop_instance.sh', creds:, scope:, env:)
   end
 
   def prepare_command
@@ -102,7 +102,7 @@ class Provider
     FileUtils.mkdir_p(File.join(dir, 'log/')).first
   end
 
-  def run_action(action, creds: {}, env: {}, scope:)
+  def run_action(action, scope:, creds: {}, env: {})
     script = File.join(dir, 'actions', action)
 
     raise ArgumentError, "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
