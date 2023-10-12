@@ -1,2 +1,3 @@
 # Start the given instance. Exit status 0 denotes success.
-echo 'Started instance'
+echo "Starting $INSTANCE_ID"
+"$RUN_ENV/bin/yq_linux_amd64" -i '.state = "on"' "nodes/$INSTANCE_ID"
