@@ -27,6 +27,7 @@ class Project
   end
 
   def stop_instance(instance_id)
+    provider.stop_instance(instance_id, creds: @credentials, scope: @scope)
     # TODO send some commands to stop the instance
     # return a boolean indicating whether the instance successfully stopped
   end

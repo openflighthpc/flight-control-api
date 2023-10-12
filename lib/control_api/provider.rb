@@ -77,6 +77,14 @@ class Provider
     run_action('start_instance.sh', creds: creds, scope: scope, env: env)
   end
 
+  def stop_instance(instance_id, creds: {}, scope:)
+    env = {
+      'INSTANCE_ID' => instance_id
+    }
+
+    run_action('stop_instance.sh', creds: creds, scope: scope, env: env)
+  end
+
   def prepare_command
     File.join(dir, 'prepare.sh')
   end
@@ -98,8 +106,6 @@ class Provider
     script = File.join(dir, 'actions', action)
 
     raise ArgumentError, "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
-
-    return unless File.exist?(script)
 
     stdout, stderr, status = Open3.capture3(
       {
