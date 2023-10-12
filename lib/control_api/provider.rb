@@ -69,7 +69,7 @@ class Provider
     false
   end
 
-  def start_instance(instance_id, scope, creds: {})
+  def start_instance(instance_id, scope:, creds: {})
     env = {
       'INSTANCE_ID' => instance_id
     }
