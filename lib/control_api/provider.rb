@@ -60,9 +60,9 @@ class Provider
     JSON.parse(run_action('list_instances.sh', creds: creds, scope: scope))
   end
 
-  def valid_credentials?(creds:)
+  def valid_credentials?(creds:, scope:)
     begin
-      run_action('authorise_credentials.sh', creds: creds, scope: nil)
+      run_action('authorise_credentials.sh', creds: creds, scope: scope)
       return true
     rescue RuntimeError => e
     end
