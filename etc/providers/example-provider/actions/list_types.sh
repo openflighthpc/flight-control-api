@@ -1,2 +1,2 @@
 # List instance types for a provider. Must be a comma separated list.
-echo 'compute_small,compute_large,gpu'
+"$RUN_ENV/bin/yq_linux_amd64" eval-all '[.]' instance_types/* -o=json
