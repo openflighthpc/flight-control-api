@@ -39,6 +39,7 @@ class Provider
 
   def prepare
     raise "No prepare script available for '#{id}'" unless File.exist?(prepare_command)
+    return if prepared?
 
     log_name = File.join(log_dir, "#{id}-prepare-#{Time.now.to_i}.log")
     Open3.popen2e(
