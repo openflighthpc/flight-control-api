@@ -8,12 +8,19 @@ class Project
     @provider_id = provider_id
     @credentials = credentials
     raise "Invalid provider id \"#{provider_id}\" given" unless provider_exists?
-    raise "The following required credentials are missing: #{missing_credentials.join(", ")}" unless !missing_credentials.any?
     @scope = scope
   end
 
+  def required_credentials?
+    missing_credentials.none?
+  end
+
   def valid_credentials?
-    Provider[@provider_id].valid_credentials?(creds: @credentials)
+    unless required_credentials?
+      raise "The following required credentials are missing: #{missing_credentials.join(", ")}"
+    end
+
+    Provider[@provider_id].valid_credentials?(creds: @credentials, scope: @scope)
   end
 
   def list_instances
@@ -32,6 +39,10 @@ class Project
     # return a boolean indicating whether the instance successfully stopped
   end
 
+  def missing_credentials
+    provider.required_credentials - (@credentials.keys)
+  end
+
   private
 
   def provider
@@ -40,9 +51,5 @@ class Project
 
   def provider_exists?
     Provider.exists?(@provider_id)
-  end
-
-  def missing_credentials
-    provider.required_credentials - (@credentials.keys)
   end
 end

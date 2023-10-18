@@ -32,7 +32,7 @@ LOGGER = Logger.new(ENV['LOG_PATH'] || STDOUT)
 
 log_levels = {
   'debug' => Logger::DEBUG,
-  'info' => Logger::INFO, 
+  'info' => Logger::INFO,
   'warn' => Logger::WARN,
   'error' => Logger::ERROR,
   'fatal' => Logger::FATAL
@@ -51,6 +51,14 @@ get '/ping' do
   'OK'
 end
 
+helpers do
+  def valid_json?(str)
+    JSON.parse(str)
+  rescue JSON::ParserError
+    false
+  end
+end
+
 namespace '/providers' do
   # get providers list
   get do
@@ -61,16 +69,26 @@ namespace '/providers' do
   get '/:id' do
     id = params['id']
     return Provider[id].to_hash.to_json if Provider[id]
+
     404
   end
 
   # verify credentials
-  post '/:id/validate_credentials' do
-    begin
-      return 401 unless Project.new(params['id'], JSON.parse(params['credentials'])).valid_credentials?
-    rescue
-      return 401
+  post '/:id/validate-credentials' do
+    body = request.body.read
+    return [401, 'Malformed JSON body'] unless valid_json?(body)
+
+    credentials = JSON.parse(body)['credentials']
+    project = Project.new(params['id'], credentials)
+
+    if !project.required_credentials?
+      status 401
+      body "Missing credentials: #{project.missing_credentials.join(', ')}"
+    elsif Project.new(params['id'], credentials).valid_credentials?
+      'OK'
+    else
+      status 401
+      body 'Invalid credentials'
     end
-    'OK'
   end
 end

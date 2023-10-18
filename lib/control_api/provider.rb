@@ -38,16 +38,11 @@ class Provider
   end
 
   def list_instances(creds: {}, scope:)
-    JSON.parse(run_action('list_instances.sh', creds: creds, scope: scope))
+    JSON.parse(run_action('list_instances.sh', creds:, scope:))
   end
 
   def valid_credentials?(creds:, scope:)
-    begin
-      run_action('authorise_credentials.sh', creds: creds, scope: scope)
-      return true
-    rescue RuntimeError => e
-    end
-    false
+    run_action('authorise_credentials.sh', creds:, scope:)
   end
 
   def start_instance(instance_id, scope:, creds: {})
@@ -90,25 +85,27 @@ class Provider
   def run_action(action, scope:, creds: {}, env: {})
     prepare unless prepared?
     script = File.join(dir, 'actions', action)
+    log_name = File.join(log_dir,"#{id}-#{File.basename(script, File.extname(script))}-#{Time.now.to_i}.log")
 
     raise ArgumentError, "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
 
     stdout, stderr, status = Open3.capture3(
       {
         'RUN_ENV' => run_env,
-        'SCOPE' => scope,
+        'SCOPE' => scope
       }.merge(creds, env),
       script,
       chdir: run_env
     )
 
+    File.open(log_name, 'a+') { |f| f.write stdout }
+
     unless status.success?
-      log_name = File.join(log_dir,"#{id}-#{File.basename(script, File.extname(script))}-#{Time.now.to_i}.log")
       File.open(log_name, 'a+') { |f| f.write stderr }
       raise "Error running action. See #{log_name} for details."
     end
 
-    return stdout
+    status
   end
 
   attr_reader :id, :dir, :required_credentials
@@ -121,7 +118,8 @@ class Provider
 
   def to_hash
     {
-      id: @id
+      id:,
+      required_credentials:
     }
   end
 
