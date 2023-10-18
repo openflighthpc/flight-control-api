@@ -55,11 +55,16 @@ tags:
 EOF
 done
 
+echo "Creating projects dir..."
+mkdir "$RUN_ENV/projects"
+echo "Created."
+
 # Download yq for parsing YAML and JSON
-echo "wgetting yq"
+echo "Downloading yq..."
 mkdir "$RUN_ENV/bin"
 wget https://github.com/mikefarah/yq/releases/download/v4.35.2/yq_linux_amd64 -P "$RUN_ENV/bin"
 chmod +x "$RUN_ENV/bin/yq_linux_amd64"
+echo "Downloaded."
 
 sleep 3
-echo "Prepared"
+echo "Prepared."
