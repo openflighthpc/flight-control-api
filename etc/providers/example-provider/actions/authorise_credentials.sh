@@ -1,5 +1,6 @@
-# This command will authorise credentials. Exit status 0 indicates correct credentials, any other exit status indicates otherwise.
+set -e
 
+# This command will authorise credentials. Exit status 0 indicates correct credentials, any other exit status indicates otherwise.
 # We also use this file to set up a fake backend 'project'.
 
 project="$RUN_ENV/projects/$PROJECT_NAME"
@@ -10,6 +11,7 @@ then
 fi
 
 echo "Creating project '$PROJECT_NAME'"
+mkdir -p "$project"
 
 nodes_dir="$project/nodes"
 mkdir "$nodes_dir"
