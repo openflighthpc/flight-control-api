@@ -37,26 +37,6 @@ class Provider
     end
   end
 
-  def prepare
-    raise "No prepare script available for '#{id}'" unless File.exist?(prepare_command)
-    return if prepared?
-
-    log_name = File.join(log_dir, "#{id}-prepare-#{Time.now.to_i}.log")
-    Open3.popen2e(
-      { 'RUN_ENV' => run_env },
-      prepare_command,
-      chdir: run_env
-    ) do |_, stdout_stderr, wait_thr|
-      Thread.new do
-        stdout_stderr.each do |log|
-          File.open(log_name, 'a+') { |f| f.write log }
-        end
-      end
-      wait_thr.value
-    end
-    File.write(File.join(dir, 'state.yaml'), { 'prepared' => true }.to_yaml)
-  end
-
   def list_instances(creds: {}, scope:)
     JSON.parse(run_action('list_instances.sh', creds: creds, scope: scope))
   end
@@ -108,6 +88,7 @@ class Provider
   end
 
   def run_action(action, scope:, creds: {}, env: {})
+    prepare unless prepared?
     script = File.join(dir, 'actions', action)
 
     raise ArgumentError, "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
@@ -142,5 +123,26 @@ class Provider
     {
       id: @id
     }
+  end
+
+  private
+
+  def prepare
+    raise "No prepare script available for '#{id}'" unless File.exist?(prepare_command)
+
+    log_name = File.join(log_dir, "#{id}-prepare-#{Time.now.to_i}.log")
+    Open3.popen2e(
+      { 'RUN_ENV' => run_env },
+      prepare_command,
+      chdir: run_env
+    ) do |_, stdout_stderr, wait_thr|
+      Thread.new do
+        stdout_stderr.each do |log|
+          File.open(log_name, 'a+') { |f| f.write log }
+        end
+      end
+      wait_thr.value
+    end
+    File.write(File.join(dir, 'state.yaml'), { 'prepared' => true }.to_yaml)
   end
 end
