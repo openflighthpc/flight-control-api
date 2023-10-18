@@ -1,4 +1,3 @@
 ---
 required_credentials:
-  - credential_1
-  - credential_2
+  - PROJECT_NAME
