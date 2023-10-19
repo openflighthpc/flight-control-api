@@ -77,13 +77,22 @@ namespace '/providers' do
         Provider[id_param]
       end
 
+      def request_body
+        request.body.rewind
+        @request_body ||= request.body.read.tap do |body|
+          halt 401, 'Malformed JSON body' unless valid_json?(body)
+        end
+      end
+
+      def credentials
+        JSON.parse(request_body)['credentials'] || {}
+      end
+
+      def project
+        @project ||= Project.new(params['id'], credentials)
+      end
+
       def validate_credentials
-        body = request.body.read
-        halt 401, 'Malformed JSON body' unless valid_json?(body)
-
-        credentials = JSON.parse(body)['credentials']
-        project = Project.new(params['id'], credentials)
-
         puts project.required_credentials?
         if !project.required_credentials?
           body "Missing credentials: #{project.missing_credentials.join(', ')}"
