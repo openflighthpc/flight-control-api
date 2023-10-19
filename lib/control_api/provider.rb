@@ -105,7 +105,7 @@ class Provider
       raise "Error running action. See #{log_name} for details."
     end
 
-    status
+    stdout
   end
 
   attr_reader :id, :dir, :required_credentials
