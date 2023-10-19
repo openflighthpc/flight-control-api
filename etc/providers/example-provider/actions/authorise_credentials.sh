@@ -35,7 +35,7 @@ do
 name: $name
 state: on
 tags:
-    - type: compute
+    - type: compute_small
 EOF
 done
 
