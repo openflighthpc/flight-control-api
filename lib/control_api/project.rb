@@ -1,13 +1,13 @@
 require_relative 'provider'
 
 class Project
-
   attr_reader :provider_id, :credentials, :scope
 
   def initialize(provider_id, credentials, scope = nil)
     @provider_id = provider_id
     @credentials = credentials
     raise "Invalid provider id \"#{provider_id}\" given" unless provider_exists?
+
     @scope = scope
   end
 
@@ -17,7 +17,7 @@ class Project
 
   def valid_credentials?
     unless required_credentials?
-      raise "The following required credentials are missing: #{missing_credentials.join(", ")}"
+      raise "The following required credentials are missing: #{missing_credentials.join(', ')}"
     end
 
     Provider[@provider_id].valid_credentials?(creds: @credentials, scope: @scope)
@@ -29,18 +29,18 @@ class Project
 
   def start_instance(instance_id)
     provider.start_instance(instance_id, creds: @credentials, scope: @scope)
-    # TODO send some commands to start the instance
+    # TODO: send some commands to start the instance
     # return a boolean indicating whether the instance successfully started
   end
 
   def stop_instance(instance_id)
     provider.stop_instance(instance_id, creds: @credentials, scope: @scope)
-    # TODO send some commands to stop the instance
+    # TODO: send some commands to stop the instance
     # return a boolean indicating whether the instance successfully stopped
   end
 
   def missing_credentials
-    provider.required_credentials - (@credentials.keys)
+    provider.required_credentials - @credentials.keys
   end
 
   private

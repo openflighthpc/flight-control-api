@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/custom_logger'
 require 'sinatra/namespace'
 require 'logger'
 
-require_relative './lib/control_api'
+require_relative 'lib/control_api'
 
 # Set up recognised environments
 set :environments, %w[test production development]
