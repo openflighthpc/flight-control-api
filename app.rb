@@ -79,21 +79,31 @@ namespace '/providers' do
 
       def request_body
         request.body.rewind
-        @request_body ||= request.body.read.tap do |body|
-          halt 401, 'Malformed JSON body' unless valid_json?(body)
+        body = request.body.read
+
+        if body.is_a?(String)
+          halt 401, 'Malformed JSON body' if body.is_a?(String) && !valid_json?(body)
+          @request_body ||= JSON.parse(body)
+        elsif body.is_a?(Hash)
+          @request_body ||= body
+        else
+          halt 401, 'Malformed request body'
         end
       end
 
       def credentials
-        JSON.parse(request_body)['credentials'] || {}
+        request_body['credentials'] || {}
+      end
+
+      def scope
+        request_body['scope']
       end
 
       def project
-        @project ||= Project.new(params['id'], credentials)
+        @project ||= Project.new(params['id'], credentials, scope)
       end
 
       def validate_credentials
-        puts project.required_credentials?
         if !project.required_credentials?
           body "Missing credentials: #{project.missing_credentials.join(', ')}"
           halt 401
@@ -114,6 +124,23 @@ namespace '/providers' do
     end
 
     post '/validate-credentials' do
+      validate_credentials
+    end
+
+    get '/list-instances' do
+      validate_credentials
+
+      project.list_instances.to_json
+    end
+
+    post '/start-instance' do
+      validate_credentials
+
+      instance_id = request_body['instance_id']
+      project.start_instance(instance_id)
+    end
+
+    post '/stop-instance' do
       validate_credentials
     end
   end
