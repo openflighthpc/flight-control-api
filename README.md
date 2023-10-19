@@ -189,7 +189,7 @@ Verify the credential of the project.
 ### Path
 
 ```
-/providers/{provider-id}/validate_credentials
+/providers/{provider-id}/validate-credentials
 ```
 
 ### POST
@@ -205,6 +205,98 @@ responses:
     content-type: text/plain
     content: OK
   - 401: Invalid result
+```
+
+## Start instance
+
+Attempt to start an instance existing on the provider.
+
+### Path
+
+```http request
+/providers/:id/start-instance
+```
+
+### POST
+
+```
+requestBody:
+  content-type: application/json
+  content:
+    credentials:
+      type: json
+    instance_id:
+      type: string
+responses:
+- 200: The instance was started successfully
+  content-type: application/json
+  content:
+    body: "Started {instance_id}"
+- 400: Instance not found 
+- 500: Server error
+```
+
+## Stop instance
+
+Attempt to stop an instance existing on the provider.
+
+### Path
+
+```http request
+/providers/:id/stop-instance
+```
+
+### POST
+
+```
+requestBody:
+  content-type: application/json
+  content:
+    credentials:
+      type: json
+    instance_id:
+      type: string
+responses:
+- 200: The instance was stopped successfully
+  content-type: application/json
+  content:
+    body: "Stopped {instance_id}"
+- 400: Instance not found 
+- 500: Server error
+```
+
+## List instances
+
+Return a JSON list of instances existing for the given provider and credentials
+
+### Path
+
+```http request
+/providers/:id/list-instances
+```
+
+### GET
+
+```
+requestBody:
+  content-type: application/json
+  content:
+    credentials:
+      type: json
+    scope:
+      type: string
+responses:
+- 200: List of instances
+  content-type: application/json
+  content:
+    body:
+      name:
+        type: string
+      state:
+        type: string
+      tags:
+        type: array
+- 500: Server error
 ```
 
 # Troubleshooting

@@ -133,7 +133,7 @@ namespace '/providers' do
     get '/list-instances' do
       validate_credentials
 
-      { body: project.list_instances.to_json }
+      { body: project.list_instances }.to_json
     rescue SubprocessError
       status 500
       { body: 'Error starting fetching instance list' }.to_json
