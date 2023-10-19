@@ -134,6 +134,9 @@ namespace '/providers' do
       validate_credentials
 
       project.list_instances.to_json
+    rescue SubprocessError
+      status 500
+      { body: 'Error starting fetching instance list' }.to_json
     end
 
     post '/start-instance' do
