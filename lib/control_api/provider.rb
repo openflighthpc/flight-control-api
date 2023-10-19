@@ -104,7 +104,7 @@ class Provider
 
     unless status.success?
       File.open(log_name, 'a+') { |f| f.write stderr }
-      raise SubprocessError "Error running action. See #{log_name} for details."
+      raise SubprocessError, "Error running action. See #{log_name} for details."
     end
 
     stdout
