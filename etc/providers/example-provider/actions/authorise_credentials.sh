@@ -27,10 +27,10 @@ EOF
 
 for int in {01..03}
 do
-  name="cnode$int.yaml"
-  echo "Creating $name..."
+  name="cnode$int"
+  echo "Creating $name.yaml..."
 
-  cat <<EOF > "$nodes_dir/$name"
+  cat <<EOF > "$nodes_dir/$name.yaml"
 ---
 name: $name
 state: on
