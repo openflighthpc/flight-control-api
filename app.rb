@@ -82,6 +82,8 @@ namespace '/providers' do
         request.body.rewind
         body = request.body.read
 
+        # It looks like Sinatra attempts to parse the request body
+        # automatically if the content type is `application/json`.
         if body.is_a?(String)
           halt 401, 'Malformed JSON body' if body.is_a?(String) && !valid_json?(body)
           @request_body ||= JSON.parse(body)
