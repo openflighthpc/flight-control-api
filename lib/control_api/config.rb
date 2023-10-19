@@ -42,7 +42,7 @@ class Config
     end
 
     def provider_path
-      self.fetch(:provider_path) || File.join(Config.root, 'etc/providers')
+      fetch(:provider_path) || File.join(Config.root, 'etc/providers')
     end
 
     def config

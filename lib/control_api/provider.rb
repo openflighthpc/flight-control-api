@@ -12,7 +12,7 @@ class SubprocessError < StandardError; end
 class Provider
   class << self
     def all
-      @providers ||= [].tap do |a|
+      @all ||= [].tap do |a|
         Dir[File.join(Config.provider_path, '*')].each do |d|
           d = File.expand_path(d, Config.root)
           md = YAML.load_file(File.join(d, 'metadata.yaml'))
@@ -26,8 +26,8 @@ class Provider
       all.find { |p| p.id == provider_id }
     end
 
-    def each(&block)
-      all.each(&block)
+    def each(&)
+      all.each(&)
     end
 
     def exists?(provider_id)
@@ -39,7 +39,7 @@ class Provider
     end
   end
 
-  def list_instances(creds: {}, scope:)
+  def list_instances(scope:, creds: {})
     JSON.parse(run_action('list_instances.sh', creds:, scope:))
   end
 
@@ -87,7 +87,7 @@ class Provider
   def run_action(action, scope:, creds: {}, env: {})
     prepare unless prepared?
     script = File.join(dir, 'actions', action)
-    log_name = File.join(log_dir,"#{id}-#{File.basename(script, File.extname(script))}-#{Time.now.to_i}.log")
+    log_name = File.join(log_dir, "#{id}-#{File.basename(script, File.extname(script))}-#{Time.now.to_i}.log")
 
     raise ArgumentError, "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
 
