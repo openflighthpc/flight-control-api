@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'sinatra'
 require 'sinatra/custom_logger'
 require 'sinatra/namespace'
@@ -28,7 +29,7 @@ if Config.fetch(:log)
   ENV['LOG_LEVEL'] ||= Config.fetch(:log, :path)
 end
 
-LOGGER = Logger.new(ENV['LOG_PATH'] || STDOUT)
+LOGGER = Logger.new(ENV['LOG_PATH'] || $stdout)
 
 log_levels = {
   'debug' => Logger::DEBUG,
@@ -38,7 +39,7 @@ log_levels = {
   'fatal' => Logger::FATAL
 }
 
-raise "Invalid log level" if ENV['LOG_LEVEL'] && !log_levels.key?(ENV['LOG_LEVEL'])
+raise 'Invalid log level' if ENV['LOG_LEVEL'] && !log_levels.key?(ENV['LOG_LEVEL'])
 
 LOGGER.level = log_levels[ENV['LOG_LEVEL']] if ENV['LOG_LEVEL']
 
@@ -65,30 +66,46 @@ namespace '/providers' do
     Provider.all.map(&:to_hash).to_json
   end
 
-  # get specific provider
-  get '/:id' do
-    id = params['id']
-    return Provider[id].to_hash.to_json if Provider[id]
+  # Endpoints specific to a provider
+  namespace '/:id' do
+    helpers do
+      def id_param
+        params['id']
+      end
 
-    404
-  end
+      def provider
+        Provider[id_param]
+      end
 
-  # verify credentials
-  post '/:id/validate-credentials' do
-    body = request.body.read
-    return [401, 'Malformed JSON body'] unless valid_json?(body)
+      def validate_credentials
+        body = request.body.read
+        halt 401, 'Malformed JSON body' unless valid_json?(body)
 
-    credentials = JSON.parse(body)['credentials']
-    project = Project.new(params['id'], credentials)
+        credentials = JSON.parse(body)['credentials']
+        project = Project.new(params['id'], credentials)
 
-    if !project.required_credentials?
-      status 401
-      body "Missing credentials: #{project.missing_credentials.join(', ')}"
-    elsif Project.new(params['id'], credentials).valid_credentials?
-      'OK'
-    else
-      status 401
-      body 'Invalid credentials'
+        puts project.required_credentials?
+        if !project.required_credentials?
+          body "Missing credentials: #{project.missing_credentials.join(', ')}"
+          halt 401
+        elsif !Project.new(params['id'], credentials).valid_credentials?
+          body 'Invalid credentials'
+          halt 401
+        end
+      end
+    end
+
+    before do
+      halt 404, 'Provider not found' unless provider
+    end
+
+    # Show provider attributes
+    get do
+      return provider.to_hash.to_json
+    end
+
+    post '/validate-credentials' do
+      validate_credentials
     end
   end
 end
