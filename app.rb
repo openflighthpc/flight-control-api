@@ -138,6 +138,9 @@ namespace '/providers' do
       validate_credentials
 
       instance_id = request_body['instance_id']
+
+      halt 400, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
+
       project.start_instance(instance_id)
 
       { body: "Started #{instance_id}" }.to_json
@@ -150,6 +153,9 @@ namespace '/providers' do
       validate_credentials
 
       instance_id = request_body['instance_id']
+
+      halt 400, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
+
       project.stop_instance(instance_id)
 
       { body: "Stopped #{instance_id}" }.to_json
