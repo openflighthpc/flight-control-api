@@ -7,6 +7,8 @@ require 'yaml'
 
 require_relative 'config'
 
+class SubprocessError < StandardError; end
+
 class Provider
   class << self
     def all
@@ -102,7 +104,7 @@ class Provider
 
     unless status.success?
       File.open(log_name, 'a+') { |f| f.write stderr }
-      raise "Error running action. See #{log_name} for details."
+      raise SubprocessError "Error running action. See #{log_name} for details."
     end
 
     stdout

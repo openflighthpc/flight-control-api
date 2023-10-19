@@ -138,10 +138,23 @@ namespace '/providers' do
 
       instance_id = request_body['instance_id']
       project.start_instance(instance_id)
+
+      { body: "Started #{instance_id}" }.to_json
+    rescue SubprocessError
+      status 500
+      { body: "Error starting #{instance_id}" }.to_json
     end
 
     post '/stop-instance' do
       validate_credentials
+
+      instance_id = request_body['instance_id']
+      project.stop_instance(instance_id)
+
+      { body: "Stopped #{instance_id}" }.to_json
+    rescue SubprocessError
+      status 500
+      { body: "Error stopping #{instance_id}" }.to_json
     end
   end
 end
