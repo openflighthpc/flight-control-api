@@ -136,9 +136,13 @@ Testing the connection to the server.
 ### GET
 
 ```
-- 200: Connection testing is successful
-   content-type: text/plain
-   content: OK
+responses:
+  200:
+    description: Successful connection test
+    content:
+      text/plain:
+        schema:
+          type: string
 ```
 
 ## List Providers
@@ -154,12 +158,18 @@ List the information of all the available providers
 ### GET
 
 ```
-- 200: Successfully fetched the providers list
-  content-type: application/json
-  content:
-    - id: provider-1-id
-    - id: provider-2-id
-    - id: provider-n-id
+responses:
+  200:
+    description: List of providers
+    content:
+      application/json:
+        schema:
+           type: array
+           items:
+             type: object
+             properties:
+               id:
+                 type: string
 ```
 
 ## Fetch Provider
@@ -175,11 +185,18 @@ Fetch the information of a specific provider by id.
 ### GET
 
 ```
-- 200: Successfully fetched the provider information
-  content-type: application/json
-  content:
-  id: provider-id
-- 404: The requested provider does not exist
+responses:
+  200:
+    description: Provider specification
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+  404:
+    description: Provider doesn't exist
 ```
 
 ## Validate Credentials
@@ -196,15 +213,18 @@ Verify the credential of the project.
 
 ```
 requestBody:
-  content-type: application/json
+  description: Dict of credential key/value pairs to validate
+  required: true
   content:
-    credentials:
-      type: json
+    application/json:
+      schema:
+        credentials:
+          type: object
 responses:
-  - 200: The given credentials are valid
-    content-type: text/plain
-    content: OK
-  - 401: Invalid result
+  200:
+    description: The given credentials are valid
+  401:
+    description: The given credentials are either invalid or are missing keys
 ```
 
 ## Start instance
@@ -221,19 +241,19 @@ Attempt to start an instance existing on the provider.
 
 ```
 requestBody:
-  content-type: application/json
+  description: Instance name to switch on
   content:
-    credentials:
-      type: json
-    instance_id:
-      type: string
+    application/json:
+      schema:
+        instance_id:
+          type: string
 responses:
-- 200: The instance was started successfully
-  content-type: application/json
-  content:
-    body: "Started {instance_id}"
-- 400: Instance not found 
-- 500: Server error
+  200:
+    description: The instance was started successfully
+  400:
+    description: Instance not found
+  500:
+    description: Internal server error
 ```
 
 ## Stop instance
@@ -250,19 +270,19 @@ Attempt to stop an instance existing on the provider.
 
 ```
 requestBody:
-  content-type: application/json
+  description: Instance name to switch off
   content:
-    credentials:
-      type: json
-    instance_id:
-      type: string
+    application/json:
+      schema:
+        instance_id:
+          type: string
 responses:
-- 200: The instance was stopped successfully
-  content-type: application/json
-  content:
-    body: "Stopped {instance_id}"
-- 400: Instance not found 
-- 500: Server error
+  200:
+    description: The instance was stopped successfully
+  400:
+    description: Instance not found
+  500:
+    description: Internal server error
 ```
 
 ## List instances
@@ -278,25 +298,26 @@ Return a JSON list of instances existing for the given provider and credentials
 ### GET
 
 ```
-requestBody:
-  content-type: application/json
-  content:
-    credentials:
-      type: json
-    scope:
-      type: string
 responses:
-- 200: List of instances
-  content-type: application/json
-  content:
-    body:
-      name:
-        type: string
-      state:
-        type: string
-      tags:
-        type: array
-- 500: Server error
+  200:
+    description: Array of instances
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              state:
+                type: string
+              tags:
+                type: array
+                items:
+                  type: object
+  500:
+    description: Internal server error
 ```
 
 # Troubleshooting
