@@ -85,12 +85,12 @@ namespace '/providers' do
         # It looks like Sinatra attempts to parse the request body
         # automatically if the content type is `application/json`.
         if body.is_a?(String)
-          halt 401, 'Malformed JSON body' if body.is_a?(String) && !valid_json?(body)
+          halt 400, 'Malformed JSON body' if body.is_a?(String) && !valid_json?(body)
           @request_body ||= JSON.parse(body)
         elsif body.is_a?(Hash)
           @request_body ||= body
         else
-          halt 401, 'Malformed request body'
+          halt 400, 'Malformed request body'
         end
       end
 
@@ -144,7 +144,7 @@ namespace '/providers' do
 
       instance_id = request_body['instance_id']
 
-      halt 400, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
+      halt 404, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
 
       project.start_instance(instance_id)
 
@@ -159,7 +159,7 @@ namespace '/providers' do
 
       instance_id = request_body['instance_id']
 
-      halt 400, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
+      halt 404, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
 
       project.stop_instance(instance_id)
 
