@@ -74,6 +74,10 @@ namespace '/providers' do
         params['id']
       end
 
+      def scope_param
+        params['scope']
+      end
+
       def provider
         Provider[id_param]
       end
@@ -95,15 +99,15 @@ namespace '/providers' do
       end
 
       def credentials
-        request_body['credentials'] || {}
-      end
-
-      def scope
-        request_body['scope']
+        if valid_json?(request.env['HTTP_PROJECT_CREDENTIALS'])
+          JSON.parse(request.env['HTTP_PROJECT_CREDENTIALS'])
+        else
+          {}
+        end
       end
 
       def project
-        @project ||= Project.new(params['id'], credentials, scope)
+        @project ||= Project.new(params['id'], credentials, scope_param)
       end
 
       def validate_credentials
