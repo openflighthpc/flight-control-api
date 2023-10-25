@@ -43,8 +43,10 @@ class Provider
     JSON.parse(run_action('list_instances', creds:, scope:))
   end
 
-  def instance_details(scope:, creds: {})
-    JSON.parse(run_action('instance_details.sh', creds:, scope:))
+  def instance_details(model:)
+    JSON.parse(run_action('instance_details.sh', env: {
+      model: model
+    }))
   end
 
   def valid_credentials?(creds:, scope:)

@@ -135,8 +135,8 @@ namespace '/providers' do
     end
 
     get '/instance-details' do
-      model = params['model']
-      provider.instance_details(model).to_json
+      halt 400, 'Missing model' unless params['model']
+      provider.instance_details(model: params['model']).to_json
     rescue SubprocessError
       halt 500, 'Error fetching instance details'
     end
