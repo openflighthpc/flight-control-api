@@ -267,7 +267,7 @@ parameters:
     schema:
       type: string
   - in: query
-    name: scope
+    name: model
     schema:
       type: string
   - in: header
@@ -284,9 +284,8 @@ responses:
           items:
             type: object
             properties:
-              name:
-                type: string
-              region:
+              model:
+                description: The name of the fixed instance size choice offered by providers, e.g. "t3.medium"
                 type: string
               provider:
                 type: string
@@ -310,6 +309,63 @@ responses:
   500:
     description: Internal server error
 
+```
+
+## List instances
+
+Return a JSON list of instances existing for the given provider and credentials
+
+### Path
+
+```http request
+/providers/{provider-id}/list-instances
+```
+
+### GET
+
+```
+parameters:
+  - in: path
+    name: provider-id
+    schema:
+      type: string
+  - in: query
+    name: scope
+    schema:
+      type: string
+  - in: header
+    name: Project-credentials
+    schema:
+      type: object
+responses:
+  200:
+    description: Array of instances
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              model:
+                description: The name of the fixed instance size choice offered by providers, e.g. "t3.medium"
+                type: string
+              region:
+                type: string
+              state:
+                type: string
+              tags:
+                type: array
+                items:
+                  type: object
+  401:
+    description: The given credentials are either invalid or are missing keys
+  404:
+    description: Provider does not exist
+  500:
+    description: Internal server error
 ```
 
 ## Start instance
@@ -400,58 +456,6 @@ responses:
     description: The given credentials are either invalid or are missing keys
   404:
     description: Provider does not exist or instance not found
-  500:
-    description: Internal server error
-```
-
-## List instances
-
-Return a JSON list of instances existing for the given provider and credentials
-
-### Path
-
-```http request
-/providers/{provider-id}/list-instances
-```
-
-### GET
-
-```
-parameters:
-  - in: path
-    name: provider-id
-    schema:
-      type: string
-  - in: query
-    name: scope
-    schema:
-      type: string
-  - in: header
-    name: Project-credentials
-    schema:
-      type: object
-responses:
-  200:
-    description: Array of instances
-    content:
-      application/json:
-        schema:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              state:
-                type: string
-              tags:
-                type: array
-                items:
-                  type: object
-  401:
-    description: The given credentials are either invalid or are missing keys
-  404:
-    description: Provider does not exist
   500:
     description: Internal server error
 ```
