@@ -298,8 +298,6 @@ responses:
               mem:
                 description: total memory
                 type: integer
-  401:
-    description: The given credentials are either invalid or are missing keys
   404:
     description: Provider doesn't exist
   500:
