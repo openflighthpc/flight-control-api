@@ -231,6 +231,59 @@ responses:
     description: The given credentials are either invalid or are missing keys
 ```
 
+
+## Instance Details
+
+Fetch the details of instances.
+
+### Path
+
+```
+/providers/{provider-id}/instance-details
+```
+
+### GET
+
+```
+parameters:
+  scope:
+    type: string
+responses:
+  200:
+    description: Array of instance details
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              region:
+                type: string
+              provider:
+                type: string
+              currency:
+                type: string
+              price_per_hour:
+                type: float
+              cpu:
+                description: the number of CPUs
+                type: integer
+              gpu:
+                description: the number of GPUs
+                type: integer
+              mem:
+                description: total memory
+                type: integer
+  401:
+    description: The given credentials are either invalid or are missing keys
+  500:
+    description: Internal server error
+
+```
+
 ## Start instance
 
 Attempt to start an instance existing on the provider.
