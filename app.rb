@@ -139,7 +139,7 @@ namespace '/providers' do
 
       project.list_instances
     rescue SubprocessError
-      halt 500, 'Error starting fetching instance list'
+      halt 500, 'Error fetching instance list'
     end
 
     get '/instance-details' do
@@ -147,7 +147,7 @@ namespace '/providers' do
 
       project.instance_details.to_json
     rescue SubprocessError
-      halt 500, 'Error starting fetching instance details'
+      halt 500, 'Error fetching instance details'
     end
 
     post '/start-instance' do
