@@ -244,6 +244,9 @@ Attempt to start an instance existing on the provider.
 ### POST
 
 ```
+parameters:
+  scope:
+    type: string
 requestBody:
   description: Instance name to switch on
   content:
@@ -277,6 +280,9 @@ Attempt to stop an instance existing on the provider.
 ### POST
 
 ```
+parameters:
+  scope:
+    type: string
 requestBody:
   description: Instance name to switch off
   content:
@@ -310,6 +316,9 @@ Return a JSON list of instances existing for the given provider and credentials
 ### GET
 
 ```
+parameters:
+  scope:
+    type: string
 responses:
   200:
     description: Array of instances
