@@ -25,6 +25,9 @@ price_per_hour: 1.5
 cpu: 4
 gpu: 4
 mem: 4
+name: compute_large
+cost_per_hour: 0.5
+kilowatts_per_hour: 0.5
 EOF
 
 cat <<EOF > "$RUN_ENV/instance_models/mining_rig.yaml"
@@ -36,35 +39,18 @@ price_per_hour: 0.000123
 cpu: 1
 gpu: 8192
 mem: 8.1632
+=======
+name: login
+cost_per_hour: 0.1
+kilowatts_per_hour: 0.2
 EOF
 
-
-# Set up login node
-mkdir "$RUN_ENV/nodes"
-
-echo "Creating login1..."
-cat <<EOF > "$RUN_ENV/nodes/login1.yaml"
+cat <<EOF > "$RUN_ENV/instance_types/gpu.yaml"
 ---
-name: login1
-state: on
-tags:
-  - type: login
+name: gpu
+cost_per_hour: 1
+kilowatts_per_hour: 1
 EOF
-
-# Set up compute nodes
-for int in {01..03}
-do
-  name="cnode$int"
-  echo "Creating $name..."
-
-  cat <<EOF > "$RUN_ENV/nodes/$name.yaml"
----
-name: $name
-state: on
-tags:
-    - type: compute
-EOF
-done
 
 echo "Creating projects dir..."
 mkdir "$RUN_ENV/projects"
