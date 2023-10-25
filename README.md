@@ -270,10 +270,6 @@ parameters:
     name: model
     schema:
       type: string
-  - in: header
-    name: Project-credentials
-    schema:
-      type: object
 responses:
   200:
     description: Array of instance details
