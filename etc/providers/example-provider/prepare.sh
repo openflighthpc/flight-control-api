@@ -6,25 +6,25 @@ mkdir "$RUN_ENV/instance_types"
 cat <<EOF > "$RUN_ENV/instance_types/compute_small.yaml"
 ---
 name: compute_small
-cost_per_hour: 5
+cpu: 2
+gpu: 2
+mem: 2
 EOF
 
 cat <<EOF > "$RUN_ENV/instance_types/compute_large.yaml"
 ---
 name: compute_large
-cost_per_hour: 10
+cpu: 4
+gpu: 4
+mem: 4
 EOF
 
-cat <<EOF > "$RUN_ENV/instance_types/login.yaml"
+cat <<EOF > "$RUN_ENV/instance_types/mining_rig.yaml"
 ---
-name: login
-cost_per_hour: 5
-EOF
-
-cat <<EOF > "$RUN_ENV/instance_types/gpu.yaml"
----
-name: gpu
-cost_per_hour: 20
+name: mining_rig
+cpu: 1
+gpu: 8192
+mem: 8.1632
 EOF
 
 
