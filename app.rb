@@ -137,10 +137,9 @@ namespace '/providers' do
     get '/list-instances' do
       validate_credentials
 
-      { body: project.list_instances }.to_json
+      project.list_instances
     rescue SubprocessError
-      status 500
-      { body: 'Error starting fetching instance list' }.to_json
+      halt 500, 'Error starting fetching instance list'
     end
 
     get '/instance-details' do
@@ -160,10 +159,9 @@ namespace '/providers' do
 
       project.start_instance(instance_id)
 
-      { body: "Started #{instance_id}" }.to_json
+      "Started #{instance_id}"
     rescue SubprocessError
-      status 500
-      { body: "Error starting #{instance_id}" }.to_json
+      halt 500, "Error starting #{instance_id}"
     end
 
     post '/stop-instance' do
@@ -175,10 +173,9 @@ namespace '/providers' do
 
       project.stop_instance(instance_id)
 
-      { body: "Stopped #{instance_id}" }.to_json
+      "Stopped #{instance_id}"
     rescue SubprocessError
-      status 500
-      { body: "Error stopping #{instance_id}" }.to_json
+      halt 500, "Error stopping #{instance_id}"
     end
   end
 end
