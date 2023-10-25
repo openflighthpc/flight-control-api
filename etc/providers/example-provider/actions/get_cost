@@ -1,5 +1,36 @@
 #!/usr/bin/env bash
+set -e
 
 # Get cost of instance(s) between two dates, as a float
-random_val=$RANDOM%1001
-echo "$((random_val / 100)).$(printf "%02d" $((random_val % 100)))"
+#
+# Vars:
+# START_DATE: Unix timestamp
+# END_DATE: Unix timestamp
+# INSTANCE_ID: ID to get cost for
+# PROJECT_NAME: provided credential
+
+# Calculate date range
+TIME_DIFF=$(echo "$END_DATE-$START_DATE" | bc)
+DIFF_IN_HOURS=$(echo "$TIME_DIFF/60/60" | bc -l)
+UPTIME=$(echo "$DIFF_IN_HOURS * 0.6" | bc -l) # Assume an average uptime of 60%
+
+echo "Uptime: $UPTIME hours"
+
+# Fetch instance type
+TYPE=$("$RUN_ENV/bin/yq_linux_amd64" '.type' "$RUN_ENV/projects/$PROJECT_NAME/nodes/$INSTANCE_ID.yaml")
+
+echo "Type: $TYPE"
+
+# Fetch hourly cost of instance type
+HOURLY_COST=$("$RUN_ENV/bin/yq_linux_amd64" '.cost_per_hour' "$RUN_ENV/instance_types/$TYPE.yaml")
+
+echo "Hourly cost: $HOURLY_COST"
+
+# Total cost for instance
+INSTANCE_COST_PER_HOUR=$(echo "$UPTIME * $HOURLY_COST" | bc -l)
+echo "Instance cost per hour: $INSTANCE_COST_PER_HOUR"
+
+echo "$INSTANCE_COST_PER_HOUR"
+
+#random_val=$RANDOM%1001
+#echo "$((random_val / 100)).$(printf "%02d" $((random_val % 100)))"
