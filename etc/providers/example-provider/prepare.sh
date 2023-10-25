@@ -6,6 +6,9 @@ mkdir "$RUN_ENV/instance_models"
 cat <<EOF > "$RUN_ENV/instance_models/compute_small.yaml"
 ---
 model: compute_small
+provider: example-provider
+currency: GBP
+price_per_hour: 1
 cpu: 2
 gpu: 2
 mem: 2
@@ -14,6 +17,9 @@ EOF
 cat <<EOF > "$RUN_ENV/instance_models/compute_large.yaml"
 ---
 model: compute_large
+provider: example-provider
+currency: GBP
+price_per_hour: 1.5
 cpu: 4
 gpu: 4
 mem: 4
@@ -22,6 +28,9 @@ EOF
 cat <<EOF > "$RUN_ENV/instance_models/mining_rig.yaml"
 ---
 model: mining_rig
+provider: example-provider
+currency: Bitcoin
+price_per_hour: 0.000123
 cpu: 1
 gpu: 8192
 mem: 8.1632
