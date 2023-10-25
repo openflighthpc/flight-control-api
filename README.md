@@ -243,6 +243,8 @@ responses:
     description: Malformed JSON request body
   401:
     description: The given credentials are either invalid or are missing keys
+  404:
+    description: Provider doesn't exist
 ```
 
 
@@ -303,6 +305,8 @@ responses:
                 type: integer
   401:
     description: The given credentials are either invalid or are missing keys
+  404:
+    description: Provider doesn't exist
   500:
     description: Internal server error
 
@@ -349,7 +353,7 @@ responses:
   401:
     description: The given credentials are either invalid or are missing keys
   404:
-    description: Instance not found
+    description: Provider does not exist or instance not found
   500:
     description: Internal server error
 ```
@@ -395,7 +399,7 @@ responses:
   401:
     description: The given credentials are either invalid or are missing keys
   404:
-    description: Instance not found
+    description: Provider does not exist or instance not found
   500:
     description: Internal server error
 ```
@@ -446,6 +450,8 @@ responses:
                   type: object
   401:
     description: The given credentials are either invalid or are missing keys
+  404:
+    description: Provider does not exist
   500:
     description: Internal server error
 ```
