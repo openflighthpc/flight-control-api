@@ -1,27 +1,27 @@
 echo "Preparing..."
 
-# Set up instance types and costs
-echo "Creating instance types"
-mkdir "$RUN_ENV/instance_types"
-cat <<EOF > "$RUN_ENV/instance_types/compute_small.yaml"
+# Set up instance models and costs
+echo "Creating instance models"
+mkdir "$RUN_ENV/instance_models"
+cat <<EOF > "$RUN_ENV/instance_models/compute_small.yaml"
 ---
-name: compute_small
+model: compute_small
 cpu: 2
 gpu: 2
 mem: 2
 EOF
 
-cat <<EOF > "$RUN_ENV/instance_types/compute_large.yaml"
+cat <<EOF > "$RUN_ENV/instance_models/compute_large.yaml"
 ---
-name: compute_large
+model: compute_large
 cpu: 4
 gpu: 4
 mem: 4
 EOF
 
-cat <<EOF > "$RUN_ENV/instance_types/mining_rig.yaml"
+cat <<EOF > "$RUN_ENV/instance_models/mining_rig.yaml"
 ---
-name: mining_rig
+model: mining_rig
 cpu: 1
 gpu: 8192
 mem: 8.1632
