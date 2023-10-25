@@ -99,7 +99,7 @@ namespace '/providers' do
       end
 
       def credentials
-        if valid_json?(request.env['HTTP_PROJECT_CREDENTIALS'])
+        if request.env['HTTP_PROJECT_CREDENTIALS'] && valid_json?(request.env['HTTP_PROJECT_CREDENTIALS'])
           JSON.parse(request.env['HTTP_PROJECT_CREDENTIALS'])
         else
           {}
