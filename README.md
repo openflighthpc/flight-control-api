@@ -187,6 +187,11 @@ Fetch the information of a specific provider by id.
 ### GET
 
 ```
+parameters:
+  - in: path
+    name: provider-id
+    schema:
+      type: string
 responses:
   200:
     description: Provider specification
@@ -214,6 +219,15 @@ Verify the credential of the project.
 ### POST
 
 ```
+parameters:
+  - in: path
+    name: provider-id
+    schema:
+      type: string
+  - in: header
+    name: http-project-credentials
+    schema:
+      type: object
 requestBody:
   description: Dict of credential key/value pairs to validate
   required: true
@@ -246,8 +260,18 @@ Fetch the details of instances.
 
 ```
 parameters:
-  scope:
-    type: string
+  - in: path
+    name: provider-id
+    schema:
+      type: string
+  - in: query
+    name: scope
+    schema:
+      type: string
+  - in: header
+    name: http-project-credentials
+    schema:
+      type: object
 responses:
   200:
     description: Array of instance details
@@ -291,15 +315,25 @@ Attempt to start an instance existing on the provider.
 ### Path
 
 ```http request
-/providers/:id/start-instance
+/providers/{provider-id}/start-instance
 ```
 
 ### POST
 
 ```
 parameters:
-  scope:
-    type: string
+  - in: path
+    name: provider-id
+    schema:
+      type: string
+  - in: query
+    name: scope
+    schema:
+      type: string
+  - in: header
+    name: http-project-credentials
+    schema:
+      type: object
 requestBody:
   description: Instance name to switch on
   content:
@@ -327,15 +361,25 @@ Attempt to stop an instance existing on the provider.
 ### Path
 
 ```http request
-/providers/:id/stop-instance
+/providers/{provider-id}/stop-instance
 ```
 
 ### POST
 
 ```
 parameters:
-  scope:
-    type: string
+  - in: path
+    name: provider-id
+    schema:
+      type: string
+  - in: query
+    name: scope
+    schema:
+      type: string
+  - in: header
+    name: http-project-credentials
+    schema:
+      type: object
 requestBody:
   description: Instance name to switch off
   content:
@@ -363,15 +407,25 @@ Return a JSON list of instances existing for the given provider and credentials
 ### Path
 
 ```http request
-/providers/:id/list-instances
+/providers/{provider-id}/list-instances
 ```
 
 ### GET
 
 ```
 parameters:
-  scope:
-    type: string
+  - in: path
+    name: provider-id
+    schema:
+      type: string
+  - in: query
+    name: scope
+    schema:
+      type: string
+  - in: header
+    name: http-project-credentials
+    schema:
+      type: object
 responses:
   200:
     description: Array of instances
