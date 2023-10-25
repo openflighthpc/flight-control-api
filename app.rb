@@ -59,6 +59,12 @@ helpers do
   rescue JSON::ParserError
     false
   end
+
+  def valid_timestamp?(timestamp)
+    Time.at(timestamp)
+  rescue TypeError
+    false
+  end
 end
 
 namespace '/providers' do
@@ -129,6 +135,30 @@ namespace '/providers' do
     # Show provider attributes
     get do
       return provider.to_hash.to_json
+    end
+
+    get '/get-instance-costs' do
+      validate_credentials
+
+      instance_id = params['instance_id']
+      start_date = params['start_date'].to_i
+      end_date = params['end_date'].to_i
+
+      halt 404, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
+
+      DATES = [start_date, end_date].freeze
+
+      if DATES.any? { |d| !valid_timestamp?(d) }
+        halt 400, 'Start and end dates must be valid Unix timestamps'
+      end
+
+      if start_date > end_date
+        halt 400, 'Start date must be before end date'
+      end
+
+      project.get_historic_instance_costs(instance_id, start_date, end_date)
+    rescue SubprocessError
+      halt 500, "Error fetching instance costs for instance #{instance_id}"
     end
 
     post '/validate-credentials' do
