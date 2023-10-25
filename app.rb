@@ -137,7 +137,7 @@ namespace '/providers' do
     get '/list-instances' do
       validate_credentials
 
-      project.list_instances
+      project.list_instances.to_json
     rescue SubprocessError
       halt 500, 'Error fetching instance list'
     end
