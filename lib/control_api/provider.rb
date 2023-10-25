@@ -72,6 +72,20 @@ class Provider
     JSON.parse(run_action('list_models', scope: nil))
   end
 
+  def get_historic_instance_costs(instance_id, start_date, end_date, creds:, scope:)
+    env = {
+      'INSTANCE_ID' => instance_id,
+      'START_DATE' => start_date,
+      'END_DATE' => end_date
+    }
+
+    run_action('get_cost.sh', creds:, scope:, env:)
+  end
+
+  def list_types
+    JSON.parse(run_action('list_types.sh', scope: nil))
+  end
+
   def prepare_command
     File.join(dir, 'prepare')
   end
@@ -96,11 +110,15 @@ class Provider
 
     raise ArgumentError, "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
 
+    extra_vars = {
+      'RUN_ENV' => run_env,
+      'SCOPE' => scope
+    }
+    env = creds.merge(env, extra_vars)
+    env.transform_values!(&:to_s)
+
     stdout, stderr, status = Open3.capture3(
-      {
-        'RUN_ENV' => run_env,
-        'SCOPE' => scope
-      }.merge(creds, env),
+      env,
       script,
       chdir: run_env
     )

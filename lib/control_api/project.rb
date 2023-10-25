@@ -45,6 +45,10 @@ class Project
     provider.required_credentials - @credentials.keys
   end
 
+  def get_historic_instance_costs(instance_id, start_date, end_date)
+    provider.get_historic_instance_costs(instance_id, start_date, end_date, creds: @credentials, scope: @scope)
+  end
+
   private
 
   def provider
