@@ -143,6 +143,14 @@ namespace '/providers' do
       { body: 'Error starting fetching instance list' }.to_json
     end
 
+    get '/instance-details' do
+      validate_credentials
+
+      project.instance_details.to_json
+    rescue SubprocessError
+      halt 500, 'Error starting fetching instance details'
+    end
+
     post '/start-instance' do
       validate_credentials
 
