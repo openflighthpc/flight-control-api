@@ -107,14 +107,14 @@ namespace '/providers' do
       end
 
       def project
-        @project ||= Project.new(params['id'], credentials, scope_param)
+        @project ||= Project.new(id_param, credentials, scope_param)
       end
 
       def validate_credentials
         if !project.required_credentials?
           body "Missing credentials: #{project.missing_credentials.join(', ')}"
           halt 401
-        elsif !Project.new(params['id'], credentials).valid_credentials?
+        elsif !Project.new(id_param, credentials).valid_credentials?
           body 'Invalid credentials'
           halt 401
         end
@@ -134,20 +134,19 @@ namespace '/providers' do
       validate_credentials
     end
 
+    get '/instance-details' do
+      model = params['model']
+      provider.instance_details(model).to_json
+    rescue SubprocessError
+      halt 500, 'Error fetching instance details'
+    end
+
     get '/list-instances' do
       validate_credentials
 
       project.list_instances.to_json
     rescue SubprocessError
       halt 500, 'Error fetching instance list'
-    end
-
-    get '/instance-details' do
-      validate_credentials
-
-      project.instance_details.to_json
-    rescue SubprocessError
-      halt 500, 'Error fetching instance details'
     end
 
     post '/start-instance' do
