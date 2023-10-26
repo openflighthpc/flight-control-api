@@ -44,7 +44,7 @@ class Provider
   end
 
   def instance_details(model:)
-    JSON.parse(run_action('instance_details.sh', env: {
+    JSON.parse(run_action('instance_details', env: {
       'MODEL' => model
     }))
   end
