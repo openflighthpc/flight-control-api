@@ -90,7 +90,7 @@ class Provider
     FileUtils.mkdir_p(File.join(dir, 'log/')).first
   end
 
-  def run_action(action, scope: '', creds: {}, env: {})
+  def run_action(action, scope: nil, creds: {}, env: {})
     prepare unless prepared?
     script = File.join(dir, 'actions', action)
     log_name = File.join(log_dir, "#{id}-#{File.basename(script, File.extname(script))}-#{Time.now.to_i}.log")
