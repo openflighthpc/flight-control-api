@@ -69,8 +69,8 @@ class Provider
     run_action('stop_instance', creds:, scope:, env:)
   end
 
-  def list_types
-    JSON.parse(run_action('list_types', scope: nil))
+  def list_models
+    JSON.parse(run_action('list_models', scope: nil))
   end
 
   def prepare_command
