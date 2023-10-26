@@ -43,7 +43,7 @@ class Provider
     JSON.parse(run_action('list_instances', creds:, scope:))
   end
 
-  def instance_details(model:)
+  def instance_details(model)
     JSON.parse(run_action('instance_details', env: {
       'MODEL' => model
     }))
