@@ -31,6 +31,8 @@ External components, including external scripts and description files, can be ad
 
 The providers can be regarded as a set of folders representing cloud service providers, where each folder corresponds to one cloud service provider. The folder names of these providers will be loaded by Flight Control as provider ids. Each folder contains a YAML file named 'metadata.yaml' to describe the attributes of that cloud service provider. The metadata files of different cloud service providers should have the same structure, i.e. same attributes. By default, Flight Control takes [etc/providers](etc/providers) as the default path to search for the available providers, in which an example provider folder containing the metadata.yaml is given as a template.
 
+Each provider has a set of action scripts that it will use for common API use-cases. Please see the [example provider](etc/providers/example-provider) for a specification of required scripts. All scripts must be executable and include a shebang.
+
 # Operation
 
 The application is designed to work out of the box. Customisation options are available in [etc/config.yaml.ex](etc/config.yaml.ex).
