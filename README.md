@@ -190,6 +190,7 @@ Fetch the information of a specific provider by id.
 parameters:
   - in: path
     name: provider-id
+    required: true
     schema:
       type: string
 responses:
@@ -222,10 +223,12 @@ Verify the credential of the project.
 parameters:
   - in: path
     name: provider-id
+    required: true
     schema:
       type: string
   - in: header
     name: Project-Credentials
+    required: true
     schema:
       type: object
 requestBody:
@@ -264,10 +267,12 @@ Fetch the details of instances.
 parameters:
   - in: path
     name: provider-id
+    required: true
     schema:
       type: string
   - in: query
     name: model
+    required: true
     schema:
       type: string
 responses:
@@ -321,6 +326,7 @@ Return a JSON list of instances existing for the given provider and credentials
 parameters:
   - in: path
     name: provider-id
+    required: true
     schema:
       type: string
   - in: query
@@ -329,6 +335,7 @@ parameters:
       type: string
   - in: header
     name: Project-Credentials
+    required: true
     schema:
       type: object
 responses:
@@ -378,6 +385,7 @@ Attempt to start an instance existing on the provider.
 parameters:
   - in: path
     name: provider-id
+    required: true
     schema:
       type: string
   - in: query
@@ -386,6 +394,7 @@ parameters:
       type: string
   - in: header
     name: Project-Credentials
+    required: true
     schema:
       type: object
 requestBody:
@@ -424,6 +433,7 @@ Attempt to stop an instance existing on the provider.
 parameters:
   - in: path
     name: provider-id
+    required: true
     schema:
       type: string
   - in: query
@@ -432,6 +442,7 @@ parameters:
       type: string
   - in: header
     name: Project-Credentials
+    required: true
     schema:
       type: object
 requestBody:
