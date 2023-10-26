@@ -281,28 +281,26 @@ responses:
     content:
       application/json:
         schema:
-          type: array
-          items:
-            type: object
-            properties:
-              model:
-                description: The name of the fixed instance size choice offered by providers, e.g. "t3.medium"
-                type: string
-              provider:
-                type: string
-              currency:
-                type: string
-              price_per_hour:
-                type: float
-              cpu:
-                description: the number of CPUs
-                type: integer
-              gpu:
-                description: the number of GPUs
-                type: integer
-              mem:
-                description: total memory
-                type: integer
+          type: object
+          properties:
+            model:
+              description: The name of the fixed instance size choice offered by providers, e.g. "t3.medium"
+              type: string
+            provider:
+              type: string
+            currency:
+              type: string
+            price_per_hour:
+              type: float
+            cpu:
+              description: the number of CPUs
+              type: integer
+            gpu:
+              description: the number of GPUs
+              type: integer
+            mem:
+              description: total memory
+              type: integer
   404:
     description: Provider doesn't exist
   500:
