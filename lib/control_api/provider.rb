@@ -44,9 +44,8 @@ class Provider
   end
 
   def instance_details(model)
-    JSON.parse(run_action('instance_details', env: {
-      'MODEL' => model
-    }))
+    env = { 'MODEL' => model }
+    JSON.parse(run_action('instance_details', env: env))
   end
 
   def valid_credentials?(creds:, scope:)
