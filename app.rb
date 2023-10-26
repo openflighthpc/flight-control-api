@@ -136,6 +136,7 @@ namespace '/providers' do
 
     get '/instance-details' do
       halt 400, 'Missing model' unless params['model']
+      # halt 404, 'Instance model does not exist' unless
       provider.instance_details(params['model']).to_json
     rescue SubprocessError
       halt 500, 'Error fetching instance details'
@@ -153,7 +154,7 @@ namespace '/providers' do
       validate_credentials
 
       instance_id = request_body['instance_id']
-
+      halt 400, 'Missing instance id' unless instance_id
       halt 404, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
 
       project.start_instance(instance_id)
@@ -167,7 +168,7 @@ namespace '/providers' do
       validate_credentials
 
       instance_id = request_body['instance_id']
-
+      halt 400, 'Missing instance id' unless instance_id
       halt 404, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
 
       project.stop_instance(instance_id)
