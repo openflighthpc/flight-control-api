@@ -225,7 +225,7 @@ parameters:
     schema:
       type: string
   - in: header
-    name: Project-credentials
+    name: Project-Credentials
     schema:
       type: object
 requestBody:
@@ -328,7 +328,7 @@ parameters:
     schema:
       type: string
   - in: header
-    name: Project-credentials
+    name: Project-Credentials
     schema:
       type: object
 responses:
@@ -385,7 +385,7 @@ parameters:
     schema:
       type: string
   - in: header
-    name: Project-credentials
+    name: Project-Credentials
     schema:
       type: object
 requestBody:
@@ -431,7 +431,7 @@ parameters:
     schema:
       type: string
   - in: header
-    name: Project-credentials
+    name: Project-Credentials
     schema:
       type: object
 requestBody:
