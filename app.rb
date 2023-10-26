@@ -135,9 +135,10 @@ namespace '/providers' do
     end
 
     get '/instance-details' do
-      halt 400, 'Missing model' unless params['model']
-      # halt 404, 'Instance model does not exist' unless
-      provider.instance_details(params['model']).to_json
+      model = params['model']
+      halt 400, 'Missing model' unless model
+      halt 404, 'Instance model does not exist' unless provider.list_models.any? { |i| i['model'] == model}
+      instance_details.to_json
     rescue SubprocessError
       halt 500, 'Error fetching instance details'
     end
