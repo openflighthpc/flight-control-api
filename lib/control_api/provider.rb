@@ -40,11 +40,11 @@ class Provider
   end
 
   def list_instances(scope:, creds: {})
-    JSON.parse(run_action('list_instances.sh', creds:, scope:))
+    JSON.parse(run_action('list_instances', creds:, scope:))
   end
 
   def valid_credentials?(creds:, scope:)
-    run_action('authorise_credentials.sh', creds:, scope:)
+    run_action('authorise_credentials', creds:, scope:)
   end
 
   def start_instance(instance_id, scope:, creds: {})
@@ -52,7 +52,7 @@ class Provider
       'INSTANCE_ID' => instance_id
     }
 
-    run_action('start_instance.sh', creds:, scope:, env:)
+    run_action('start_instance', creds:, scope:, env:)
   end
 
   def stop_instance(instance_id, scope:, creds: {})
@@ -60,15 +60,15 @@ class Provider
       'INSTANCE_ID' => instance_id
     }
 
-    run_action('stop_instance.sh', creds:, scope:, env:)
+    run_action('stop_instance', creds:, scope:, env:)
   end
 
   def list_types
-    JSON.parse(run_action('list_types.sh', scope: nil))
+    JSON.parse(run_action('list_types', scope: nil))
   end
 
   def prepare_command
-    File.join(dir, 'prepare.sh')
+    File.join(dir, 'prepare')
   end
 
   def prepared?
