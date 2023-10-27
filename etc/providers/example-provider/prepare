@@ -11,6 +11,7 @@ model: compute_small
 provider: example-provider
 currency: GBP
 price_per_hour: 1
+kilowatts_per_hour: 0.2
 cpu: 2
 gpu: 2
 mem: 2
@@ -22,12 +23,10 @@ model: compute_large
 provider: example-provider
 currency: GBP
 price_per_hour: 1.5
+kilowatts_per_hour: 0.5
 cpu: 4
 gpu: 4
 mem: 4
-name: compute_large
-cost_per_hour: 0.5
-kilowatts_per_hour: 0.5
 EOF
 
 cat <<EOF > "$RUN_ENV/instance_models/mining_rig.yaml"
@@ -36,20 +35,10 @@ model: mining_rig
 provider: example-provider
 currency: Bitcoin
 price_per_hour: 0.000123
+kilowatts_per_hour: 2
 cpu: 1
 gpu: 8192
 mem: 8.1632
-=======
-name: login
-cost_per_hour: 0.1
-kilowatts_per_hour: 0.2
-EOF
-
-cat <<EOF > "$RUN_ENV/instance_types/gpu.yaml"
----
-name: gpu
-cost_per_hour: 1
-kilowatts_per_hour: 1
 EOF
 
 echo "Creating projects dir..."
