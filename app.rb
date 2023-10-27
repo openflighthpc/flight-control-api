@@ -186,6 +186,15 @@ namespace '/providers' do
     rescue SubprocessError
       halt 500, 'Error fetching instance list'
     end
+    
+    get '/instance-usage' do
+      validate_credentials
+
+      instance_id = request_body['instance_id']
+      project.instance_usage(instance_id).to_json
+    rescue SubprocessError
+      halt 500, "Error fetching the usage of instance #{instance_id}"
+    end
 
     post '/start-instance' do
       validate_credentials
