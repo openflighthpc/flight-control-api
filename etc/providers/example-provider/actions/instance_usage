@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-#return the instance usage
+#return the details of the given instance model
 "$RUN_ENV/bin/yq_linux_amd64" eval '.' "$RUN_ENV/instance_models/$MODEL.yaml" -o=json
