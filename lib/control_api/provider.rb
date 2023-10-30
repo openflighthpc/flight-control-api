@@ -82,10 +82,6 @@ class Provider
     run_action('get_cost', creds:, scope:, env:)
   end
 
-  def list_types
-    JSON.parse(run_action('list_types.sh', scope: nil))
-  end
-
   def prepare_command
     File.join(dir, 'prepare')
   end
