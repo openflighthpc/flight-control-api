@@ -29,6 +29,10 @@ class Project
     provider.list_instances(creds: @credentials, scope: @scope)
   end
 
+  def instance_usage(instance_id)
+    provider.start_instance(instance_id, creds: @credentials, scope: @scope)
+  end
+
   def start_instance(instance_id)
     provider.start_instance(instance_id, creds: @credentials, scope: @scope)
     # TODO: send some commands to start the instance
