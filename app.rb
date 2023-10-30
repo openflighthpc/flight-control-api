@@ -190,7 +190,7 @@ namespace '/providers' do
     get '/instance-usage' do
       validate_credentials
 
-      instance_id = request_body['instance_id']
+      instance_id = params['instance_id']
       halt 400, 'Missing instance id' unless instance_id
       halt 404, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
       
