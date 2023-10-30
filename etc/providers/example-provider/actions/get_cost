@@ -6,7 +6,7 @@ set -e
 # Vars:
 # START_DATE: Unix timestamp
 # END_DATE: Unix timestamp
-# INSTANCE_ID: ID to get cost for
+# INSTANCE_IDs: IDs to get cost for, comma separated list
 # PROJECT_NAME: provided credential
 
 # Calculate date range
@@ -33,7 +33,7 @@ do
 
   # Total cost for instance
   INSTANCE_COST_PER_HOUR=$(echo "$UPTIME * $HOURLY_COST" | bc -l)
-  TOTAL_KWH=$(echo "$UPTIME & $KWH_USAGE" | bc -l)
+  TOTAL_KWH=$(echo "$UPTIME * $KWH_USAGE" | bc -l)
 
   # Construct variable to store YAML for newly processed instance
   # Has to be exported so that yq can access it
