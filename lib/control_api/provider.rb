@@ -52,7 +52,7 @@ class Provider
     run_action('authorise_credentials', creds:, scope:)
   end
 
-  def start_instance(instance_id, scope:, creds: {})
+  def instance_usage(instance_id, scope:, creds: {})
     env = {
       'INSTANCE_ID' => instance_id
     }
