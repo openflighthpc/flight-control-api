@@ -40,7 +40,7 @@ do
   export new=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.$instance; .price = \"$INSTANCE_COST_PER_HOUR\" | .kwh= \"$TOTAL_KWH\")")
 
   # Merge out-string and new instance string
-  out=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(out) + env(new)')
+  out=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(out) + env(new)' -o=json)
 done
 
 echo "$out"
