@@ -30,7 +30,7 @@ class Project
   end
 
   def instance_usage(instance_id)
-    provider.start_instance(instance_id, creds: @credentials, scope: @scope)
+    provider.instance_usage(instance_id, creds: @credentials, scope: @scope)
   end
 
   def start_instance(instance_id)
