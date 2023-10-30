@@ -140,15 +140,18 @@ namespace '/providers' do
     get '/get-instance-costs' do
       validate_credentials
 
-      instance_id = params['instance_id']
+      instance_ids = params['instance_ids'].split(',').compact
       start_date = params['start_date'].to_i
       end_date = params['end_date'].to_i
 
-      halt 404, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
+      all_instances = project.list_instances
+      instance_ids.each do |id|
+        halt 404, "Instance #{id} not found" unless all_instances.any? { |i| i['name'] == id }
+      end
 
-      DATES = [start_date, end_date].freeze
+      DATES_PARAMS = [start_date, end_date].freeze
 
-      if DATES.any? { |d| !valid_timestamp?(d) }
+      if DATES_PARAMS.any? { |d| !valid_timestamp?(d) }
         halt 400, 'Start and end dates must be valid Unix timestamps'
       end
 
@@ -156,9 +159,9 @@ namespace '/providers' do
         halt 400, 'Start date must be before end date'
       end
 
-      project.get_historic_instance_costs(instance_id, start_date, end_date)
+      project.get_historic_instance_costs(instance_ids, *DATES_PARAMS)
     rescue SubprocessError
-      halt 500, "Error fetching instance costs for instance #{instance_id}"
+      halt 500, "Error fetching instance costs for instances #{instance_ids.join(',')}"
     end
 
     post '/validate-credentials' do

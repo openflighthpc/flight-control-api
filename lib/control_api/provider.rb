@@ -72,14 +72,14 @@ class Provider
     JSON.parse(run_action('list_models', scope: nil))
   end
 
-  def get_historic_instance_costs(instance_id, start_date, end_date, creds:, scope:)
+  def get_historic_instance_costs(instance_ids, start_date, end_date, creds:, scope:)
     env = {
-      'INSTANCE_ID' => instance_id,
+      'INSTANCE_IDS' => instance_ids.join(','),
       'START_DATE' => start_date,
       'END_DATE' => end_date
     }
 
-    run_action('get_cost.sh', creds:, scope:, env:)
+    run_action('get_cost', creds:, scope:, env:)
   end
 
   def list_types
