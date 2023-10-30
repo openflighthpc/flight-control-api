@@ -308,7 +308,7 @@ responses:
 
 ```
 
-## List instances
+## List Instances
 
 Return a JSON list of instances existing for the given provider and credentials
 
@@ -367,7 +367,66 @@ responses:
     description: Internal server error
 ```
 
-## Start instance
+## Instance Usage
+
+Return the average of the last 20 mins and the last recorded usage of the instance in percentage.
+
+### Path
+
+```http request
+/providers/{provider-id}/instance-usage
+```
+
+### GET
+
+```
+parameters:
+  - in: path
+    name: provider-id
+    required: true
+    schema:
+      type: string
+  - in: query
+    name: scope
+    schema:
+      type: string
+  - in: query
+    name: instance_id
+    required: true
+    schema:
+      type: string
+  - in: header
+    name: Project-Credentials
+    required: true
+    schema:
+      type: object
+responses:
+  200:
+    description: Instance usage
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              instance_id:
+                type: string
+              average:
+                description: The average usage of the given instance during the past 20 mins
+                type: string
+              last:
+                description: The last recorded usage of the given instance
+                type: string
+  401:
+    description: The given credentials are either invalid or are missing keys
+  404:
+    description: Provider does not exist or instance not found
+  500:
+    description: Internal server error
+```
+
+## Start Instance
 
 Attempt to start an instance existing on the provider.
 
@@ -415,7 +474,7 @@ responses:
     description: Internal server error
 ```
 
-## Stop instance
+## Stop Instance
 
 Attempt to stop an instance existing on the provider.
 
