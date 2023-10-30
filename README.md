@@ -463,6 +463,63 @@ responses:
     description: Internal server error
 ```
 
+## Get instance costs
+
+Return a JSON object of instances with their monetary costs and energy usage between two dates 
+
+### Path
+
+```http request
+/providers/{provider-id}/get-instance-costs
+```
+
+### GET
+
+```
+parameters:
+  - in: path
+    name: provider-id
+    required: true
+    schema:
+      type: string
+  - in: query
+    name: scope
+    schema:
+      type: string
+  - in: query
+    name: instance_ids
+    schema:
+      type: string
+  - in: query
+    name: start_date
+    schema:
+      type: string
+  - in: query
+    name: end_date
+    schema:
+      type: string
+  - in: header
+    name: Project-Credentials
+    required: true
+    schema:
+      type: object
+responses:
+  200:
+    description: Object describing instances
+    content:
+      application/json:
+        schema:
+          type: object
+  400:
+    description: The given start/end dates are invalid
+  401:
+    description: The given credentials are either invalid or are missing keys
+  404:
+    description: Any number of given instance IDs do not exist
+  500:
+    description: Internal server error
+```
+
 # Troubleshooting
 
 This section collects some potential errors that may be raised while running this application, along with the corresponding solutions.
