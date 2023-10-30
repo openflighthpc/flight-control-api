@@ -57,7 +57,7 @@ class Provider
       'INSTANCE_ID' => instance_id
     }
 
-    run_action('instance_usage', creds:, scope:, env:)
+    JSON.parse(run_action('instance_usage', creds:, scope:, env:))
   end
 
   def start_instance(instance_id, scope:, creds: {})
