@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-#return the details of the given instance model
-"$RUN_ENV/bin/yq_linux_amd64" eval '.' "$RUN_ENV/instance_models/$MODEL.yaml" -o=json
+# Calculate average and last usage, accurate to two decimal places
+read -r average last <<< $(awk -v max=100 'BEGIN{srand(); printf "%.2f %.2f", rand()*max, rand()*max}')
+
+# return the JSON string including the usage data
+echo "{\"average\":\"$average\",\"last\":\"$last\"}"
