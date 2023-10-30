@@ -57,6 +57,14 @@ class Provider
       'INSTANCE_ID' => instance_id
     }
 
+    run_action('instance_usage', creds:, scope:, env:)
+  end
+
+  def start_instance(instance_id, scope:, creds: {})
+    env = {
+      'INSTANCE_ID' => instance_id
+    }
+
     run_action('start_instance', creds:, scope:, env:)
   end
 

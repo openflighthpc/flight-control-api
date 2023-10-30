@@ -4,4 +4,4 @@
 read -r average last <<< $(awk -v max=100 'BEGIN{srand(); printf "%.2f %.2f", rand()*max, rand()*max}')
 
 # return the JSON string including the usage data
-echo "{\"average\":\"$average\",\"last\":\"$last\"}"
+echo "{\"instance_id\":\"$INSTANCE_ID\",\"average\":\"$average\",\"last\":\"$last\"}"
