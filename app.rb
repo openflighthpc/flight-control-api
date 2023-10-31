@@ -190,12 +190,22 @@ namespace '/providers' do
     get '/instance-usage' do
       validate_credentials
 
-      instance_ids = params['instance_id']
+      instance_ids = params['instance_id'].split(',')
       halt 400, 'Missing instance id' unless instance_ids
-      puts instance_ids.class
-      halt 404, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['name'] == instance_id }
+      halt 400, 'Malformed instance_id parameter' if instance_ids.any? { |i| i.empty? }
       
-      project.instance_usage(instance_id).to_json
+      non_existent_instances = []
+      project.list_instances.each do |i|
+        non_existent_instances << i['name'] if instance_ids.delete(i['name'])
+      end
+      halt 404, "Instance #{non_existent_instances.inspect} not found" unless non_existent_instances.empty?
+
+      instance_usages = []
+      instance_ids.each do |instance_id|
+        instance_usages << project.instance_usage(instance_id)
+      end
+    
+      project.instance_usages.to_json
     rescue SubprocessError
       halt 500, "Error fetching the usage of instance #{instance_id}"
     end
