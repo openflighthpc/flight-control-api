@@ -216,7 +216,7 @@ namespace '/providers' do
         instance_usages << project.instance_usage(instance_id, start_time, end_time)
       end
     
-      project.instance_usages.to_json
+      instance_usages.to_json
     rescue SubprocessError
       halt 500, "Error fetching the usage of instance #{instance_id}"
     end
