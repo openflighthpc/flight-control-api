@@ -393,6 +393,7 @@ parameters:
   - in: query
     name: instance_id
     required: true
+    collectionFormat: multi
     schema:
       type: string
   - in: header
