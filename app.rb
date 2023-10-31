@@ -88,6 +88,7 @@ namespace '/providers' do
         t = params[time]
         halt 400, "Missing #{time}" unless t
         halt 400, "Malformed #{time}" if t.empty? || !t.match?(/\A\d+\z/) || t.to_i > Time.now.to_i
+        t
       end
 
       def provider
