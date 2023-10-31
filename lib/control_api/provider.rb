@@ -52,9 +52,11 @@ class Provider
     run_action('authorise_credentials', creds:, scope:)
   end
 
-  def instance_usage(instance_id, scope:, creds: {})
+  def instance_usage(instance_id, start_time, stop_time, scope:, creds: {})
     env = {
-      'INSTANCE_ID' => instance_id
+      'INSTANCE_ID' => instance_id,
+      'START_TIME' => start_time,
+      'STOP_TIME' => stop_time
     }
 
     JSON.parse(run_action('instance_usage', creds:, scope:, env:))
