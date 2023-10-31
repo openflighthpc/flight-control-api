@@ -212,10 +212,7 @@ namespace '/providers' do
       end
       halt 404, "Instance #{non_existent_instances.inspect} not found" unless non_existent_instances.empty?
 
-      instance_usages = []
-      instance_ids.each do |instance_id|
-        instance_usages << project.instance_usage(instance_id, start_time, end_time)
-      end
+      instance_usages = project.instance_usages(instance_ids, start_time, end_time)
     
       instance_usages.to_json
     rescue SubprocessError

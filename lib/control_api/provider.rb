@@ -52,14 +52,22 @@ class Provider
     run_action('authorise_credentials', creds:, scope:)
   end
 
-  def instance_usage(instance_id, start_time, stop_time, scope:, creds: {})
-    env = {
-      'INSTANCE_ID' => instance_id,
-      'START_TIME' => start_time,
-      'STOP_TIME' => stop_time
-    }
+  def instance_usages(instance_ids, start_time, stop_time, scope:, creds: {})
+    usages = []
+    instance_ids.each do |instance_id|
+      env = {
+        'INSTANCE_ID' => instance_id,
+        'START_TIME' => start_time,
+        'STOP_TIME' => stop_time
+      }
 
-    JSON.parse(run_action('instance_usage', creds:, scope:, env:))
+      usages << JSON.parse(run_action('instance_usage', creds:, scope:, env:))
+    end
+    {
+      'start_time' => start_time,
+      'stop_time' => stop_time,
+      'usages' => usages
+    }
   end
 
   def start_instance(instance_id, scope:, creds: {})
