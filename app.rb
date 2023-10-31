@@ -194,9 +194,10 @@ namespace '/providers' do
       halt 400, 'Missing instance id' unless instance_ids
       halt 400, 'Malformed instance_id parameter' if instance_ids.any? { |i| i.empty? }
       
+      all_instances = project.list_instances
       non_existent_instances = []
-      project.list_instances.each do |i|
-        non_existent_instances << i['name'] unless instance_ids.delete(i['name'])
+      instance_ids.each do |i|
+        non_existent_instances << i unless all_instances.any? { |a| a['name'] == i }
       end
       halt 404, "Instance #{non_existent_instances.inspect} not found" unless non_existent_instances.empty?
 
