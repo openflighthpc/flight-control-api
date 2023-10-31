@@ -84,6 +84,12 @@ namespace '/providers' do
         params['scope']
       end
 
+      def time_param(time)
+        t = params[time]
+        halt 400, "Missing #{time}" unless t
+        halt 400, "Malformed #{time}" if t.empty? || !t.match?(/\A\d+\z/) || t.to_i > Time.now.to_i
+      end
+
       def provider
         Provider[id_param]
       end
@@ -190,9 +196,13 @@ namespace '/providers' do
     get '/instance-usage' do
       validate_credentials
 
+      start_time = time_param('start_time')
+      end_time = time_param('end_time')
+      halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
+
       instance_ids = params['instance_id']&.split(',')
       halt 400, 'Missing instance id' unless instance_ids
-      halt 400, 'Malformed instance_id parameter' if instance_ids.empty? || instance_ids.any? { |i| i.empty? }
+      halt 400, 'Malformed instance id' if instance_ids.empty? || instance_ids.any? { |i| i.empty? }
       
       all_instances = project.list_instances
       non_existent_instances = []
