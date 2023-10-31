@@ -419,18 +419,23 @@ responses:
     content:
       application/json:
         schema:
-          type: array
-          items:
-            type: object
-            properties:
-              instance_id:
-                type: string
-              average:
-                description: The average usage of the given instance during the past 20 mins
-                type: string
-              last:
-                description: The last recorded usage of the given instance
-                type: string
+          start_time:
+            type: long
+          endt_time:
+            type: long
+          usages:
+            type: array
+            items:
+              type: object
+              properties:
+                instance_id:
+                  type: string
+                average:
+                  description: The average usage of the given instance during the past 20 mins
+                  type: string
+                last:
+                  description: The last recorded usage of the given instance
+                  type: string
   401:
     description: The given credentials are either invalid or are missing keys
   404:
