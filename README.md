@@ -396,6 +396,18 @@ parameters:
     collectionFormat: csv
     schema:
       type: string
+  - in: query
+    description: The timestamp of the start of the time range, accurate to seconds
+    name: start_time
+    required: true
+    schema:
+      type: long
+  - in: query
+    description: The timestamp of the end of the time range, accurate to seconds
+    name: end_time
+    required: true
+    schema:
+      type: long
   - in: header
     name: Project-Credentials
     required: true
