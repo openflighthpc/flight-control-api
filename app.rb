@@ -213,7 +213,7 @@ namespace '/providers' do
 
       instance_usages = []
       instance_ids.each do |instance_id|
-        instance_usages << project.instance_usage(instance_id)
+        instance_usages << project.instance_usage(instance_id, start_time, end_time)
       end
     
       project.instance_usages.to_json

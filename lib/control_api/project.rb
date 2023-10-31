@@ -29,8 +29,8 @@ class Project
     provider.list_instances(creds: @credentials, scope: @scope)
   end
 
-  def instance_usage(instance_id)
-    provider.instance_usage(instance_id, creds: @credentials, scope: @scope)
+  def instance_usage(instance_id, start_time, stop_time)
+    provider.instance_usage(instance_id, start_time, stop_time, creds: @credentials, scope: @scope)
   end
 
   def start_instance(instance_id)
