@@ -391,7 +391,7 @@ parameters:
     schema:
       type: string
   - in: query
-    name: instance_id
+    name: instance_ids
     required: true
     collectionFormat: csv
     schema:
