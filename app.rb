@@ -190,9 +190,9 @@ namespace '/providers' do
     get '/instance-usage' do
       validate_credentials
 
-      instance_ids = params['instance_id'].split(',')
+      instance_ids = params['instance_id']&.split(',')
       halt 400, 'Missing instance id' unless instance_ids
-      halt 400, 'Malformed instance_id parameter' if instance_ids.any? { |i| i.empty? }
+      halt 400, 'Malformed instance_id parameter' if instance_ids.empty? || instance_ids.any? { |i| i.empty? }
       
       all_instances = project.list_instances
       non_existent_instances = []
