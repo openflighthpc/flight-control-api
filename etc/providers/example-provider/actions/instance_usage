@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+sleep 1
+
 # Calculate average and last usage, accurate to two decimal places
 read -r average last <<< $(awk -v max=100 'BEGIN{srand(); printf "%.2f %.2f", rand()*max, rand()*max}')
 
