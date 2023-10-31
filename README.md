@@ -436,6 +436,8 @@ responses:
                 last:
                   description: The last recorded usage of the given instance
                   type: string
+  400:
+    description: Missing instance_ids, start_time, or end_time parameters, or passing malformed parameters
   401:
     description: The given credentials are either invalid or are missing keys
   404:
