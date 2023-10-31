@@ -196,7 +196,7 @@ namespace '/providers' do
       
       non_existent_instances = []
       project.list_instances.each do |i|
-        non_existent_instances << i['name'] if instance_ids.delete(i['name'])
+        non_existent_instances << i['name'] unless instance_ids.delete(i['name'])
       end
       halt 404, "Instance #{non_existent_instances.inspect} not found" unless non_existent_instances.empty?
 
