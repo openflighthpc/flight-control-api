@@ -201,7 +201,7 @@ namespace '/providers' do
       end_time = time_param('end_time')
       halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
 
-      instance_ids = params['instance_id']&.split(',')
+      instance_ids = params['instance_ids']&.split(',')
       halt 400, 'Missing instance id' unless instance_ids
       halt 400, 'Malformed instance id' if instance_ids.empty? || instance_ids.any? { |i| i.empty? }
       
