@@ -210,7 +210,7 @@ namespace '/providers' do
       instance_ids.each do |i|
         non_existent_instances << i unless all_instances.any? { |a| a['name'] == i }
       end
-      halt 404, "Instance #{non_existent_instances.inspect} not found" unless non_existent_instances.empty?
+      halt 404, "Instance(s) #{non_existent_instances.inspect} not found" unless non_existent_instances.empty?
 
       instance_usages = project.instance_usages(instance_ids, start_time, end_time)
     
