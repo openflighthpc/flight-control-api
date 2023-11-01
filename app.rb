@@ -203,7 +203,6 @@ namespace '/providers' do
 
       instance_ids = params['instance_ids']&.split(',').compact.uniq
       halt 400, 'Missing instance id' unless instance_ids
-      halt 400, 'Malformed instance id' if instance_ids.empty? || instance_ids.any? { |i| i.empty? }
       
       all_instances = project.list_instances
       non_existent_instances = []
