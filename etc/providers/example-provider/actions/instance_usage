@@ -3,14 +3,15 @@
 IFS=',' read -ra ids_array <<< "$INSTANCE_IDS"
 
 export out="---"
+
 for instance_id in "${ids_array[@]}"
 do
   # Calculate average and last usage, accurate to two decimal places
   sleep 1
   read -r average last <<< $(awk -v max=100 'BEGIN{srand(); printf "%.2f %.2f", rand()*max, rand()*max}')
 
-  export new=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.usages; .instance_id = \"$instance_id\" | .average = \"$average\" | .last = \"$last\")")
-  out=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(out) += [env(new)]')
+  export new=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.; .instance_id = \"$instance_id\" | .average = \"$average\" | .last = \"$last\")")
+  out=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(out) + [env(new)]')
 done
 
 # Start and end time could be fetched like this in practice
