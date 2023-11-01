@@ -53,20 +53,15 @@ class Provider
   end
 
   def instance_usages(instance_ids, start_time, stop_time, scope:, creds: {})
-    usages = []
-    instance_ids.each do |instance_id|
-      env = {
-        'INSTANCE_ID' => instance_id,
-        'START_TIME' => start_time,
-        'STOP_TIME' => stop_time
-      }
-
-      usages << JSON.parse(run_action('instance_usage', creds:, scope:, env:))
-    end
+    env = {
+      'INSTANCE_IDS' => instance_ids.join(','),
+      'START_TIME' => start_time,
+      'STOP_TIME' => stop_time
+    }
     {
       'start_time' => start_time,
       'stop_time' => stop_time,
-      'usages' => usages
+      'usages' => JSON.parse(run_action('instance_usage', creds:, scope:, env:))
     }
   end
 
