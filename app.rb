@@ -201,7 +201,7 @@ namespace '/providers' do
       end_time = time_param('end_time')
       halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
 
-      instance_ids = params['instance_ids']&.split(',').compact.uniq
+      instance_ids = params['instance_ids']&.split(',').reject(&:empty?).uniq
       halt 400, 'Missing instance id' unless instance_ids
       
       all_instances = project.list_instances
