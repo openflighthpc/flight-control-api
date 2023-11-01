@@ -50,13 +50,7 @@ mkdir "$RUN_ENV/bin"
 echo "Downloading yq..."
 wget https://github.com/mikefarah/yq/releases/download/v4.35.2/yq_linux_amd64 -P "$RUN_ENV/bin"
 chmod +x "$RUN_ENV/bin/yq_linux_amd64"
-echo "yq downloaded."
-
-# Download jq for constructing JSON
-echo "Downloading jq..."
-wget https://github.com/jqlang/jq/releases/download/jq-1.7/jq-linux-amd64 -P "$RUN_ENV/bin"
-chmod +x "$RUN_ENV/bin/jq-linux-amd64"
-echo "jq Downloaded."
+echo "Downloaded."
 
 sleep 3
 echo "Prepared."
