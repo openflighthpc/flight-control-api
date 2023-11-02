@@ -421,7 +421,7 @@ responses:
         schema:
           start_time:
             type: long
-          endt_time:
+          end_time:
             type: long
           usages:
             type: array

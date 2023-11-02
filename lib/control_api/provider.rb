@@ -52,15 +52,15 @@ class Provider
     run_action('authorise_credentials', creds:, scope:)
   end
 
-  def instance_usages(instance_ids, start_time, stop_time, scope:, creds: {})
+  def instance_usages(instance_ids, start_time, end_time, scope:, creds: {})
     env = {
       'INSTANCE_IDS' => instance_ids.join(','),
       'START_TIME' => start_time,
-      'STOP_TIME' => stop_time
+      'END_TIME' => end_time
     }
     {
       'start_time' => start_time,
-      'stop_time' => stop_time,
+      'end_time' => end_time,
       'usages' => JSON.parse(run_action('instance_usages', creds:, scope:, env:))
     }
   end
@@ -85,11 +85,11 @@ class Provider
     JSON.parse(run_action('list_models', scope: nil))
   end
 
-  def get_historic_instance_costs(*instance_ids, start_date, end_date, creds:, scope:)
+  def get_historic_instance_costs(*instance_ids, start_time, end_time, creds:, scope:)
     env = {
       'INSTANCE_IDS' => instance_ids.join(','),
-      'START_DATE' => start_date,
-      'END_DATE' => end_date
+      'START_TIME' => start_time,
+      'END_TIME' => end_time
     }
 
     run_action('instance_costs', creds:, scope:, env:)
