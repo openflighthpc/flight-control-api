@@ -148,8 +148,8 @@ namespace '/providers' do
       validate_credentials
 
       instance_ids = params['instance_ids'].to_s.split(',')
-      start_date = params['start_date'].to_i
-      end_date = params['end_date'].to_i
+      start_time = time_param('start_time').to_i
+      end_time = time_param('end_time').to_i
 
       all_instances = project.list_instances.map { |i| i['name'] }
       not_found = instance_ids.reject { |id| all_instances.include?(id) }
@@ -158,17 +158,17 @@ namespace '/providers' do
         halt 404, "Instance(s) #{not_found.join(',')} not found"
       end
 
-      date_params = [start_date, end_date].freeze
+      time_params = [start_time, end_time].freeze
 
-      if date_params.any? { |d| !valid_timestamp?(d) }
+      if time_params.any? { |d| !valid_timestamp?(d) }
         halt 400, 'Start and end dates must be valid Unix timestamps'
       end
 
-      if start_date > end_date
+      if start_time > end_time
         halt 400, 'Start date must be before end date'
       end
 
-      project.get_historic_instance_costs(*instance_ids, *date_params)
+      project.get_historic_instance_costs(*instance_ids, *time_params)
     rescue SubprocessError
       halt 500, "Error fetching instance costs for instances #{instance_ids.join(',')}"
     end
@@ -201,18 +201,18 @@ namespace '/providers' do
       end_time = time_param('end_time')
       halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
 
+      halt 400, 'Missing instance id' unless params['instance_ids']
       instance_ids = params['instance_ids']&.split(',').reject(&:empty?).uniq
-      halt 400, 'Missing instance id' unless instance_ids
-      
+
       all_instances = project.list_instances
       non_existent_instances = []
       instance_ids.each do |i|
         non_existent_instances << i unless all_instances.any? { |a| a['name'] == i }
       end
-      halt 404, "Instance(s) #{non_existent_instances.inspect} not found" unless non_existent_instances.empty?
+      halt 404, "Instance(s) #{non_existent_instances.join(',')} not found" unless non_existent_instances.empty?
 
       instance_usages = project.instance_usages(instance_ids, start_time, end_time)
-    
+
       instance_usages.to_json
     rescue SubprocessError
       halt 500, "Error fetching the usage of instance #{instance_id}"
