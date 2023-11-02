@@ -367,9 +367,9 @@ responses:
     description: Internal server error
 ```
 
-## Instance Usage
+## Instance Usages
 
-Return the average of the last 20 mins and the last recorded usage of the instance in percentage.
+Return the average during the given period and the last recorded usage of the instance in percentage.
 
 ### Path
 
@@ -432,10 +432,10 @@ responses:
                   type: string
                 average:
                   description: The average usage of the given instance during the given period 
-                  type: string
+                  type: float
                 last:
                   description: The last recorded usage of the given instance
-                  type: string
+                  type: float
   400:
     description: Missing instance_ids, start_time, or end_time parameters, or passing malformed parameters
   401:
@@ -589,7 +589,21 @@ responses:
     content:
       application/json:
         schema:
-          type: object
+          start_time:
+            type: long
+          end_time:
+            type: long
+          usages:
+            type: array
+            items:
+              type: object
+              properties:
+                instance_id:
+                  type: string
+                price:
+                  type: float
+                kwh:
+                  type: float
   400:
     description: The given start/end dates are invalid
   401:

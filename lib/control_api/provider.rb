@@ -91,8 +91,11 @@ class Provider
       'START_TIME' => start_time,
       'END_TIME' => end_time
     }
-
-    run_action('instance_costs', creds:, scope:, env:)
+    {
+      'start_time' => start_time,
+      'end_time' => end_time,
+      'costs' => JSON.parse(run_action('instance_costs', creds:, scope:, env:))
+    }
   end
 
   def prepare_command
