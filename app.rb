@@ -184,7 +184,7 @@ namespace '/providers' do
       halt 500, 'Error fetching instance list'
     end
 
-    get '/instance-usage' do
+    get '/instance-usages' do
       validate_credentials
 
       start_time = time_param('start_time')
