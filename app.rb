@@ -158,7 +158,7 @@ namespace '/providers' do
       non_existent_instances = instance_ids.reject { |id| all_instances.include?(id) }
       halt 404, "Instance(s) #{non_existent_instances.join(',')} not found" if non_existent_instances.any?
 
-      project.get_historic_instance_costs(*instance_ids, start_time, end_time)  
+      project.get_historic_instance_costs(*instance_ids, start_time, end_time).to_json
     rescue SubprocessError
       halt 500, "Error fetching instance costs for instances #{instance_ids.join(',')}"
     end
