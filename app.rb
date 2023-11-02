@@ -144,7 +144,7 @@ namespace '/providers' do
       return provider.to_hash.to_json
     end
 
-    get '/get-instance-costs' do
+    get '/instance-costs' do
       validate_credentials
 
       instance_ids = params['instance_ids'].to_s.split(',')
