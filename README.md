@@ -431,7 +431,7 @@ responses:
                 instance_id:
                   type: string
                 average:
-                  description: The average usage of the given instance during the past 20 mins
+                  description: The average usage of the given instance during the given period 
                   type: string
                 last:
                   description: The last recorded usage of the given instance
@@ -542,9 +542,9 @@ responses:
     description: Internal server error
 ```
 
-## Get instance costs
+## Instance Costs
 
-Return a JSON object of instances with their monetary costs and energy usage between two dates 
+Return a JSON object of instances with their monetary costs and energy usage between two dates.
 
 ### Path
 
