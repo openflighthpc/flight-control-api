@@ -571,13 +571,13 @@ parameters:
       type: string
     collectionFormat: csv
   - in: query
-    name: start_date
+    name: start_time
     schema:
-      type: string
+      type: long
   - in: query
-    name: end_date
+    name: end_time
     schema:
-      type: string
+      type: long
   - in: header
     name: Project-Credentials
     required: true
