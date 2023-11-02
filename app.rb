@@ -87,7 +87,8 @@ namespace '/providers' do
       def time_param(time)
         t = params[time]
         halt 400, "Missing #{time}" unless t
-        halt 400, "Malformed #{time}" if t.empty? || !t.match?(/\A\d+\z/) || t.to_i > Time.now.to_i
+        halt 400, "Malformed #{time}" if t.empty? || !t.match?(/\A\d+\z/)
+        halt 400, "#{time} must be earlier than the current time" if t.to_i > Time.now.to_i
         t
       end
 
@@ -148,24 +149,15 @@ namespace '/providers' do
       validate_credentials
 
       instance_ids = params['instance_ids'].to_s.split(',')
-      start_time = time_param('start_time').to_i
-      end_time = time_param('end_time').to_i
+      start_time = time_param('start_time')
+      end_time = time_param('end_time')
+      halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
 
       all_instances = project.list_instances.map { |i| i['name'] }
       not_found = instance_ids.reject { |id| all_instances.include?(id) }
 
       if not_found.any?
         halt 404, "Instance(s) #{not_found.join(',')} not found"
-      end
-
-      time_params = [start_time, end_time].freeze
-
-      if time_params.any? { |d| !valid_timestamp?(d) }
-        halt 400, 'Start and end dates must be valid Unix timestamps'
-      end
-
-      if start_time > end_time
-        halt 400, 'Start date must be before end date'
       end
 
       project.get_historic_instance_costs(*instance_ids, *time_params)
