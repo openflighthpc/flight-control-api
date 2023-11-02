@@ -374,7 +374,7 @@ Return the average of the last 20 mins and the last recorded usage of the instan
 ### Path
 
 ```http request
-/providers/{provider-id}/instance-usage
+/providers/{provider-id}/instance-usages
 ```
 
 ### GET
@@ -549,7 +549,7 @@ Return a JSON object of instances with their monetary costs and energy usage bet
 ### Path
 
 ```http request
-/providers/{provider-id}/get-instance-costs
+/providers/{provider-id}/instance-costs
 ```
 
 ### GET
@@ -569,6 +569,7 @@ parameters:
     name: instance_ids
     schema:
       type: string
+    collectionFormat: csv
   - in: query
     name: start_date
     schema:

@@ -61,7 +61,7 @@ class Provider
     {
       'start_time' => start_time,
       'stop_time' => stop_time,
-      'usages' => JSON.parse(run_action('instance_usage', creds:, scope:, env:))
+      'usages' => JSON.parse(run_action('instance_usages', creds:, scope:, env:))
     }
   end
 
@@ -92,7 +92,7 @@ class Provider
       'END_DATE' => end_date
     }
 
-    run_action('get_cost', creds:, scope:, env:)
+    run_action('instance_costs', creds:, scope:, env:)
   end
 
   def prepare_command
