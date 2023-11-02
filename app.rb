@@ -87,7 +87,7 @@ namespace '/providers' do
       def time_param(time)
         t = params[time]
         halt 400, "Missing #{time}" unless t
-        halt 400, "Malformed #{time}" if t.empty? || !t.match?(/\A\d+\z/)
+        halt 400, "Malformed #{time}" unless t.match?(/\A\d+\z/)
         halt 400, "#{time} must be earlier than the current time" if t.to_i > Time.now.to_i
         t
       end
