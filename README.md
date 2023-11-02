@@ -121,6 +121,52 @@ It could be found in the above example file that some options can be set by both
 
 The above approaches are recommended for configuring this application and should be sufficient to accommodate different scenarios. However, there might be other configuration approaches delivered alongside the underlying components of this application. Please note that they are not officially tested and might cause unexpected error.
 
+# Action Scripts
+
+This application itself does not provide algorithms for retrieving information from different cloud service providers. Instead, it relies on external scripts. Therefore, each provider directory under the [provider path](https://github.com/openflighthpc/flight-control-api#PROVIDER_PATH) contains a subfolder named 'actions' to store these scripts.
+
+For a request, the Flight Control API first processes the received parameters, passes the relevant ones to the action scripts as environment variables. These scripts utilize these environment variables to retrieve requested information from the provider and return a JSON object in a specific structure. This section outlines all the necessary actions for this application, the environment variables passed to them, and their return format specifications.
+
+## Script: authorise_credentials
+
+### Environment Variables
+
+Since the field names for credentials required by different providers vary, the environment variable names that this script can obtain are defined through the 'required_credentials' property in the corresponding provider's `metadata.yaml` file. For other scripts that require credentials, they also follow this specification when fetching credential-related environment variables.
+
+### Returns
+
+This script does not return a specific JSON object. Instead, exiting the script with status code `0` indicates correct credentials. Any other exit status indicates otherwise.
+
+## Script: list_models
+
+*This section is under constructing*
+This script is used to retrieve a list of instance models that supported by the provider. It does not require extra environment variables.
+
+### Returns
+
+## Script: model_details
+
+This script retrieves the attributes of a given instance model.
+
+### Environment Variables
+
+- MODEL: The name of instance model, e.g. `t2.medium`.
+
+### Returns
+
+```
+{
+  "model": "mining_rig",
+  "provider": "example-provider",
+  "currency": "Bitcoin",
+  "price_per_hour": 0.000123,
+  "kilowatts_per_hour": 2,
+  "cpu": 1,
+  "gpu": 8192,
+  "mem": 8.1632
+}
+```
+
 # REST API
 
 To use this application, simply access the REST API paths listed below through your web browser.
@@ -249,7 +295,6 @@ responses:
   404:
     description: Provider doesn't exist
 ```
-
 
 ## Instance Details
 
