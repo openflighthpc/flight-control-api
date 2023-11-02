@@ -148,19 +148,17 @@ namespace '/providers' do
     get '/instance-costs' do
       validate_credentials
 
-      instance_ids = params['instance_ids'].to_s.split(',')
       start_time = time_param('start_time')
       end_time = time_param('end_time')
       halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
 
+      halt 400, 'Missing instance id' unless params['instance_ids']
+      instance_ids = params['instance_ids']&.split(',').reject(&:empty?).uniq
       all_instances = project.list_instances.map { |i| i['name'] }
-      not_found = instance_ids.reject { |id| all_instances.include?(id) }
+      non_existent_instances = instance_ids.reject { |id| all_instances.include?(id) }
+      halt 404, "Instance(s) #{non_existent_instances.join(',')} not found" if non_existent_instances.any?
 
-      if not_found.any?
-        halt 404, "Instance(s) #{not_found.join(',')} not found"
-      end
-
-      project.get_historic_instance_costs(*instance_ids, *time_params)
+      project.get_historic_instance_costs(*instance_ids, *time_params)  
     rescue SubprocessError
       halt 500, "Error fetching instance costs for instances #{instance_ids.join(',')}"
     end
@@ -195,19 +193,13 @@ namespace '/providers' do
 
       halt 400, 'Missing instance id' unless params['instance_ids']
       instance_ids = params['instance_ids']&.split(',').reject(&:empty?).uniq
+      all_instances = project.list_instances.map { |i| i['name'] }
+      non_existent_instances = instance_ids.reject { |id| all_instances.include?(id) }
+      halt 404, "Instance(s) #{non_existent_instances.join(',')} not found" if non_existent_instances.any?
 
-      all_instances = project.list_instances
-      non_existent_instances = []
-      instance_ids.each do |i|
-        non_existent_instances << i unless all_instances.any? { |a| a['name'] == i }
-      end
-      halt 404, "Instance(s) #{non_existent_instances.join(',')} not found" unless non_existent_instances.empty?
-
-      instance_usages = project.instance_usages(instance_ids, start_time, end_time)
-
-      instance_usages.to_json
+      project.instance_usages(instance_ids, start_time, end_time).to_json
     rescue SubprocessError
-      halt 500, "Error fetching the usage of instance #{instance_id}"
+      halt 500, "Error fetching the usage of instances  #{instance_ids.join(',')}"
     end
 
     post '/start-instance' do
