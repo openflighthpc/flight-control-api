@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 # List instance types for a provider. Must be a comma separated list.
-"$RUN_ENV/bin/yq_linux_amd64" eval-all '[.]' "$RUN_ENV/instance_models"/* -o=json
+"$RUN_ENV/bin/yq_linux_amd64" eval-all '[.model]' "$RUN_ENV/instance_models"/* -o=json
