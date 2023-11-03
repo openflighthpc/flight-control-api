@@ -178,7 +178,7 @@ namespace '/providers' do
       halt 400, 'Missing model' unless models
       all_models = provider.list_models
       non_existent_models = models.reject { |model| all_models.include?(model) }
-      halt 404, "Model(s) #{non_existent_models.join(',')} deos not exist" if non_existent_models.any?
+      halt 404, "Model(s) #{non_existent_models.join(',')} does not exist" if non_existent_models.any?
       provider.model_details(models).to_json
     rescue SubprocessError
       halt 500, 'Error fetching model details'
