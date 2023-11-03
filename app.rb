@@ -152,7 +152,7 @@ namespace '/providers' do
       end_time = time_param('end_time')
       halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
 
-      instance_ids = params['instance_ids']&.split(',').reject(&:empty?).uniq
+      instance_ids = params['instance_ids']&.split(',')&.reject(&:empty?)&.uniq
       halt 400, 'Missing instance id' unless instance_ids
       all_instances = project.list_instances.map { |i| i['instance_id'] }
       non_existent_instances = instance_ids.reject { |id| all_instances.include?(id) }
@@ -174,7 +174,7 @@ namespace '/providers' do
     end
 
     get '/model-details' do
-      models = params['models']&.split(',').reject(&:empty?).uniq
+      models = params['models']&.split(',')&.reject(&:empty?)&.uniq
       halt 400, 'Missing model' unless models
       all_models = provider.list_models
       non_existent_models = models.reject { |model| all_models.include?(model) }
@@ -199,7 +199,7 @@ namespace '/providers' do
       end_time = time_param('end_time')
       halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
 
-      instance_ids = params['instance_ids']&.split(',').reject(&:empty?).uniq
+      instance_ids = params['instance_ids']&.split(',')&.reject(&:empty?)&.uniq
       halt 400, 'Missing instance id' unless instance_ids
       all_instances = project.list_instances.map { |i| i['instance_id'] }
       non_existent_instances = instance_ids.reject { |id| all_instances.include?(id) }
