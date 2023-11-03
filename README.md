@@ -183,7 +183,7 @@ This script retrieves the list of all instances in a certain project.
 ```
 [
   {
-    "name":"login1",
+    "instance_id":"login1",
     "model":"compute_small",
     "region":"Mars",
     "state":"on",
@@ -192,7 +192,7 @@ This script retrieves the list of all instances in a certain project.
     ]
   },
   {
-    "name":"cnode01",
+    "instance_id":"cnode01",
     "model":"mining_rig",
     "region":"Metaverse",
     "state":"on",
@@ -511,7 +511,7 @@ responses:
           items:
             type: object
             properties:
-              name:
+              instance_id:
                 type: string
               model:
                 description: The name of the fixed instance size choice offered by providers, e.g. "t3.medium"
