@@ -296,14 +296,14 @@ responses:
     description: Provider doesn't exist
 ```
 
-## Instance Details
+## Model Details
 
-Fetch the details of instances.
+Fetch the details of instance models.
 
 ### Path
 
 ```
-/providers/{provider-id}/instance-details
+/providers/{provider-id}/model-details
 ```
 
 ### GET
@@ -322,7 +322,7 @@ parameters:
       type: string
 responses:
   200:
-    description: Array of instance details
+    description: Array of model details
     content:
       application/json:
         schema:
