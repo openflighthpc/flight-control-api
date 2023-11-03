@@ -174,7 +174,7 @@ namespace '/providers' do
     end
 
     get '/model-details' do
-      models = params['models']&.split(',').reject(&:empty?).uniq
+      models = params['models']&.split(',')&.reject(&:empty?)&.uniq
       halt 400, 'Missing model' unless models
       all_models = provider.list_models
       non_existent_models = models.reject { |model| all_models.include?(model) }
@@ -200,10 +200,14 @@ namespace '/providers' do
       halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
 
 <<<<<<< HEAD
+<<<<<<< HEAD
       halt 400, 'Missing instance id' unless params['instance_ids']
       instance_ids = params['instance_ids'].split(',').reject(&:empty?).uniq
 =======
       instance_ids = params['instance_ids']&.split(',').reject(&:empty?).uniq
+=======
+      instance_ids = params['instance_ids']&.split(',')&.reject(&:empty?)&.uniq
+>>>>>>> 092cd28 (safe navigation)
       halt 400, 'Missing instance id' unless instance_ids
 >>>>>>> 50cbb3c (model details api change)
       all_instances = project.list_instances.map { |i| i['instance_id'] }
