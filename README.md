@@ -206,7 +206,7 @@ This script retrieves the list of all instances in a certain project.
 
 ## Script: instance_costs
 
-This script retrieves the costs of a given list of instances during a specific period of time.
+This script retrieves the costs of a given list of instances during a specific period of time. The `START_TIME`, `END_TIME`, and the `INSTANCE_IDS` variables should have been validated before they are passed into the script. Therefore, The script itself generally does NOT need to care about whether the given values are in correct format, whether there are conflicts between them, and whether the given values exist.
 
 ### Environment Variables
 
@@ -235,7 +235,7 @@ This script retrieves the costs of a given list of instances during a specific p
 
 ## Script: instance_usages
 
-This script retrieves the usages of a given list of instances during a specific period of time.
+This script retrieves the usages of a given list of instances during a specific period of time. The `START_TIME`, `END_TIME`, and the `INSTANCE_IDS` variables should have been validated before they are passed into the script. Therefore, The script itself generally does NOT need to care about whether the given values are in correct format, whether there are conflicts between them, and whether the given values exist.
 
 ### Environment Variables
 
@@ -263,10 +263,11 @@ This script retrieves the usages of a given list of instances during a specific 
 
 ## Script: start_instance
 
-This script triggers the commands to launch a given instance.
+This script triggers the commands to launch a given instance. The `INSTANCE_ID` variable should have been validated before they are passed into the script. Therefore, The script itself generally does NOT need to care about whether it in correct format,  and whether the instance exists.
 
 ### Environment Variables
 
+- SCOPE: The scope of the project
 - INSTANCE_ID: The id of the instance
 
 ### Echoes
@@ -275,10 +276,11 @@ This script does not return a specific JSON object. Instead, exiting the script 
 
 ## Script: stop_instance
 
-This script triggers the commands to shut down a given instance.
+This script triggers the commands to shut down a given instance. The `INSTANCE_ID` variable should have been validated before they are passed into the script. Therefore, The script itself generally does NOT need to care about whether it in correct format,  and whether the instance exists.
 
 ### Environment Variables
 
+- SCOPE: The scope of the project
 - INSTANCE_ID: The id of the instance
 
 ### Echoes
