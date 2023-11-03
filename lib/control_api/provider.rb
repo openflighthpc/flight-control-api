@@ -45,7 +45,7 @@ class Provider
 
   def model_details(model)
     env = { 'MODEL' => model }
-    JSON.parse(run_action('model_details', env: env))
+    JSON.parse(run_action('get_model_details', env: env))
   end
 
   def valid_credentials?(creds:, scope:)
@@ -61,7 +61,7 @@ class Provider
     {
       'start_time' => start_time,
       'end_time' => end_time,
-      'usages' => JSON.parse(run_action('instance_usages', creds:, scope:, env:))
+      'usages' => JSON.parse(run_action('get_instance_usages', creds:, scope:, env:))
     }
   end
 
@@ -94,7 +94,7 @@ class Provider
     {
       'start_time' => start_time,
       'end_time' => end_time,
-      'costs' => JSON.parse(run_action('instance_costs', creds:, scope:, env:))
+      'costs' => JSON.parse(run_action('get_instance_costs', creds:, scope:, env:))
     }
   end
 
