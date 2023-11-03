@@ -139,11 +139,17 @@ This script does not return a specific JSON object. Instead, exiting the script 
 
 ## Script: list_models
 
-*This section is under construction*
-
-This script is used to retrieve a list of instance models that supported by the provider. It does not require extra environment variables.
+This script is used to retrieve a list of available instance models that offered by the provider. It does not require extra environment variables.
 
 ### Echoes
+
+```
+[
+  't2.large',
+  't3.medium',
+  ...other model names
+]
+```
 
 ## Script: model_details
 
@@ -416,6 +422,41 @@ responses:
     description: Provider doesn't exist
 ```
 
+## List Models
+
+Fetch the details of instance models.
+
+### Path
+
+```
+/providers/{provider-id}/models
+```
+
+### GET
+
+```
+parameters:
+  - in: path
+    name: provider-id
+    required: true
+    schema:
+      type: string
+responses:
+  200:
+    description: Array of model details
+    content:
+      application/json:
+        schema:
+          type: array
+            items:
+              description: the name of the model
+              type: string
+  404:
+    description: Provider doesn't exist
+  500:
+    description: Internal server error
+```
+
 ## Model Details
 
 Fetch the details of instance models.
@@ -470,7 +511,6 @@ responses:
     description: Provider doesn't exist
   500:
     description: Internal server error
-
 ```
 
 ## List Instances
