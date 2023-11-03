@@ -170,7 +170,7 @@ namespace '/providers' do
     get '/model-details' do
       model = params['model']
       halt 400, 'Missing model' unless model
-      halt 404, 'Instance model does not exist' unless provider.list_models.any? { |i| i['model'] == model}
+      halt 404, 'Instance model does not exist' unless provider.list_models.include?(model)
       provider.model_details(model).to_json
     rescue SubprocessError
       halt 500, 'Error fetching instance details'
