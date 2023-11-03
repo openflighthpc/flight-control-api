@@ -133,26 +133,29 @@ For a request, the Flight Control API first processes the received parameters, p
 
 Since the field names for credentials required by different providers vary, the environment variable names that this script can obtain are defined through the 'required_credentials' property in the corresponding provider's `metadata.yaml` file. For other scripts that require credentials, they also follow this specification when fetching credential-related environment variables.
 
-### Returns
+### Echoes
 
 This script does not return a specific JSON object. Instead, exiting the script with status code `0` indicates correct credentials. Any other exit status indicates otherwise.
 
 ## Script: list_models
 
-*This section is under constructing*
+*This section is under construction*
+
 This script is used to retrieve a list of instance models that supported by the provider. It does not require extra environment variables.
 
-### Returns
+### Echoes
 
 ## Script: model_details
+
+*This section is under construction*
 
 This script retrieves the attributes of a given instance model.
 
 ### Environment Variables
 
-- MODEL: The name of instance model, e.g. `t2.medium`.
+- MODEL: The name of instance model, e.g. `t3.medium`
 
-### Returns
+### Echoes
 
 ```
 {
@@ -166,6 +169,121 @@ This script retrieves the attributes of a given instance model.
   "mem": 8.1632
 }
 ```
+
+## Script: list_instances
+
+This script retrieves the list of all instances in a certain project.
+
+### Environment Variables
+
+- SCOPE: The scope of the project
+
+### Echoes
+
+```
+[
+  {
+    "name":"login1",
+    "model":"compute_small",
+    "region":"Mars",
+    "state":"on",
+    "tags":[
+      {"type":"login"}
+    ]
+  },
+  {
+    "name":"cnode01",
+    "model":"mining_rig",
+    "region":"Metaverse",
+    "state":"on",
+    "tags":[
+      {"type":"compute"}
+    ]
+  },
+  ...more instances
+]
+```
+
+## Script: instance_costs
+
+This script retrieves the costs of a given list of instances during a specific period of time.
+
+### Environment Variables
+
+- SCOPE: The scope of the project
+- START_TIME: Unix timestamp
+- END_TIME: Unix timestamp
+- INSTANCE_IDS: IDs to get cost for, comma separated list
+
+### Echoes
+
+```
+[
+  {
+    "instance_id":"login1",
+    "price":"1.85183333333333333332",
+    "kwh":".37036666666666666666"
+  },
+  {
+    "instance_id":"cnode01",
+    "price":".00022777549999999999",
+    "kwh":"3.70366666666666666664"
+  },
+  ...more instances
+]
+```
+
+## Script: instance_usages
+
+This script retrieves the usages of a given list of instances during a specific period of time.
+
+### Environment Variables
+
+- SCOPE: The scope of the project
+- START_TIME: Unix timestamp
+- END_TIME: Unix timestamp
+- INSTANCE_IDS: IDs to get cost for, comma separated list
+
+### Echoes
+
+```
+[
+  {
+    "instance_id":"login1",
+    "average":"41.36",
+    "last":"76.07"
+  },
+  {
+    "instance_id":"cnode01",
+    "average":"97.65",
+    "last":"99.32"
+  }
+]
+```
+
+## Script: start_instance
+
+This script triggers the commands to launch a given instance.
+
+### Environment Variables
+
+- INSTANCE_ID: The id of the instance
+
+### Echoes
+
+This script does not return a specific JSON object. Instead, exiting the script with status code `0` indicates correct credentials. Any other exit status indicates otherwise.
+
+## Script: stop_instance
+
+This script triggers the commands to shut down a given instance.
+
+### Environment Variables
+
+- INSTANCE_ID: The id of the instance
+
+### Echoes
+
+This script does not return a specific JSON object. Instead, exiting the script with status code `0` indicates correct credentials. Any other exit status indicates otherwise.
 
 # REST API
 
