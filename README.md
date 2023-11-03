@@ -153,27 +153,28 @@ This script is used to retrieve a list of available instance models that offered
 
 ## Script: model_details
 
-*This section is under construction*
-
-This script retrieves the attributes of a given instance model.
+This script retrieves the details of given instance models.
 
 ### Environment Variables
 
-- MODEL: The name of instance model, e.g. `t3.medium`
+- MODELS: A list of the names of instance models, seperated by comma, e.g. `t3.medium,t2.large`
 
 ### Echoes
 
 ```
-{
-  "model": "mining_rig",
-  "provider": "example-provider",
-  "currency": "Bitcoin",
-  "price_per_hour": 0.000123,
-  "kilowatts_per_hour": 2,
-  "cpu": 1,
-  "gpu": 8192,
-  "mem": 8.1632
-}
+[
+  {
+    "model": "mining_rig",
+    "provider": "example-provider",
+    "currency": "Bitcoin",
+    "price_per_hour": 0.000123,
+    "kilowatts_per_hour": 2,
+    "cpu": 1,
+    "gpu": 8192,
+    "mem": 8.1632
+  },
+  ...details of other models
+]
 ```
 
 ## Script: list_instances
@@ -477,8 +478,9 @@ parameters:
     schema:
       type: string
   - in: query
-    name: model
+    name: models
     required: true
+    collectionFormat: csv
     schema:
       type: string
 responses:
@@ -487,26 +489,28 @@ responses:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            model:
-              description: The name of the fixed instance size choice offered by providers, e.g. "t3.medium"
-              type: string
-            provider:
-              type: string
-            currency:
-              type: string
-            price_per_hour:
-              type: float
-            cpu:
-              description: the number of CPUs
-              type: integer
-            gpu:
-              description: the number of GPUs
-              type: integer
-            mem:
-              description: total memory
-              type: integer
+          type: array
+          items:
+            type: object
+            properties:
+              model:
+                description: The name of the fixed instance size choice offered by providers, e.g. "t3.medium"
+                type: string
+              provider:
+                type: string
+              currency:
+                type: string
+              price_per_hour:
+                type: float
+              cpu:
+                description: the number of CPUs
+                type: integer
+              gpu:
+                description: the number of GPUs
+                type: integer
+              mem:
+                description: total memory
+                type: integer
   404:
     description: Provider doesn't exist
   500:
@@ -772,9 +776,9 @@ parameters:
       type: string
   - in: query
     name: instance_ids
+    collectionFormat: csv
     schema:
       type: string
-    collectionFormat: csv
   - in: query
     name: start_time
     schema:
