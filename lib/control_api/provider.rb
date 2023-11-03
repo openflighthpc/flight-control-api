@@ -43,8 +43,8 @@ class Provider
     JSON.parse(run_action('list_instances', creds:, scope:))
   end
 
-  def model_details(model)
-    env = { 'MODEL' => model }
+  def model_details(models)
+    env = { 'MODELS' => models.join(',') }
     JSON.parse(run_action('get_model_details', env: env))
   end
 
