@@ -176,7 +176,7 @@ namespace '/providers' do
       halt 500, 'Error fetching instance details'
     end
 
-    get '/list-instances' do
+    get '/instances' do
       validate_credentials
 
       project.list_instances.to_json

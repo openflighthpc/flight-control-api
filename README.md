@@ -480,7 +480,7 @@ Return a JSON list of instances existing for the given provider and credentials
 ### Path
 
 ```http request
-/providers/{provider-id}/list-instances
+/providers/{provider-id}/instances
 ```
 
 ### GET
