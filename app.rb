@@ -153,7 +153,7 @@ namespace '/providers' do
       halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
 
       halt 400, 'Missing instance id' unless params['instance_ids']
-      instance_ids = params['instance_ids']&.split(',').reject(&:empty?).uniq
+      instance_ids = params['instance_ids'].split(',').reject(&:empty?).uniq
       all_instances = project.list_instances.map { |i| i['instance_id'] }
       non_existent_instances = instance_ids.reject { |id| all_instances.include?(id) }
       halt 404, "Instance(s) #{non_existent_instances.join(',')} not found" if non_existent_instances.any?
@@ -192,7 +192,7 @@ namespace '/providers' do
       halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
 
       halt 400, 'Missing instance id' unless params['instance_ids']
-      instance_ids = params['instance_ids']&.split(',').reject(&:empty?).uniq
+      instance_ids = params['instance_ids'].split(',').reject(&:empty?).uniq
       all_instances = project.list_instances.map { |i| i['instance_id'] }
       non_existent_instances = instance_ids.reject { |id| all_instances.include?(id) }
       halt 404, "Instance(s) #{non_existent_instances.join(',')} not found" if non_existent_instances.any?
