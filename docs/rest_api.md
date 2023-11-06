@@ -104,14 +104,6 @@ parameters:
     required: true
     schema:
       type: object
-requestBody:
-  description: Dict of credential key/value pairs to validate
-  required: true
-  content:
-    application/json:
-      schema:
-        credentials:
-          type: object
 responses:
   200:
     description: The given credentials are valid
