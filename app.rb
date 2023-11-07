@@ -175,7 +175,7 @@ namespace '/providers' do
 
     get '/model-details' do
       halt 400, 'Missing instance id' unless params['models']
-      instance_ids = params['models'].split(',').reject(&:empty?).uniq
+      models = params['models'].split(',').reject(&:empty?).uniq
       all_models = provider.list_models
       non_existent_models = models.reject { |model| all_models.include?(model) }
       halt 404, "Model(s) #{non_existent_models.join(',')} does not exist" if non_existent_models.any?
