@@ -10,35 +10,42 @@ This script does not return a specific JSON object. Instead, exiting the script 
 
 # Script: list_models
 
-*This section is under construction*
-
-This script is used to retrieve a list of instance models that supported by the provider. It does not require extra environment variables.
-
-## Echoes
-
-# Script: model_details
-
-*This section is under construction*
-
-This script retrieves the attributes of a given instance model.
-
-## Environment Variables
-
-- MODEL: The name of instance model, e.g. `t3.medium`
+This script is used to retrieve a list of available instance models that offered by the provider. It does not require extra environment variables.
 
 ## Echoes
 
 ```
-{
-  "model": "mining_rig",
-  "provider": "example-provider",
-  "currency": "Bitcoin",
-  "price_per_hour": 0.000123,
-  "kilowatts_per_hour": 2,
-  "cpu": 1,
-  "gpu": 8192,
-  "mem": 8.1632
-}
+[
+  't2.large',
+  't3.medium',
+  ...other model names
+]
+```
+
+# Script: model_details
+
+This script retrieves the details of given instance models.
+
+## Environment Variables
+
+- MODELS: A list of the names of instance models, seperated by comma, e.g. `t3.medium,t2.large`
+
+## Echoes
+
+```
+[
+  {
+    "model": "mining_rig",
+    "provider": "example-provider",
+    "currency": "Bitcoin",
+    "price_per_hour": 0.000123,
+    "kilowatts_per_hour": 2,
+    "cpu": 1,
+    "gpu": 8192,
+    "mem": 8.1632
+  },
+  ...details of other models
+]
 ```
 
 # Script: list_instances
