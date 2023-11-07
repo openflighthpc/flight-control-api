@@ -4,13 +4,13 @@ set -e
 # Get cost of instance(s) between two dates, as a float
 #
 # Vars:
-# START_DATE: Unix timestamp
-# END_DATE: Unix timestamp
+# START_TIME: Unix timestamp
+# END_TIME: Unix timestamp
 # INSTANCE_IDs: IDs to get cost for, comma separated list
 # PROJECT_NAME: provided credential
 
 # Calculate date range
-TIME_DIFF=$(echo "$END_DATE-$START_DATE" | bc)
+TIME_DIFF=$(echo "$END_TIME-$START_TIME" | bc)
 DIFF_IN_HOURS=$(echo "$TIME_DIFF/60/60" | bc -l)
 UPTIME=$(echo "$DIFF_IN_HOURS * 0.6" | bc -l) # Assume an average uptime of 60%
 
@@ -37,10 +37,10 @@ do
 
   # Construct variable to store YAML for newly processed instance
   # Has to be exported so that yq can access it
-  export new=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.$instance; .price = \"$INSTANCE_COST_PER_HOUR\" | .kwh= \"$TOTAL_KWH\")")
+  export new=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.; .instance_id = \"$instance\" | .price = \"$INSTANCE_COST_PER_HOUR\" | .kwh= \"$TOTAL_KWH\")")
 
   # Merge out-string and new instance string
-  out=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(out) + env(new)')
+  out=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(out) + [env(new)]')
 done
 
 "$RUN_ENV/bin/yq_linux_amd64" -n 'env(out)' -o=json
