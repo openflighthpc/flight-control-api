@@ -7,5 +7,8 @@ if [[ ! -z ${SCOPE} ]] ; then
 fi
 
 # Get instance list
-aws ec2 describe-instances $FILTERS --query 'Reservations[].Instances[].{instance_id: InstanceId, model: InstanceType, region: "whydothishere?", state: State.Name, tags: {project: Tags[?Key==`project`]|[0].Value, type: Tags[?Key==`type`]|[0].Value}}' |tr -d '\n '
+LIST=$(aws ec2 describe-instances $FILTERS --query 'Reservations[].Instances[].{instance_id: InstanceId, model: InstanceType, state: State.Name, tags: {project: Tags[?Key==`project`]|[0].Value, type: Tags[?Key==`type`]|[0].Value}}' |tr -d '\n ')
+
+# Add region to list
+echo "$LIST" |jq ".[] += { \"region\": \"$AWS_REGION\" }"
 
