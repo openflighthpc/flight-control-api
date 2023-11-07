@@ -167,13 +167,21 @@ namespace '/providers' do
       validate_credentials
     end
 
-    get '/model-details' do
-      model = params['model']
-      halt 400, 'Missing model' unless model
-      halt 404, 'Instance model does not exist' unless provider.list_models.any? { |i| i['model'] == model}
-      provider.model_details(model).to_json
+    get '/models' do
+      provider.list_models.to_json
     rescue SubprocessError
-      halt 500, 'Error fetching instance details'
+      halt 500, 'Error fetching list of models'
+    end
+
+    get '/model-details' do
+      halt 400, 'Missing model' unless params['models']
+      models = params['models'].split(',').reject(&:empty?).uniq
+      all_models = provider.list_models
+      non_existent_models = models.reject { |model| all_models.include?(model) }
+      halt 404, "Model(s) #{non_existent_models.join(',')} does not exist" if non_existent_models.any?
+      provider.model_details(models).to_json
+    rescue SubprocessError
+      halt 500, 'Error fetching model details'
     end
 
     get '/instances' do

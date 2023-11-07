@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
 
-#return the details of the given instance model
-"$RUN_ENV/bin/yq_linux_amd64" eval '.' "$RUN_ENV/instance_models/$MODEL.yaml" -o=json
+IFS=',' read -ra models <<< "$MODELS"
+
+export out="---"
+
+for model in "${models[@]}"
+do
+  export new=$("$RUN_ENV/bin/yq_linux_amd64" eval '.' "$RUN_ENV/instance_models/$model.yaml")
+  out=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(out) + [env(new)]')
+done
+
+"$RUN_ENV/bin/yq_linux_amd64" -n 'env(out)' -o=json

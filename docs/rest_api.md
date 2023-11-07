@@ -115,6 +115,41 @@ responses:
     description: Provider doesn't exist
 ```
 
+## List Models
+
+Fetch the array containing the name of instance models.
+
+### Path
+
+```
+/providers/{provider-id}/models
+```
+
+### GET
+
+```
+parameters:
+  - in: path
+    name: provider-id
+    required: true
+    schema:
+      type: string
+responses:
+  200:
+    description: Array of model details
+    content:
+      application/json:
+        schema:
+          type: array
+            items:
+              description: the name of the model
+              type: string
+  404:
+    description: Provider doesn't exist
+  500:
+    description: Internal server error
+```
+
 # Model Details
 
 Fetch the details of instance models.
@@ -135,8 +170,9 @@ parameters:
     schema:
       type: string
   - in: query
-    name: model
+    name: models
     required: true
+    collectionFormat: csv
     schema:
       type: string
 responses:
@@ -145,26 +181,28 @@ responses:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            model:
-              description: The name of the fixed instance size choice offered by providers, e.g. "t3.medium"
-              type: string
-            provider:
-              type: string
-            currency:
-              type: string
-            price_per_hour:
-              type: float
-            cpu:
-              description: the number of CPUs
-              type: integer
-            gpu:
-              description: the number of GPUs
-              type: integer
-            mem:
-              description: total memory
-              type: integer
+          type: array
+          items:
+            type: object
+            properties:
+              model:
+                description: The name of the fixed instance size choice offered by providers, e.g. "t3.medium"
+                type: string
+              provider:
+                type: string
+              currency:
+                type: string
+              price_per_hour:
+                type: float
+              cpu:
+                description: the number of CPUs
+                type: integer
+              gpu:
+                description: the number of GPUs
+                type: integer
+              mem:
+                description: total memory
+                type: integer
   404:
     description: Provider doesn't exist
   500:
