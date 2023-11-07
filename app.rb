@@ -174,7 +174,7 @@ namespace '/providers' do
     end
 
     get '/model-details' do
-      halt 400, 'Missing instance id' unless params['models']
+      halt 400, 'Missing model' unless params['models']
       models = params['models'].split(',').reject(&:empty?).uniq
       all_models = provider.list_models
       non_existent_models = models.reject { |model| all_models.include?(model) }
