@@ -12,4 +12,6 @@ unzip -qq awscliv2.zip
 ./aws/install -i $RUN_ENV/aws/cli/bin/cli/aws_cli -b $RUN_ENV/aws/cli/bin/
 rm -rf $temp_dir
 
+dnf -y install jq
+
 echo "Prepared"
