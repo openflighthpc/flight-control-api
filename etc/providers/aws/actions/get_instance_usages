@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Sort timestamps into start & end days
+START=$(gdate -d @$START_TIME +%Y-%m-%dT%TZ)
+END=$(gdate -d @$END_TIME +%Y-%m-%dT%TZ)
+
+INSTANCE_LIST="$(echo "[\"$(echo $INSTANCE_IDS |sed 's/,/","/g' |tr -d '\n\t\r[:blank:][:space:]')\"]")"
+
+OUT="[]"
+
+echo "From $START to $END"
+for instance in $(echo "$INSTANCE_IDS" |sed 's/,/ /g') ; do
+    aws cloudwatch get-metric-statistics --namespace AWS/EC2 --metric-name CPUUtilization --start-time $START --end-time $END --period 60 --unit Percent --statistics Maximum --dimensions "{ \"Name\": \"InstanceId\", \"Value\": \"$instance\" }" |cat
+done
+
