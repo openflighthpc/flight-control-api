@@ -8,11 +8,37 @@ HW=$(aws ec2 describe-instance-types --filter "Name=instance-type,Values=$MODEL"
 COST=$(aws pricing get-products --service-code AmazonEC2 --filters "Type=TERM_MATCH,Field=instanceType,Value=$MODEL" "Type=TERM_MATCH,Field=regionCode,Value=$AWS_REGION" "Type=TERM_MATCH,Field=tenancy,Value=shared" "Type=TERM_MATCH,Field=capacitystatus,Value=UnusedCapacityReservation" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSW,Value=NA" --region us-east-1)
 COST_JSON=$(echo "$COST" |jq -rc '.PriceList[]' |jq -rc '{ "price_per_hour": .terms.OnDemand[].priceDimensions[].pricePerUnit.USD, "currency": "USD"}' )
 
+# Get carbon info
+#
+# Here we use the boavitza API to identify the Scope 2 carbon usage for the instance type at maximum load (worst case scenario)
+#
+
+# Identify country code for AWS region
+#     This is super inefficient and silly, should probably at least localise the data we're going to query against)
+#     Or maybe actually create our own dictionary that directly allows for AWS_REGION to be converted into an ISO code
+country=$(curl -s -L https://github.com/PaulieScanlon/cloud-regions-country-flags/raw/main/from-provider.js |grep "'$AWS_REGION':" -A 5 |grep country |sed "s/.* = '//g;s/'.*//g")
+
+# Handle names that don't match between the above and boavizta
+if [[ "$country" == "England" ]] ; then
+    country="United Kingdom"
+elif [[ "$country" == "South Korea" ]] ; then
+    country="Korea, Republic Of"
+elif [[ "$country" == "United States of America" ]] ; then 
+    country="United States"
+fi
+
+# Get country code from name
+country_code=$(curl -s https://api.boavizta.org/v1/utils/country_code |jq |grep "$country" |sed 's/.* "//g;s/".*//g')
+
+# Get the Max estimate for usage (gwp) of 100% utilisation for 1 hour in region location
+#     This excludes embedded carbon 
+CARBON_COMPLEX=$(curl -s -X 'POST' -H 'accept: application/json' -H 'Content-Type: application/json' 'https://api.boavizta.org/v1/cloud/instance?verbose=false&duration=1' -d "{\"provider\": \"aws\", \"instance_type\": \"$MODEL\", \"usage\": { \"usage_location\": \"$country_code\", \"time_workload\": [{ \"time_percentage\": 100, \"load_percentage\": 100}]} }" |jq '.impacts.gwp.use.max')
+
 # Combine gathered information
 OUT=$(jq -s 'add' <(echo "$HW") <(echo "$COST_JSON"))
 
 # Add additional fields
-OUT=$(echo "$OUT"  |jq ". += { \"provider\": \"aws\", \"kilowatts_per_hour\": \"UNKNOWN\"}")
+OUT=$(echo "$OUT"  |jq ". += { \"provider\": \"aws\", \"kilowatts_per_hour\": \"$CARBON_COMPLEX\"}")
 
 # Set GPU to 0 if null
 OUT=$(echo "$OUT" |jq '. |= (.gpu //= 0)')
