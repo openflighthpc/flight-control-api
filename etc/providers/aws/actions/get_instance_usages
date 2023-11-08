@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Sort timestamps into start & end days
-START=$(gdate -d @$START_TIME +%Y-%m-%dT%TZ)
-END=$(gdate -d @$END_TIME +%Y-%m-%dT%TZ)
+START=$(date -d @$START_TIME +%Y-%m-%dT%TZ)
+END=$(date -d @$END_TIME +%Y-%m-%dT%TZ)
 
 INSTANCE_LIST="$(echo "[\"$(echo $INSTANCE_IDS |sed 's/,/","/g' |tr -d '\n\t\r[:blank:][:space:]')\"]")"
 
