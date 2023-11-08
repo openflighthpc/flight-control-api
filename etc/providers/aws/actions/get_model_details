@@ -14,4 +14,7 @@ OUT=$(jq -s 'add' <(echo "$HW") <(echo "$COST_JSON"))
 # Add additional fields
 OUT=$(echo "$OUT"  |jq ". += { \"provider\": \"aws\", \"kilowatts_per_hour\": \"UNKNOWN\"}")
 
+# Set GPU to 0 if null
+OUT=$(echo "$OUT" |jq '. |= (.gpu //= 0)')
+
 echo "$OUT"
