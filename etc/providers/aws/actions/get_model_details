@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Get hardware info (e.g. num cores, mem, etc)
+HW=$(aws ec2 describe-instance-types --filter "Name=instance-type,Values=$MODEL" --query 'InstanceTypes[0].{model: InstanceType, cpu: VCpuInfo.DefaultVCpus, gpu: GpuInfo.Gpus[0].Count, mem: MemoryInfo.SizeInMiB}')
+
+# Get cost info 
+## Use us-east-1 for the API call (only exists in that region) then filter the location out of the results 
+COST=$(aws pricing get-products --service-code AmazonEC2 --filters "Type=TERM_MATCH,Field=instanceType,Value=$MODEL" "Type=TERM_MATCH,Field=regionCode,Value=$AWS_REGION" "Type=TERM_MATCH,Field=tenancy,Value=shared" "Type=TERM_MATCH,Field=capacitystatus,Value=UnusedCapacityReservation" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSW,Value=NA" --region us-east-1)
+COST_JSON=$(echo "$COST" |jq -rc '.PriceList[]' |jq -rc '{ "price_per_hour": .terms.OnDemand[].priceDimensions[].pricePerUnit.USD, "currency": "USD"}' )
+
+# Combine gathered information
+OUT=$(jq -s 'add' <(echo "$HW") <(echo "$COST_JSON"))
+
+# Add additional fields
+OUT=$(echo "$OUT"  |jq ". += { \"provider\": \"aws\", \"kilowatts_per_hour\": \"UNKNOWN\"}")
+
+echo "$OUT"
