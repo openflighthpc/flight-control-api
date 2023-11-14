@@ -99,11 +99,13 @@ This script retrieves the costs of a given list of instances during a specific p
 [
   {
     "instance_id":"login1",
+    "currency": "GBP",
     "price":"1.85183333333333333332",
     "kwh":".37036666666666666666"
   },
   {
     "instance_id":"cnode01",
+    "currency": "Bitcoin",
     "price":".00022777549999999999",
     "kwh":"3.70366666666666666664"
   },
