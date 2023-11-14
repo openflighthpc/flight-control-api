@@ -502,6 +502,8 @@ responses:
               properties:
                 instance_id:
                   type: string
+                currency:
+                  type: string
                 price:
                   type: float
                 kwh:
