@@ -30,17 +30,17 @@ class Project
   end
 
   def instance_usages(instance_ids, start_time, stop_time)
-    provider.instance_usages(instance_ids, start_time, stop_time, creds: @credentials, scope: @scope)
+    provider.instance_usages(instance_ids, start_time, stop_time, creds: @credentials)
   end
 
   def start_instance(instance_id)
-    provider.start_instance(instance_id, creds: @credentials, scope: @scope)
+    provider.start_instance(instance_id, creds: @credentials)
     # TODO: send some commands to start the instance
     # return a boolean indicating whether the instance successfully started
   end
 
   def stop_instance(instance_id)
-    provider.stop_instance(instance_id, creds: @credentials, scope: @scope)
+    provider.stop_instance(instance_id, creds: @credentials)
     # TODO: send some commands to stop the instance
     # return a boolean indicating whether the instance successfully stopped
   end
@@ -50,7 +50,7 @@ class Project
   end
 
   def get_historic_instance_costs(*instance_ids, start_time, end_time)
-    provider.get_historic_instance_costs(*instance_ids, start_time, end_time, creds: @credentials, scope: @scope)
+    provider.get_historic_instance_costs(*instance_ids, start_time, end_time, creds: @credentials)
   end
 
   private
