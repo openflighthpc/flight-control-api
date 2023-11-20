@@ -93,7 +93,11 @@ namespace '/providers' do
       end
 
       def provider
-        Provider[id_param]
+        begin
+          Provider[id_param]
+        rescue ProviderNotFoundError => e
+          halt 404, e.message
+        end
       end
 
       def request_body
@@ -121,30 +125,19 @@ namespace '/providers' do
         end
       end
 
-      def project
-        @project ||= Project.new(id_param, credentials, scope_param)
+      def instances
+        provider.list_instances(scope: scope_param, creds: credentials)
       end
 
       def validate_credentials
         begin
-
-        rescue e
+          halt 401, 'Invalid credentials' unless provider.valid_credentials?(creds: credentials)
+        rescue MissingCredentialsError => e
           halt 401, e.message
         rescue SubprocessError
           halt 500, 'Error validating credentials'
         end
-        if !project.required_credentials?
-          body "Missing credentials: #{project.missing_credentials.join(', ')}"
-          halt 401
-        elsif !Project.new(id_param, credentials).valid_credentials?
-          body 'Invalid credentials'
-          halt 401
-        end
       end
-    end
-
-    before do
-      halt 404, 'Provider not found' unless provider
     end
 
     # Show provider attributes
@@ -161,11 +154,11 @@ namespace '/providers' do
 
       halt 400, 'Missing instance id' unless params['instance_ids']
       instance_ids = params['instance_ids'].split(',').reject(&:empty?).uniq
-      all_instances = project.list_instances.map { |i| i['instance_id'] }
+      all_instances = instances.map { |i| i['instance_id'] }
       non_existent_instances = instance_ids.reject { |id| all_instances.include?(id) }
       halt 404, "Instance(s) #{non_existent_instances.join(',')} not found" if non_existent_instances.any?
 
-      project.get_historic_instance_costs(*instance_ids, start_time, end_time).to_json
+      provider.get_historic_instance_costs(*instance_ids, start_time, end_time, creds: credentials).to_json
     rescue SubprocessError
       halt 500, "Error fetching instance costs for instances #{instance_ids.join(',')}"
     end
@@ -194,7 +187,7 @@ namespace '/providers' do
     get '/instances' do
       validate_credentials
 
-      project.list_instances.to_json
+      instances.to_json
     rescue SubprocessError
       halt 500, 'Error fetching instance list'
     end
@@ -208,7 +201,7 @@ namespace '/providers' do
 
       halt 400, 'Missing instance id' unless params['instance_ids']
       instance_ids = params['instance_ids'].split(',').reject(&:empty?).uniq
-      all_instances = project.list_instances.map { |i| i['instance_id'] }
+      all_instances = instances.map { |i| i['instance_id'] }
       non_existent_instances = instance_ids.reject { |id| all_instances.include?(id) }
       halt 404, "Instance(s) #{non_existent_instances.join(',')} not found" if non_existent_instances.any?
 
@@ -222,9 +215,9 @@ namespace '/providers' do
 
       instance_id = request_body['instance_id']
       halt 400, 'Missing instance id' unless instance_id
-      halt 404, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['instance_id'] == instance_id }
+      halt 404, "Instance #{instance_id} not found" unless instances.any? { |i| i['instance_id'] == instance_id }
 
-      project.start_instance(instance_id)
+      project.start_instance(instance_id, creds: credentials)
 
       "Started #{instance_id}"
     rescue SubprocessError
@@ -236,9 +229,9 @@ namespace '/providers' do
 
       instance_id = request_body['instance_id']
       halt 400, 'Missing instance id' unless instance_id
-      halt 404, "Instance #{instance_id} not found" unless project.list_instances.any? { |i| i['instance_id'] == instance_id }
+      halt 404, "Instance #{instance_id} not found" unless instances.any? { |i| i['instance_id'] == instance_id }
 
-      project.stop_instance(instance_id)
+      provider.stop_instance(instance_id, creds: credentials)
 
       "Stopped #{instance_id}"
     rescue SubprocessError
