@@ -23,7 +23,9 @@ class Provider
     end
 
     def [](provider_id)
-      all.find { |p| p.id == provider_id }
+      provider = all.find { |p| p.id == provider_id }
+      raise "Invalid provider id \"#{provider_id}\" given" if provider.nil?
+      provider
     end
 
     def each(&)
@@ -40,7 +42,8 @@ class Provider
   end
 
   def list_instances(scope:, creds: {})
-    JSON.parse(run_action('list_instances', creds:, scope:))
+    env = { 'SCOPE' => scope }
+    JSON.parse(run_action('list_instances', creds:, env: env))
   end
 
   def model_details(models)
@@ -48,11 +51,13 @@ class Provider
     JSON.parse(run_action('get_model_details', env: env))
   end
 
-  def valid_credentials?(creds:, scope:)
-    run_action('authorise_credentials', creds:, scope:)
+  def valid_credentials?(creds:)
+    missing_credentials = @required_credentials - @creds.keys
+    raise "The following required credentials are missing: #{missing_credentials.join(', ')}" unless missing_credentials.none?
+    run_action('authorise_credentials', creds:)
   end
 
-  def instance_usages(instance_ids, start_time, end_time, scope:, creds: {})
+  def instance_usages(instance_ids, start_time, end_time, creds: {})
     env = {
       'INSTANCE_IDS' => instance_ids.join(','),
       'START_TIME' => start_time,
@@ -61,31 +66,31 @@ class Provider
     {
       'start_time' => start_time,
       'end_time' => end_time,
-      'usages' => JSON.parse(run_action('get_instance_usages', creds:, scope:, env:))
+      'usages' => JSON.parse(run_action('get_instance_usages', creds:, env:))
     }
   end
 
-  def start_instance(instance_id, scope:, creds: {})
+  def start_instance(instance_id, creds: {})
     env = {
       'INSTANCE_ID' => instance_id
     }
 
-    run_action('start_instance', creds:, scope:, env:)
+    run_action('start_instance', creds:, env:)
   end
 
-  def stop_instance(instance_id, scope:, creds: {})
+  def stop_instance(instance_id, creds: {})
     env = {
       'INSTANCE_ID' => instance_id
     }
 
-    run_action('stop_instance', creds:, scope:, env:)
+    run_action('stop_instance', creds:, env:)
   end
 
   def list_models
-    JSON.parse(run_action('list_models', scope: nil))
+    JSON.parse(run_action('list_models'))
   end
 
-  def get_historic_instance_costs(*instance_ids, start_time, end_time, creds:, scope:)
+  def get_historic_instance_costs(*instance_ids, start_time, end_time, creds: {})
     env = {
       'INSTANCE_IDS' => instance_ids.join(','),
       'START_TIME' => start_time,
@@ -94,7 +99,7 @@ class Provider
     {
       'start_time' => start_time,
       'end_time' => end_time,
-      'costs' => JSON.parse(run_action('get_instance_costs', creds:, scope:, env:))
+      'costs' => JSON.parse(run_action('get_instance_costs', creds:, env:))
     }
   end
 
@@ -115,7 +120,7 @@ class Provider
     FileUtils.mkdir_p(File.join(dir, 'log/')).first
   end
 
-  def run_action(action, scope: nil, creds: {}, env: {})
+  def run_action(action, creds: {}, env: {})
     prepare unless prepared?
     script = File.join(dir, 'actions', action)
     log_name = File.join(log_dir, "#{id}-#{File.basename(script, File.extname(script))}-#{Time.now.to_i}.log")
@@ -123,8 +128,7 @@ class Provider
     raise ArgumentError, "The action '#{action}' is not available for '#{id}'" unless File.exist?(script)
 
     extra_vars = {
-      'RUN_ENV' => run_env,
-      'SCOPE' => scope
+      'RUN_ENV' => run_env
     }
     env = creds.merge(env, extra_vars)
     env.transform_values!(&:to_s)
