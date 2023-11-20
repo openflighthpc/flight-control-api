@@ -61,7 +61,7 @@ class Provider
     {
       'start_time' => start_time,
       'end_time' => end_time,
-      'usages' => JSON.parse(run_action('get_instance_usages', creds:, scope:, env:))
+      'usages' => JSON.parse(run_action('get_instance_usages', creds:, env:))
     }
   end
 
@@ -70,7 +70,7 @@ class Provider
       'INSTANCE_ID' => instance_id
     }
 
-    run_action('start_instance', creds:, scope:, env:)
+    run_action('start_instance', creds:, env:)
   end
 
   def stop_instance(instance_id, creds: {})
@@ -78,7 +78,7 @@ class Provider
       'INSTANCE_ID' => instance_id
     }
 
-    run_action('stop_instance', creds:, scope:, env:)
+    run_action('stop_instance', creds:, env:)
   end
 
   def list_models
@@ -94,7 +94,7 @@ class Provider
     {
       'start_time' => start_time,
       'end_time' => end_time,
-      'costs' => JSON.parse(run_action('get_instance_costs', creds:, scope:, env:))
+      'costs' => JSON.parse(run_action('get_instance_costs', creds:, env:))
     }
   end
 
