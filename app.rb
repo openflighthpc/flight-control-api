@@ -205,7 +205,7 @@ namespace '/providers' do
       non_existent_instances = instance_ids.reject { |id| all_instances.include?(id) }
       halt 404, "Instance(s) #{non_existent_instances.join(',')} not found" if non_existent_instances.any?
 
-      project.instance_usages(instance_ids, start_time, end_time).to_json
+      provider.instance_usages(instance_ids, start_time, end_time, creds: credentials).to_json
     rescue SubprocessError
       halt 500, "Error fetching the usage of instances  #{instance_ids.join(',')}"
     end
@@ -217,7 +217,7 @@ namespace '/providers' do
       halt 400, 'Missing instance id' unless instance_id
       halt 404, "Instance #{instance_id} not found" unless instances.any? { |i| i['instance_id'] == instance_id }
 
-      project.start_instance(instance_id, creds: credentials)
+      provider.start_instance(instance_id, creds: credentials)
 
       "Started #{instance_id}"
     rescue SubprocessError
