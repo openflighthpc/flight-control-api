@@ -24,7 +24,7 @@ class Provider
 
     def [](provider_id)
       provider = all.find { |p| p.id == provider_id }
-      raise "Invalid provider id \"#{provider_id}\" given" if provider.nil?
+      raise ProviderNotFoundError, provider_id if provider.nil?
       provider
     end
 
@@ -52,8 +52,8 @@ class Provider
   end
 
   def valid_credentials?(creds:)
-    missing_credentials = @required_credentials - @creds.keys
-    raise "The following required credentials are missing: #{missing_credentials.join(', ')}" unless missing_credentials.none?
+    missing_credentials = @required_credentials - creds.keys
+    raise MissingCredentialsError, missing_credentials unless missing_credentials.none?
     run_action('authorise_credentials', creds:)
   end
 

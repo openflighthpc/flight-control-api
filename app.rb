@@ -126,6 +126,13 @@ namespace '/providers' do
       end
 
       def validate_credentials
+        begin
+
+        rescue e
+          halt 401, e.message
+        rescue SubprocessError
+          halt 500, 'Error validating credentials'
+        end
         if !project.required_credentials?
           body "Missing credentials: #{project.missing_credentials.join(', ')}"
           halt 401
