@@ -289,10 +289,6 @@ parameters:
     schema:
       type: string
   - in: query
-    name: scope
-    schema:
-      type: string
-  - in: query
     name: instance_ids
     required: true
     collectionFormat: csv
@@ -367,10 +363,6 @@ parameters:
     required: true
     schema:
       type: string
-  - in: query
-    name: scope
-    schema:
-      type: string
   - in: header
     name: Project-Credentials
     required: true
@@ -415,10 +407,6 @@ parameters:
     required: true
     schema:
       type: string
-  - in: query
-    name: scope
-    schema:
-      type: string
   - in: header
     name: Project-Credentials
     required: true
@@ -461,10 +449,6 @@ parameters:
   - in: path
     name: provider-id
     required: true
-    schema:
-      type: string
-  - in: query
-    name: scope
     schema:
       type: string
   - in: query
