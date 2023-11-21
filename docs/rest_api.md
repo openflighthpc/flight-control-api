@@ -107,12 +107,12 @@ parameters:
 responses:
   200:
     description: The given credentials are valid
-  400:
-    description: Malformed JSON request body
   401:
     description: The given credentials are either invalid or are missing keys
   404:
     description: Provider doesn't exist
+  500:
+    description: Internal server error
 ```
 
 ## List Models
