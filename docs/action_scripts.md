@@ -1,6 +1,8 @@
-# Script: authorise_credentials
+# Description
 
 The document continues the discussion from the [Action Script section](https://github.com/openflighthpc/flight-control-api/tree/develop#app_env) in the README.md, listing the inputs and outputs for all the scripts that expected by the Flight Control API.
+
+# Script: authorise_credentials
 
 ## Environment Variables
 
@@ -8,7 +10,11 @@ Since the field names for credentials required by different providers vary, the 
 
 ## Echoes
 
-This script does not return a specific JSON object. Instead, exiting the script with status code `0` indicates correct credentials. Any other exit status indicates otherwise.
+```
+{
+  "result": true # or false if the credentials is invalid
+}
+```
 
 # Script: list_models
 

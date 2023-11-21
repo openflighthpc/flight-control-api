@@ -54,7 +54,7 @@ class Provider
   def valid_credentials?(creds:)
     missing_credentials = @required_credentials - creds.keys
     raise MissingCredentialsError, missing_credentials unless missing_credentials.none?
-    run_action('authorise_credentials', creds:)
+    JSON.parse(run_action('authorise_credentials', creds:))['result']
   end
 
   def instance_usages(instance_ids, start_time, end_time, creds: {})
