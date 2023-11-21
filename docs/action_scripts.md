@@ -1,5 +1,7 @@
 # Script: authorise_credentials
 
+The document continues the discussion from the [Action Script section](https://github.com/openflighthpc/flight-control-api/tree/develop#app_env) in the README.md, listing the inputs and outputs for all the scripts that expected by the Flight Control API.
+
 ## Environment Variables
 
 Since the field names for credentials required by different providers vary, the environment variable names that this script can obtain are defined through the 'required_credentials' property in the corresponding provider's `metadata.yaml` file. For other scripts that require credentials, they also follow this specification when fetching credential-related environment variables.
@@ -88,7 +90,6 @@ This script retrieves the costs of a given list of instances during a specific p
 
 ## Environment Variables
 
-- SCOPE: The scope of the project
 - START_TIME: Unix timestamp
 - END_TIME: Unix timestamp
 - INSTANCE_IDS: IDs to get cost for, comma separated list
@@ -117,7 +118,6 @@ This script retrieves the usages of a given list of instances during a specific 
 
 ## Environment Variables
 
-- SCOPE: The scope of the project
 - START_TIME: Unix timestamp
 - END_TIME: Unix timestamp
 - INSTANCE_IDS: IDs to get cost for, comma separated list
@@ -145,7 +145,6 @@ This script triggers the commands to launch a given instance. The `INSTANCE_ID` 
 
 ## Environment Variables
 
-- SCOPE: The scope of the project
 - INSTANCE_ID: The id of the instance
 
 ## Echoes
@@ -158,7 +157,6 @@ This script triggers the commands to shut down a given instance. The `INSTANCE_I
 
 ## Environment Variables
 
-- SCOPE: The scope of the project
 - INSTANCE_ID: The id of the instance
 
 ## Echoes
