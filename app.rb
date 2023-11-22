@@ -92,12 +92,10 @@ namespace '/providers' do
         t
       end
 
-      def provider
-        begin
-          Provider[id_param]
-        rescue ProviderNotFoundError => e
-          halt 404, e.message
-        end
+      def providers
+        Provider[id_param]
+      rescue ProviderNotFoundError => e
+        halt 404, e.message
       end
 
       def request_body
@@ -130,13 +128,11 @@ namespace '/providers' do
       end
 
       def validate_credentials
-        begin
-          halt 401, 'Invalid credentials' unless provider.valid_credentials?(creds: credentials)
-        rescue MissingCredentialsError => e
-          halt 401, e.message
-        rescue SubprocessError
-          halt 500, 'Error validating credentials'
-        end
+        halt 401, 'Invalid credentials' unless provider.valid_credentials?(creds: credentials)
+      rescue MissingCredentialsError => e
+        halt 401, e.message
+      rescue SubprocessError
+        halt 500, 'Error validating credentials'
       end
     end
 
