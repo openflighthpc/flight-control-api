@@ -92,7 +92,7 @@ namespace '/providers' do
         t
       end
 
-      def providers
+      def provider
         Provider[id_param]
       rescue ProviderNotFoundError => e
         halt 404, e.message
