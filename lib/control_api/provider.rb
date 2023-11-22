@@ -32,10 +32,6 @@ class Provider
       all.each(&)
     end
 
-    def exists?(provider_id)
-      !self[provider_id].nil?
-    end
-
     def config
       @config ||= Config.new
     end
