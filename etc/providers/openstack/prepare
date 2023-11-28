@@ -1,3 +1,5 @@
 #!/bin/bash
 
 pip install python-openstackclient
+
+dnf install -y jq
