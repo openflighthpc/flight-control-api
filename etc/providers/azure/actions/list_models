@@ -1,0 +1,3 @@
+#!/bin/bash
+
+az vm list-sizes --location $AZURE_LOCATION --query '[].name'
