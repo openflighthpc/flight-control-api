@@ -1,11 +1,15 @@
 #!/bin/bash
 
+OUT="[]"
+
+for model in $(echo "$MODEL" |sed 's/,/ /g') ; do 
+
 # Get hardware info (e.g. num cores, mem, etc)
-HW=$(aws ec2 describe-instance-types --filter "Name=instance-type,Values=$MODEL" --query 'InstanceTypes[0].{model: InstanceType, cpu: VCpuInfo.DefaultVCpus, gpu: GpuInfo.Gpus[0].Count, mem: MemoryInfo.SizeInMiB}')
+HW=$(aws ec2 describe-instance-types --filter "Name=instance-type,Values=$model" --query 'InstanceTypes[0].{model: InstanceType, cpu: VCpuInfo.DefaultVCpus, gpu: GpuInfo.Gpus[0].Count, mem: MemoryInfo.SizeInMiB}')
 
 # Get cost info 
 ## Use us-east-1 for the API call (only exists in that region) then filter the location out of the results 
-COST=$(aws pricing get-products --service-code AmazonEC2 --filters "Type=TERM_MATCH,Field=instanceType,Value=$MODEL" "Type=TERM_MATCH,Field=regionCode,Value=$AWS_REGION" "Type=TERM_MATCH,Field=tenancy,Value=shared" "Type=TERM_MATCH,Field=capacitystatus,Value=UnusedCapacityReservation" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSW,Value=NA" --region us-east-1)
+COST=$(aws pricing get-products --service-code AmazonEC2 --filters "Type=TERM_MATCH,Field=instanceType,Value=$model" "Type=TERM_MATCH,Field=regionCode,Value=$AWS_REGION" "Type=TERM_MATCH,Field=tenancy,Value=shared" "Type=TERM_MATCH,Field=capacitystatus,Value=UnusedCapacityReservation" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSW,Value=NA" --region us-east-1)
 COST_JSON=$(echo "$COST" |jq -rc '.PriceList[]' |jq -rc '{ "price_per_hour": .terms.OnDemand[].priceDimensions[].pricePerUnit.USD, "currency": "USD"}' )
 
 # Get carbon info
@@ -32,15 +36,17 @@ country_code=$(curl -s https://api.boavizta.org/v1/utils/country_code |jq |grep 
 
 # Get the Max estimate for usage (gwp) of 100% utilisation for 1 hour in region location
 #     This excludes embedded carbon 
-CARBON_COMPLEX=$(curl -s -X 'POST' -H 'accept: application/json' -H 'Content-Type: application/json' 'https://api.boavizta.org/v1/cloud/instance?verbose=false&duration=1' -d "{\"provider\": \"aws\", \"instance_type\": \"$MODEL\", \"usage\": { \"usage_location\": \"$country_code\", \"time_workload\": [{ \"time_percentage\": 100, \"load_percentage\": 100}]} }" |jq '.impacts.gwp.use.max')
+CARBON_COMPLEX=$(curl -s -X 'POST' -H 'accept: application/json' -H 'Content-Type: application/json' 'https://api.boavizta.org/v1/cloud/instance?verbose=false&duration=1' -d "{\"provider\": \"aws\", \"instance_type\": \"$model\", \"usage\": { \"usage_location\": \"$country_code\", \"time_workload\": [{ \"time_percentage\": 100, \"load_percentage\": 100}]} }" |jq '.impacts.gwp.use.max')
 
 # Combine gathered information
-OUT=$(jq -s 'add' <(echo "$HW") <(echo "$COST_JSON"))
+out=$(jq -s 'add' <(echo "$HW") <(echo "$COST_JSON"))
 
 # Add additional fields
-OUT=$(echo "$OUT"  |jq ". += { \"provider\": \"aws\", \"kilowatts_per_hour\": \"$CARBON_COMPLEX\"}")
+out=$(echo "$out"  |jq ". += { \"provider\": \"aws\", \"kilowatts_per_hour\": \"$CARBON_COMPLEX\"}")
 
 # Set GPU to 0 if null
-OUT=$(echo "$OUT" |jq '. |= (.gpu //= 0)')
+out=$(echo "$out" |jq '. |= (.gpu //= 0)')
 
+OUT="$(echo "$OUT" | jq ".[. |length] |= . + $out")"
+done
 echo "$OUT"
