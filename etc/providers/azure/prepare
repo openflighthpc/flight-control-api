@@ -1,0 +1,10 @@
+#!/bin/bash
+
+git clone https://github.com/VoxSecundus/azure-cli --depth=1 --single-branch --branch feat/env-var-auth $RUN_ENV/azure-cli
+
+python3.9 -m venv $RUN_ENV/env
+source $RUN_ENV/env/bin/activate
+
+pip install azdev
+
+azdev setup -c $RUN_ENV/azure-cli/
