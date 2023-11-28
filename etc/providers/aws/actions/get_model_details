@@ -2,7 +2,7 @@
 
 OUT="[]"
 
-for model in $(echo "$MODEL" |sed 's/,/ /g') ; do 
+for model in $(echo "$MODELS" |sed 's/,/ /g') ; do 
 
 # Get hardware info (e.g. num cores, mem, etc)
 HW=$(aws ec2 describe-instance-types --filter "Name=instance-type,Values=$model" --query 'InstanceTypes[0].{model: InstanceType, cpu: VCpuInfo.DefaultVCpus, gpu: GpuInfo.Gpus[0].Count, mem: MemoryInfo.SizeInMiB}')
