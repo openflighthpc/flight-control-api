@@ -1,0 +1,16 @@
+#!/bin/bash
+
+OUT=[]
+
+for model in $(echo "$MODELS" |sed 's/,/ /g') ; do 
+    # Get instance resource info
+    instance_details=$(az vm list-sizes --location $AZURE_LOCATION --query "[?name == '$model'].{model:name, cpu:numberOfCores, mem:memoryInMB}" |jq '.[]')
+
+    # Add missing fields
+    out=$(echo "$instance_details" | jq ". += { \"provider\": \"azure\", \"kilowatts_per_hour\": \"UNKNOWN\", \"price_per_hour\": \"UNKNOWN\", \"currency\": \"UNKNOWN\" }")
+
+    # Add to output
+    OUT="$(echo "$OUT" |jq ".[. |length] |= . + $out")"
+done
+
+echo "$OUT"
