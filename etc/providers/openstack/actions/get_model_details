@@ -1,0 +1,18 @@
+#!/bin/bash
+
+OUT="[]"
+
+for model in $(echo "$MODEL" |sed 's/,/ /g') ; do
+
+    # Get instance details
+    instance_details=$(openstack flavor show $model -f json -c name -c ram -c vcpus |jq '. | { model: .name, cpu: .vcpus, mem: .ram }')
+
+    # Add provider
+    out=$(echo "$instance_details" |jq ". += { \"provider\": \"openstack\", \"kilowatts_per_hour\": \"UNKNOWN\", \"currency\": \"UNKNOWN\", \"price_per_hour\": \"UNKNOWN\"}")
+
+    # Add to array
+    OUT="$(echo "$OUT" |jq ".[. |length] |= . + $out")"
+
+done
+
+echo "$OUT"
