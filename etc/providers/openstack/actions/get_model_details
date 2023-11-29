@@ -4,7 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 OUT="[]"
 
-for model in $(echo "$MODEL" |sed 's/,/ /g') ; do
+for model in $(echo "$MODELS" |sed 's/,/ /g') ; do
 
     # Get instance details
     instance_details=$(openstack flavor show $model -f json -c name -c ram -c vcpus |jq '. | { model: .name, cpu: .vcpus, mem: .ram }')
