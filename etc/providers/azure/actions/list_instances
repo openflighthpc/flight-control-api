@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Scope check
+if [[ ! -z ${SCOPE} ]] ; then
+    FILTERS="-g $SCOPE"
+fi
+
+# Get instance list
+LIST=$(az vm list $FILTERS -d --query '[].{ instance_id:id, model:hardwareProfile.vmSize, region:location, state:powerState ,tags:tags }' 2>/dev/null)
+
+# Filter out tags we don't want
+LIST=$(echo "$LIST" |jq '[.[] | {instance_id, model, region, state, tags: { compute_group: .tags.compute_group, type: .tags.type, project: .tags.project} }]' |jq 'del(.. | select(. == null))')
+
+# Sort power states
+# 'VM running', 'VM starting' = on
+# 'VM deallocated', 'VM stopping', 'VM stopped', 'VM deallocating' = off
+LIST="$(echo "$LIST" | sed 's/VM \(running\|starting\)/on/g;s/VM \(stopping\|stopped\|deallocating\|deallocated\)/off/g')"
+
+# Return
+echo "$LIST"
