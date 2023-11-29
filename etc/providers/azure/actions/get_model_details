@@ -4,10 +4,17 @@ OUT=[]
 
 for model in $(echo "$MODELS" |sed 's/,/ /g') ; do 
     # Get instance resource info
-    instance_details=$(az vm list-sizes --location $AZURE_LOCATION --query "[?name == '$model'].{model:name, cpu:numberOfCores, mem:memoryInMB}" |jq '.[]')
+    instance_details=$(az vm list-sizes --location $AZURE_LOCATION --query "[?name == '$model'].{model:name, cpu:numberOfCores, mem:memoryInMB}" 2>/dev/null |jq '.[]')
+
+    # Get costs from Rest API for standard consumption of Linux instance
+    cost_details=$(curl -s "https://prices.azure.com:443/api/retail/prices?api-version=2021-10-01-preview&\$filter=serviceName%20eq%20%27Virtual%20Machines%27%20and%20Type%20eq%20%27Consumption%27%20and%20contains%28productName%2C%20%27Windows%27%29%20eq%20false%20and%20contains%28skuName%2C%20%27Spot%27%29%20eq%20false%20and%20contains%28skuName%2C%20%27Low%20Priority%27%29%20eq%20false%20and%20armRegionName%20eq%20%27$AZURE_LOCATION%27%20and%20armSkuName%20eq%20%27$model%27")
+    cost_details_we_need=$(echo "$cost_details" |jq '.Items[0] | {currency: .currencyCode, price_per_hour: .unitPrice}')
+
+    # Combine outputs
+    out=$(jq -s 'add' <(echo "$instance_details") <(echo "$cost_details_we_need"))
 
     # Add missing fields
-    out=$(echo "$instance_details" | jq ". += { \"provider\": \"azure\", \"kilowatts_per_hour\": \"UNKNOWN\", \"price_per_hour\": \"UNKNOWN\", \"currency\": \"UNKNOWN\" }")
+    out=$(echo "$out" | jq ". += { \"provider\": \"azure\", \"kilowatts_per_hour\": \"UNKNOWN\" }")
 
     # Add to output
     OUT="$(echo "$OUT" |jq ".[. |length] |= . + $out")"
