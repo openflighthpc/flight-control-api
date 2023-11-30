@@ -13,7 +13,7 @@ financial_data:
   currency: GBP
   price_per_hour: 1
 eco_data:
-  perspective: "power consumption"
+  perspective: "energy consumption"
   unit: kWh
   quantity: 0.2
 cpu: 2
@@ -29,7 +29,7 @@ financial_data:
   currency: GBP
   price_per_hour: 1.5
 eco_data:
-  perspective: "power consumption"
+  perspective: "energy consumption"
   unit: kWh
   quantity: 0.5
 cpu: 4
@@ -46,7 +46,7 @@ financial_data:
   price_per_hour: 0.000123
 eco_data:
   perspective: "carbon emission"
-  unit: kgCo2
+  unit: kgCO2
   quantity: 2
 cpu: 1
 gpu: 8192

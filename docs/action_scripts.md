@@ -106,15 +106,27 @@ This script retrieves the costs of a given list of instances during a specific p
 [
   {
     "instance_id":"login1",
-    "currency": "GBP",
-    "price":"1.85183333333333333332",
-    "kwh":".37036666666666666666"
+    "financial_data":{
+      "currency":"GBP",
+      "price":1.85183333333333333332
+    },
+    "eco_data":{
+      "perspective":"energy consumption",
+      "unit":"kWh",
+      "quantity":0.37036666666666666666
+    }
   },
   {
     "instance_id":"cnode01",
-    "currency": "Bitcoin",
-    "price":".00022777549999999999",
-    "kwh":"3.70366666666666666664"
+    "financial_data":{
+      "currency":"Bitcoin",
+      "price":0.00022777549999999999
+    },
+    "eco_data":{
+      "perspective":"energy consumption",
+      "unit":"kgCo2",
+      "quantity":0.12345676584796969
+    }
   },
   ...more instances
 ]
