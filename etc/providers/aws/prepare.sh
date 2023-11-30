@@ -12,6 +12,7 @@ unzip -qq awscliv2.zip
 ./aws/install -i $RUN_ENV/aws/cli/bin/cli/aws_cli -b $RUN_ENV/aws/cli/bin/
 rm -rf $temp_dir
 
-dnf -y install jq
+wget -O $RUN_ENV/jq "https://github.com/jqlang/jq/releases/download/jq-1.7/jq-linux-amd64"
+chmod +x $RUN_ENV/jq
 
 echo "Prepared"
