@@ -25,21 +25,29 @@ do
   # Fetch instance type
   TYPE=$("$RUN_ENV/bin/yq_linux_amd64" '.model' "$RUN_ENV/projects/$PROJECT_NAME/nodes/$instance.yaml")
 
-  CURRENCY=$("$RUN_ENV/bin/yq_linux_amd64" '.currency' "$RUN_ENV/instance_models/$TYPE.yaml")
+  CURRENCY=$("$RUN_ENV/bin/yq_linux_amd64" '.financial_data.currency' "$RUN_ENV/instance_models/$TYPE.yaml")
 
   # Fetch hourly price of instance type
-  HOURLY_COST=$("$RUN_ENV/bin/yq_linux_amd64" '.price_per_hour' "$RUN_ENV/instance_models/$TYPE.yaml")
+  HOURLY_COST=$("$RUN_ENV/bin/yq_linux_amd64" '.financial_data.price_per_hour' "$RUN_ENV/instance_models/$TYPE.yaml")
+  INSTANCE_COST=$(echo "$UPTIME * $HOURLY_COST" | bc -l)
+  
+  FINANCIAL_DATA=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.;.currency = \"$CURRENCY\" | .price = \"$INSTANCE_COST\")")
 
-  # Fetch kWh usage of instance type
-  KWH_USAGE=$("$RUN_ENV/bin/yq_linux_amd64" '.kilowatts_per_hour' "$RUN_ENV/instance_models/$TYPE.yaml")
+  ECO_PERSPECTIVE=$("$RUN_ENV/bin/yq_linux_amd64" '.eco_data.perspective' "$RUN_ENV/instance_models/$TYPE.yaml")
+
+  ECO_UNIT=$("$RUN_ENV/bin/yq_linux_amd64" '.eco_data.unit' "$RUN_ENV/instance_models/$TYPE.yaml")
+
+  # Fetch eco quantity of instance type
+  ECO_QUANTITY=$("$RUN_ENV/bin/yq_linux_amd64" '.eco_data.quantity' "$RUN_ENV/instance_models/$TYPE.yaml")
+
+  ECO_DATA=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.;.perspective = \"$ECO_PERSPECTIVE\" | .unit = \"$ECO_UNIT\" | .quantity = \"$ECO_QUANTITY\")")
 
   # Total cost for instance
-  INSTANCE_COST_PER_HOUR=$(echo "$UPTIME * $HOURLY_COST" | bc -l)
-  TOTAL_KWH=$(echo "$UPTIME * $KWH_USAGE" | bc -l)
+  TOTAL_ECO_IMPACT=$(echo "$UPTIME * $KWH_USAGE" | bc -l)
 
   # Construct variable to store YAML for newly processed instance
   # Has to be exported so that yq can access it
-  export new=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.; .instance_id = \"$instance\" | .currency = \"$CURRENCY\" | .price = \"$INSTANCE_COST_PER_HOUR\" | .kwh= \"$TOTAL_KWH\")")
+  export new=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.; .instance_id = \"$instance\" | .financial_data = \"$FINANCIAL_DATA\" | .eco_data = \"$ECO_DATA\")")
 
   # Merge out-string and new instance string
   out=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(out) + [env(new)]')
