@@ -1,4 +1,4 @@
 #!/bin/bash
 
-start=$(aws ec2 start-instances --instance-ids $INSTANCE_ID)
+start=$($RUN_ENV/aws/cli/bin/aws ec2 start-instances --instance-ids $INSTANCE_ID)
 echo "$start"
