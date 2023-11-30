@@ -11,7 +11,8 @@ model: compute_small
 provider: example-provider
 currency: GBP
 price_per_hour: 1
-kilowatts_per_hour: 0.2
+eco_unit: kWh
+eco_value_per_hour: 0.2
 cpu: 2
 gpu: 2
 mem: 2
@@ -23,7 +24,8 @@ model: compute_large
 provider: example-provider
 currency: GBP
 price_per_hour: 1.5
-kilowatts_per_hour: 0.5
+eco_unit: kWh
+eco_value_per_hour: 0.5
 cpu: 4
 gpu: 4
 mem: 4
@@ -35,7 +37,8 @@ model: mining_rig
 provider: example-provider
 currency: Bitcoin
 price_per_hour: 0.000123
-kilowatts_per_hour: 2
+eco_unit: kWh
+eco_value_per_hour: 2
 cpu: 1
 gpu: 8192
 mem: 8.1632
