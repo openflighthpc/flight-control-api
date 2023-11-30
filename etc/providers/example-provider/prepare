@@ -9,10 +9,13 @@ cat <<EOF > "$RUN_ENV/instance_models/compute_small.yaml"
 ---
 model: compute_small
 provider: example-provider
-currency: GBP
-price_per_hour: 1
-eco_unit: kWh
-eco_value_per_hour: 0.2
+financial_data:
+  currency: GBP
+  price_per_hour: 1
+eco_data:
+  perspective: "power consumption"
+  unit: kWh
+  quantity: 0.2
 cpu: 2
 gpu: 2
 mem: 2
@@ -22,10 +25,13 @@ cat <<EOF > "$RUN_ENV/instance_models/compute_large.yaml"
 ---
 model: compute_large
 provider: example-provider
-currency: GBP
-price_per_hour: 1.5
-eco_unit: kWh
-eco_value_per_hour: 0.5
+financial_data:
+  currency: GBP
+  price_per_hour: 1.5
+eco_data:
+  perspective: "power consumption"
+  unit: kWh
+  quantity: 0.5
 cpu: 4
 gpu: 4
 mem: 4
@@ -35,10 +41,13 @@ cat <<EOF > "$RUN_ENV/instance_models/mining_rig.yaml"
 ---
 model: mining_rig
 provider: example-provider
-currency: Bitcoin
-price_per_hour: 0.000123
-eco_unit: kWh
-eco_value_per_hour: 2
+financial_data:
+  currency: Bitcoin
+  price_per_hour: 0.000123
+eco_data:
+  perspective: "carbon emission"
+  unit: kgCo2
+  quantity: 2
 cpu: 1
 gpu: 8192
 mem: 8.1632
