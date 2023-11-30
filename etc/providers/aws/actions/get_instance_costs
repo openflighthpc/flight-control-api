@@ -4,8 +4,6 @@
 START=$(date -d @$START_TIME +%Y-%m-%d)
 END=$(date -d @$END_TIME +%Y-%m-%d)
 
-INSTANCE_LIST="$(echo "[\"$(echo $INSTANCE_IDS |sed 's/,/","/g' |tr -d '\n\t\r[:blank:][:space:]')\"]")"
-
 OUT="[]"
 
 for instance in $(echo "$INSTANCE_IDS" |sed 's/,/ /g') ; do
