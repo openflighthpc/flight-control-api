@@ -486,12 +486,25 @@ responses:
               properties:
                 instance_id:
                   type: string
-                currency:
-                  type: string
-                price:
-                  type: float
-                kwh:
-                  type: float
+                financial_data:
+                  type:object
+                  properties:
+                    currency:
+                      type: string
+                    price:
+                      type: float
+                eco_data:
+                  type:object
+                  properties:
+                    perspective:
+                      type: string
+                      enum:
+                        - energy consumption
+                        - carbon emission
+                    unit:
+                      type: string
+                    quantity:
+                      type: float
   400:
     description: The given start/end dates are invalid
   401:
