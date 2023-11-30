@@ -1,4 +1,4 @@
 #!/bin/bash
 
-stop=$(aws ec2 stop-instances --instance-ids $INSTANCE_ID)
+stop=$($RUN_ENV/aws/cli/bin/aws ec2 stop-instances --instance-ids $INSTANCE_ID)
 echo "$stop"

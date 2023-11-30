@@ -8,22 +8,22 @@ OUT="[]"
 
 for instance in $(echo "$INSTANCE_IDS" |sed 's/,/ /g') ; do
     # Get Costs
-    costs=$(aws ce get-cost-and-usage-with-resources --time-period Start=$START,End=$END --granularity DAILY --metrics UnblendedCost --filter "{ \"Dimensions\": {\"Key\": \"RESOURCE_ID\", \"Values\": [\"$instance\"] } }"  --query 'ResultsByTime[].Total.UnblendedCost.Amount[]')
-    total=$(echo "$costs" |jq '. | add')
+    costs=$($RUN_ENV/aws/cli/bin/aws ce get-cost-and-usage-with-resources --time-period Start=$START,End=$END --granularity DAILY --metrics UnblendedCost --filter "{ \"Dimensions\": {\"Key\": \"RESOURCE_ID\", \"Values\": [\"$instance\"] } }"  --query 'ResultsByTime[].Total.UnblendedCost.Amount[]')
+    total=$(echo "$costs" |$RUN_ENV/jq '. | add')
 
     # CARBON: Get load of system 
     load_start=$(date -d @$START_TIME +%Y-%m-%dT%TZ)
     load_end=$(date -d @$END_TIME +%Y-%m-%dT%TZ)
 
-    vals=$(aws cloudwatch get-metric-statistics --namespace AWS/EC2 --metric-name CPUUtilization --start-time $load_start --end-time $load_end --period 60 --unit Percent --statistics Maximum --query 'Datapoints[].Maximum'  --dimensions "{ \"Name\": \"InstanceId\", \"Value\": \"$instance\" }")
-    avg=$(echo "$vals" |jq '. | add/length')
+    vals=$($RUN_ENV/aws/cli/bin/aws cloudwatch get-metric-statistics --namespace AWS/EC2 --metric-name CPUUtilization --start-time $load_start --end-time $load_end --period 60 --unit Percent --statistics Maximum --query 'Datapoints[].Maximum'  --dimensions "{ \"Name\": \"InstanceId\", \"Value\": \"$instance\" }")
+    avg=$(echo "$vals" |$RUN_ENV/jq '. | add/length')
     avg=$(printf "%.0f" "$avg") # Round float to int
 
     # CARBON: Work out how many hours between durations (this rounds down to nearest hour)
     num_hours=$(( (END_TIME - START_TIME) / 3600 ))
 
     # CARBON: Get model and location
-    model=$(aws ec2 describe-instances --instance-id $instance --query 'Reservations[0].Instances[0].InstanceType')
+    model=$($RUN_ENV/aws/cli/bin/aws ec2 describe-instances --instance-id $instance --query 'Reservations[0].Instances[0].InstanceType')
 
     country=$(curl -s -L https://github.com/PaulieScanlon/cloud-regions-country-flags/raw/main/from-provider.js |grep "'$AWS_REGION':" -A 5 |grep country |sed "s/.* = '//g;s/'.*//g")
 
@@ -37,13 +37,13 @@ for instance in $(echo "$INSTANCE_IDS" |sed 's/,/ /g') ; do
     fi
 
     # Get country code from name
-    country_code=$(curl -s https://api.boavizta.org/v1/utils/country_code |jq |grep "$country" |sed 's/.* "//g;s/".*//g')
+    country_code=$(curl -s https://api.boavizta.org/v1/utils/country_code |$RUN_ENV/jq |grep "$country" |sed 's/.* "//g;s/".*//g')
 
     # CARBON: Get data from boavizta
-    carbon=$(curl -s -X 'POST' -H 'accept: application/json' -H 'Content-Type: application/json' "https://api.boavizta.org/v1/cloud/instance?verbose=false&duration=$num_hours" -d "{\"provider\": \"aws\", \"instance_type\": $model, \"usage\": { \"usage_location\": \"$country_code\", \"time_workload\": [{ \"time_percentage\": 100, \"load_percentage\": $avg}]} }" |jq '.impacts.gwp.use.max')
+    carbon=$(curl -s -X 'POST' -H 'accept: application/json' -H 'Content-Type: application/json' "https://api.boavizta.org/v1/cloud/instance?verbose=false&duration=$num_hours" -d "{\"provider\": \"aws\", \"instance_type\": $model, \"usage\": { \"usage_location\": \"$country_code\", \"time_workload\": [{ \"time_percentage\": 100, \"load_percentage\": $avg}]} }" |$RUN_ENV/jq '.impacts.gwp.use.max')
 
     # Add to output
-    OUT=$(echo "$OUT" |jq ".[. |length] |= . + { \"instance_id\": \"$instance\", \"price\": $total, \"kwh\": \"$carbon\"} " )
+    OUT=$(echo "$OUT" |$RUN_ENV/jq ".[. |length] |= . + { \"instance_id\": \"$instance\", \"price\": $total, \"kwh\": \"$carbon\"} " )
 done
 
 echo "$OUT"
