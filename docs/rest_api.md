@@ -190,10 +190,25 @@ responses:
                 type: string
               provider:
                 type: string
-              currency:
-                type: string
-              price_per_hour:
-                type: float
+              financial_data:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                  price_per_hour:
+                    type: float
+              eco_data:
+                type: object
+                properties:
+                  perspective:
+                    type: string
+                    enum:
+                      - energy consumption
+                      - carbon emission
+                  unit:
+                    type: string
+                  max_quantity_per_hour:
+                      type: float
               cpu:
                 description: the number of CPUs
                 type: integer
