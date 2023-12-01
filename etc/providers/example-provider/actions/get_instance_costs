@@ -40,7 +40,7 @@ do
   ECO_UNIT=$("$RUN_ENV/bin/yq_linux_amd64" '.eco_data.unit' "$RUN_ENV/instance_models/$TYPE.yaml")
 
   # Fetch eco quantity of instance type
-  ECO_HOURLY_QUANTITY=$("$RUN_ENV/bin/yq_linux_amd64" '.eco_data.quantity' "$RUN_ENV/instance_models/$TYPE.yaml")
+  ECO_HOURLY_QUANTITY=$("$RUN_ENV/bin/yq_linux_amd64" '.eco_data.max_quantity_per_hour' "$RUN_ENV/instance_models/$TYPE.yaml")
 
   # Total cost for instance
   ECO_TOTAL_QUANTITY=$(printf "%.15f" "$(echo "$UPTIME * $ECO_HOURLY_QUANTITY" | bc -l)")

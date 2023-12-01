@@ -15,7 +15,7 @@ financial_data:
 eco_data:
   perspective: "energy consumption"
   unit: kWh
-  quantity: 0.2
+  max_quantity_per_hour: 0.2
 cpu: 2
 gpu: 2
 mem: 2
@@ -31,7 +31,7 @@ financial_data:
 eco_data:
   perspective: "energy consumption"
   unit: kWh
-  quantity: 0.5
+  max_quantity_per_hour: 0.5
 cpu: 4
 gpu: 4
 mem: 4
@@ -47,7 +47,7 @@ financial_data:
 eco_data:
   perspective: "carbon emission"
   unit: kgCO2
-  quantity: 2
+  max_quantity_per_hour: 2
 cpu: 1
 gpu: 8192
 mem: 8.1632
