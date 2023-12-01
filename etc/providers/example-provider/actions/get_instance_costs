@@ -48,7 +48,7 @@ do
   export ECO_DATA=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.eco_data; .perspective = \"$ECO_PERSPECTIVE\" | .unit = \"$ECO_UNIT\" | .quantity = $ECO_TOTAL_QUANTITY)")
 
   # Merge out-string and new instance string
-  OUT=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(OUT) + [env(INCTANCE_ID) + env(FINANCIAL_DATA) + env(ECO_DATA)]')
+  OUT=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(OUT) + [env(INSTANCE_ID) + env(FINANCIAL_DATA) + env(ECO_DATA)]')
 done
 
 "$RUN_ENV/bin/yq_linux_amd64" -n 'env(OUT)' -o=json
