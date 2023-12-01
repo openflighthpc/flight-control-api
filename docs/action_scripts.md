@@ -6,7 +6,7 @@ The document continues the discussion from the [Action Script section](https://g
 
 ## Environment Variables
 
-Since the field names for credentials required by different providers vary, the environment variable names that this script can obtain are defined through the 'required_credentials' property in the corresponding provider's `metadata.yaml` file. For other scripts that require credentials, they also follow this specification when fetching credential-related environment variables.
+Since the field names for credentials required by different providers vary, the environment variable names that this script can obtain are defined through the "required_credentials" property in the corresponding provider's `metadata.yaml` file. For other scripts that require credentials, they also follow this specification when fetching credential-related environment variables.
 
 ## Echoes
 
@@ -24,8 +24,8 @@ This script is used to retrieve a list of available instance models that offered
 
 ```
 [
-  't2.large',
-  't3.medium',
+  "t2.large",
+  "t3.medium",
   ...other model names
 ]
 ```
@@ -53,7 +53,7 @@ This script retrieves the details of given instance models. The valid string val
       "perspective":"energy consumption",
       "unit":"kWh",
       "max_quantity_per_hour":0.37036666666666666666
-    }
+    },
     "cpu": 1,
     "gpu": 8192,
     "mem": 8.1632
@@ -130,7 +130,7 @@ This script retrieves the costs of a given list of instances during a specific p
     },
     "eco_data":{
       "perspective":"carbon emission",
-      "unit":"kgCo2",
+      "unit":"kgCO2",
       "quantity":0.12345676584796969
     }
   },
@@ -154,13 +154,13 @@ This script retrieves the usages of a given list of instances during a specific 
 [
   {
     "instance_id":"login1",
-    "average":"41.36",
-    "last":"76.07"
+    "average":41.36,
+    "last":76.07
   },
   {
     "instance_id":"cnode01",
-    "average":"97.65",
-    "last":"99.32"
+    "average":97.65,
+    "last":99.32
   }
 ]
 ```
