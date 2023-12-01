@@ -32,7 +32,7 @@ This script is used to retrieve a list of available instance models that offered
 
 # Script: model_details
 
-This script retrieves the details of given instance models.
+This script retrieves the details of given instance models. The valid string value for the `perspective` of the `eco_data` are "energy consumption" and "carbon emission".
 
 ## Environment Variables
 
@@ -43,11 +43,17 @@ This script retrieves the details of given instance models.
 ```
 [
   {
-    "model": "mining_rig",
-    "provider": "example-provider",
-    "currency": "Bitcoin",
-    "price_per_hour": 0.000123,
-    "kilowatts_per_hour": 2,
+    "model":"mining_rig",
+    "provider":"example-provider",
+    "financial_data":{
+      "currency":"Bitcoin",
+      "price_per_hour":0.000123
+    },
+    "eco_data":{
+      "perspective":"energy consumption",
+      "unit":"kWh",
+      "max_quantity_per_hour":0.37036666666666666666
+    }
     "cpu": 1,
     "gpu": 8192,
     "mem": 8.1632
@@ -92,7 +98,7 @@ This script retrieves the list of all instances in a certain project.
 
 # Script: instance_costs
 
-This script retrieves the costs of a given list of instances during a specific period of time. The `START_TIME`, `END_TIME`, and the `INSTANCE_IDS` variables should have been validated before they are passed into the script. Therefore, The script itself generally does NOT need to care about whether the given values are in correct format, whether there are conflicts between them, and whether the given values exist.
+This script retrieves the costs of a given list of instances during a specific period of time. The `START_TIME`, `END_TIME`, and the `INSTANCE_IDS` variables should have been validated before they are passed into the script. Therefore, The script itself generally does NOT need to care about whether the given values are in correct format, whether there are conflicts between them, and whether the given values exist. The valid string value for the `perspective` of the `eco_data` are "energy consumption" and "carbon emission".
 
 ## Environment Variables
 
@@ -123,7 +129,7 @@ This script retrieves the costs of a given list of instances during a specific p
       "price":0.00022777549999999999
     },
     "eco_data":{
-      "perspective":"energy consumption",
+      "perspective":"carbon emission",
       "unit":"kgCo2",
       "quantity":0.12345676584796969
     }
