@@ -164,7 +164,7 @@ namespace '/providers' do
     end
 
     get '/models' do
-      provider.list_models.to_json
+      provider.list_models(creds: credentials).to_json
     rescue SubprocessError
       halt 500, 'Error fetching list of models'
     end
@@ -172,10 +172,10 @@ namespace '/providers' do
     get '/model-details' do
       halt 400, 'Missing model' unless params['models']
       models = params['models'].split(',').reject(&:empty?).uniq
-      all_models = provider.list_models
+      all_models = provider.list_models(creds: credentials)
       non_existent_models = models.reject { |model| all_models.include?(model) }
       halt 404, "Model(s) #{non_existent_models.join(',')} does not exist" if non_existent_models.any?
-      provider.model_details(models).to_json
+      provider.model_details(models, creds: credentials).to_json
     rescue SubprocessError
       halt 500, 'Error fetching model details'
     end
