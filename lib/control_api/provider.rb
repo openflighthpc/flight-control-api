@@ -42,9 +42,9 @@ class Provider
     JSON.parse(run_action('list_instances', creds:, env: env))
   end
 
-  def model_details(models)
+  def model_details(models, creds: {})
     env = { 'MODELS' => models.join(',') }
-    JSON.parse(run_action('get_model_details', env: env))
+    JSON.parse(run_action('get_model_details', env: env, creds: creds))
   end
 
   def valid_credentials?(creds:)
@@ -82,8 +82,8 @@ class Provider
     run_action('stop_instance', creds:, env:)
   end
 
-  def list_models
-    JSON.parse(run_action('list_models'))
+  def list_models(creds: {})
+    JSON.parse(run_action('list_models', creds:))
   end
 
   def get_historic_instance_costs(*instance_ids, start_time, end_time, creds: {})
