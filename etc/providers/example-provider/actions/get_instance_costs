@@ -31,7 +31,7 @@ do
 
   # Fetch hourly price of instance type
   HOURLY_COST=$("$RUN_ENV/bin/yq_linux_amd64" '.financial_data.price_per_hour' "$RUN_ENV/instance_models/$TYPE.yaml")
-  INSTANCE_COST=$(echo "$UPTIME * $HOURLY_COST" | bc -l)
+  INSTANCE_COST=$(printf "%.15f" "$(echo "$UPTIME * $HOURLY_COST" | bc -l)")
 
   export FINANCIAL_DATA=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.financial_data; .currency = \"$CURRENCY\" | .price = $INSTANCE_COST)")
 
@@ -43,7 +43,7 @@ do
   ECO_HOURLY_QUANTITY=$("$RUN_ENV/bin/yq_linux_amd64" '.eco_data.quantity' "$RUN_ENV/instance_models/$TYPE.yaml")
 
   # Total cost for instance
-  ECO_TOTAL_QUANTITY=$(echo "$UPTIME * $ECO_HOURLY_QUANTITY" | bc -l)
+  ECO_TOTAL_QUANTITY=$(printf "%.15f" "$(echo "$UPTIME * $ECO_HOURLY_QUANTITY" | bc -l)")
 
   export ECO_DATA=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.eco_data; .perspective = \"$ECO_PERSPECTIVE\" | .unit = \"$ECO_UNIT\" | .quantity = $ECO_TOTAL_QUANTITY)")
 
