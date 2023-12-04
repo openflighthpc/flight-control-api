@@ -10,7 +10,7 @@ fi
 LIST=$($RUN_ENV/aws/cli/bin/aws ec2 describe-instances $FILTERS --query 'Reservations[].Instances[].{instance_id: InstanceId, model: InstanceType, state: State.Name, tags: {project: Tags[?Key==`project`]|[0].Value, type: Tags[?Key==`type`]|[0].Value}}')
 
 # Add region to list
-LIST=$(echo "$LIST" |$RUN_ENV/jq ".[] += { \"region\": \"$AWS_REGION\" }")
+LIST=$(echo "$LIST" |$RUN_ENV/jq ".[] += { \"region\": \"$AWS_DEFAULT_REGION\" }")
 
 # Remove tags if not present (AWS returns the values for these as null)
 LIST=$(echo "$LIST" |$RUN_ENV/jq 'del(.. | select(. == null) )')

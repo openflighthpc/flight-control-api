@@ -25,7 +25,7 @@ for instance in $(echo "$INSTANCE_IDS" |sed 's/,/ /g') ; do
     # CARBON: Get model and location
     model=$($RUN_ENV/aws/cli/bin/aws ec2 describe-instances --instance-id $instance --query 'Reservations[0].Instances[0].InstanceType')
 
-    country=$(curl -s -L https://github.com/PaulieScanlon/cloud-regions-country-flags/raw/main/from-provider.js |grep "'$AWS_REGION':" -A 5 |grep country |sed "s/.* = '//g;s/'.*//g")
+    country=$(curl -s -L https://github.com/PaulieScanlon/cloud-regions-country-flags/raw/main/from-provider.js |grep "'$AWS_DEFAULT_REGION':" -A 5 |grep country |sed "s/.* = '//g;s/'.*//g")
 
     # CARBON: Handle names that don't match between the above and boavizta
     if [[ "$country" == "England" ]] ; then
