@@ -10,7 +10,7 @@ do
   sleep 1
   read -r average last <<< $(awk -v max=100 'BEGIN{srand(); printf "%.2f %.2f", rand()*max, rand()*max}')
 
-  export new=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.; .instance_id = \"$instance_id\" | .average = \"$average\" | .last = \"$last\")")
+  export new=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.; .instance_id = \"$instance_id\" | .average = $average | .last = $last)")
   out=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(out) + [env(new)]')
 done
 
