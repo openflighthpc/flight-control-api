@@ -89,7 +89,7 @@ namespace '/providers' do
         halt 400, "Missing #{time}" unless t
         halt 400, "Malformed #{time}" unless t.match?(/\A\d+\z/)
         halt 400, "#{time} must be earlier than the current time" if t.to_i > Time.now.to_i
-        t
+        t.to_i
       end
 
       def provider
@@ -146,7 +146,7 @@ namespace '/providers' do
 
       start_time = time_param('start_time')
       end_time = time_param('end_time')
-      halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
+      halt 400, 'Start time must be earlier than end time' if start_time > end_time
 
       halt 400, 'Missing instance id' unless params['instance_ids']
       instance_ids = params['instance_ids'].split(',').reject(&:empty?).uniq
@@ -193,7 +193,7 @@ namespace '/providers' do
 
       start_time = time_param('start_time')
       end_time = time_param('end_time')
-      halt 400, 'Start time must be earlier than end time' if start_time.to_i > end_time.to_i
+      halt 400, 'Start time must be earlier than end time' if start_time > end_time
 
       halt 400, 'Missing instance id' unless params['instance_ids']
       instance_ids = params['instance_ids'].split(',').reject(&:empty?).uniq
