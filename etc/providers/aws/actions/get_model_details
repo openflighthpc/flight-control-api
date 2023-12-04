@@ -9,7 +9,7 @@ HW=$($RUN_ENV/aws/cli/bin/aws ec2 describe-instance-types --filter "Name=instanc
 
 # Get cost info 
 ## Use us-east-1 for the API call (only exists in that region) then filter the location out of the results 
-COST=$($RUN_ENV/aws/cli/bin/aws pricing get-products --service-code AmazonEC2 --filters "Type=TERM_MATCH,Field=instanceType,Value=$model" "Type=TERM_MATCH,Field=regionCode,Value=$AWS_REGION" "Type=TERM_MATCH,Field=tenancy,Value=shared" "Type=TERM_MATCH,Field=capacitystatus,Value=UnusedCapacityReservation" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSW,Value=NA" --region us-east-1)
+COST=$($RUN_ENV/aws/cli/bin/aws pricing get-products --service-code AmazonEC2 --filters "Type=TERM_MATCH,Field=instanceType,Value=$model" "Type=TERM_MATCH,Field=regionCode,Value=$AWS_DEFAULT_REGION" "Type=TERM_MATCH,Field=tenancy,Value=shared" "Type=TERM_MATCH,Field=capacitystatus,Value=UnusedCapacityReservation" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSW,Value=NA" --region us-east-1)
 COST_JSON=$(echo "$COST" |$RUN_ENV/jq -rc '.PriceList[]' |jq -rc '{ "price_per_hour": .terms.OnDemand[].priceDimensions[].pricePerUnit.USD, "currency": "USD"}' )
 
 # Get carbon info
@@ -19,8 +19,8 @@ COST_JSON=$(echo "$COST" |$RUN_ENV/jq -rc '.PriceList[]' |jq -rc '{ "price_per_h
 
 # Identify country code for AWS region
 #     This is super inefficient and silly, should probably at least localise the data we're going to query against)
-#     Or maybe actually create our own dictionary that directly allows for AWS_REGION to be converted into an ISO code
-country=$(curl -s -L https://github.com/PaulieScanlon/cloud-regions-country-flags/raw/main/from-provider.js |grep "'$AWS_REGION':" -A 5 |grep country |sed "s/.* = '//g;s/'.*//g")
+#     Or maybe actually create our own dictionary that directly allows for AWS_DEFAULT_REGION to be converted into an ISO code
+country=$(curl -s -L https://github.com/PaulieScanlon/cloud-regions-country-flags/raw/main/from-provider.js |grep "'$AWS_DEFAULT_REGION':" -A 5 |grep country |sed "s/.* = '//g;s/'.*//g")
 
 # Handle names that don't match between the above and boavizta
 if [[ "$country" == "England" ]] ; then
