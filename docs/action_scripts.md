@@ -50,9 +50,9 @@ This script retrieves the details of given instance models. The valid string val
       "price_per_hour":0.000123
     },
     "eco_data":{
-      "perspective":"energy consumption",
+      "perspective":"energy_consumption",
       "unit":"kWh",
-      "max_quantity_per_hour":0.37036666666666666666
+      "max_amount_per_hour":0.37036666666666666666
     }
     "cpu": 1,
     "gpu": 8192,
@@ -117,9 +117,9 @@ This script retrieves the costs of a given list of instances during a specific p
       "price":1.85183333333333333332
     },
     "eco_data":{
-      "perspective":"energy consumption",
+      "perspective":"energy_consumption",
       "unit":"kWh",
-      "quantity":0.37036666666666666666
+      "amount":0.37036666666666666666
     }
   },
   {
@@ -129,9 +129,9 @@ This script retrieves the costs of a given list of instances during a specific p
       "price":0.00022777549999999999
     },
     "eco_data":{
-      "perspective":"carbon emission",
+      "perspective":"carbon_emission",
       "unit":"kgCo2",
-      "quantity":0.12345676584796969
+      "amount":0.12345676584796969
     }
   },
   ...more instances

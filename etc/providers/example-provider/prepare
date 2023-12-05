@@ -13,9 +13,9 @@ financial_data:
   currency: GBP
   price_per_hour: 1
 eco_data:
-  perspective: "energy consumption"
+  perspective: "energy_consumption"
   unit: kWh
-  max_quantity_per_hour: 0.2
+  max_amount_per_hour: 0.2
 cpu: 2
 gpu: 2
 mem: 2
@@ -29,9 +29,9 @@ financial_data:
   currency: GBP
   price_per_hour: 1.5
 eco_data:
-  perspective: "energy consumption"
+  perspective: "energy_consumption"
   unit: kWh
-  max_quantity_per_hour: 0.5
+  max_amount_per_hour: 0.5
 cpu: 4
 gpu: 4
 mem: 4
@@ -45,9 +45,9 @@ financial_data:
   currency: Bitcoin
   price_per_hour: 0.000123
 eco_data:
-  perspective: "carbon emission"
+  perspective: "carbon_emission"
   unit: kgCO2
-  max_quantity_per_hour: 2
+  max_amount_per_hour: 2
 cpu: 1
 gpu: 8192
 mem: 8.1632
