@@ -39,13 +39,13 @@ do
 
   ECO_UNIT=$("$RUN_ENV/bin/yq_linux_amd64" '.eco_data.unit' "$RUN_ENV/instance_models/$TYPE.yaml")
 
-  # Fetch eco quantity of instance type
-  ECO_HOURLY_QUANTITY=$("$RUN_ENV/bin/yq_linux_amd64" '.eco_data.max_quantity_per_hour' "$RUN_ENV/instance_models/$TYPE.yaml")
+  # Fetch eco amount of instance type
+  ECO_HOURLY_AMOUNT=$("$RUN_ENV/bin/yq_linux_amd64" '.eco_data.max_amount_per_hour' "$RUN_ENV/instance_models/$TYPE.yaml")
 
   # Total cost for instance
-  ECO_TOTAL_QUANTITY=$(printf "%.15f" "$(echo "$UPTIME * $ECO_HOURLY_QUANTITY" | bc -l)")
+  ECO_TOTAL_AMOUNT=$(printf "%.15f" "$(echo "$UPTIME * $ECO_HOURLY_AMOUNT" | bc -l)")
 
-  export ECO_DATA=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.eco_data; .perspective = \"$ECO_PERSPECTIVE\" | .unit = \"$ECO_UNIT\" | .quantity = $ECO_TOTAL_QUANTITY)")
+  export ECO_DATA=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.eco_data; .perspective = \"$ECO_PERSPECTIVE\" | .unit = \"$ECO_UNIT\" | .amount = $ECO_TOTAL_AMOUNT)")
 
   # Merge out-string and new instance string
   OUT=$("$RUN_ENV/bin/yq_linux_amd64" -n 'env(OUT) + [env(INSTANCE_ID) + env(FINANCIAL_DATA) + env(ECO_DATA)]')

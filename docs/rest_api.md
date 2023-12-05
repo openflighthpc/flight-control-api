@@ -203,11 +203,11 @@ responses:
                   perspective:
                     type: string
                     enum:
-                      - energy consumption
-                      - carbon emission
+                      - energy_consumption
+                      - carbon_emission
                   unit:
                     type: string
-                  max_quantity_per_hour:
+                  max_amount_per_hour:
                       type: float
               cpu:
                 description: the number of CPUs
@@ -514,11 +514,11 @@ responses:
                     perspective:
                       type: string
                       enum:
-                        - energy consumption
-                        - carbon emission
+                        - energy_consumption
+                        - carbon_emission
                     unit:
                       type: string
-                    quantity:
+                    amount:
                       type: float
   400:
     description: The given start/end dates are invalid
