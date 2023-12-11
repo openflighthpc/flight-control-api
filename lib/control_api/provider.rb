@@ -135,6 +135,9 @@ class Provider
       chdir: run_env
     )
 
+    p stdout
+    p stderr
+
     File.open(log_name, 'a+') { |f| f.write stdout }
 
     unless status.success?
