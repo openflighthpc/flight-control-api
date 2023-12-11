@@ -43,7 +43,7 @@ for instance in $(echo "$INSTANCE_IDS" |sed 's/,/ /g') ; do
     carbon=$(curl -s -X 'POST' -H 'accept: application/json' -H 'Content-Type: application/json' "https://api.boavizta.org/v1/cloud/instance?verbose=false&duration=$num_hours" -d "{\"provider\": \"aws\", \"instance_type\": $model, \"usage\": { \"usage_location\": \"$country_code\", \"time_workload\": [{ \"time_percentage\": 100, \"load_percentage\": $avg}]} }" |$RUN_ENV/jq '.impacts.gwp.use.max')
 
     # Add to output
-    OUT=$(echo "$OUT" |$RUN_ENV/jq ".[. |length] |= . + { \"instance_id\": \"$instance\", \"price\": $total, \"kwh\": \"$carbon\"} " )
+    OUT=$(echo "$OUT" |$RUN_ENV/jq ".[. |length] |= . + { \"instance_id\": \"$instance\", \"financial_data\": { \"currency\": \"USD\", \"price\": $total }, \"eco_data\": { \"perspective\": \"carbon_emission\", \"unit\": \"kgCO2e\", \"amount\": \"$carbon\"} } " )
 done
 
 echo "$OUT"
