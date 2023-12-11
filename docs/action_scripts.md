@@ -129,15 +129,9 @@ This script retrieves the costs of a given list of instances during a specific p
       "price":0.00022777549999999999
     },
     "eco_data":{
-<<<<<<< HEAD
       "perspective":"carbon_emission",
       "unit":"kgCo2",
       "amount":0.12345676584796969
-=======
-      "perspective":"carbon emission",
-      "unit":"kgCO2",
-      "quantity":0.12345676584796969
->>>>>>> 7e03af6 (fix incorrect sript echo data type)
     }
   },
   ...more instances
