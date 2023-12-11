@@ -14,7 +14,7 @@ for instance in $(echo "$INSTANCE_IDS" |sed 's/,/ /g') ; do
     avg=$(echo "$vals" |$RUN_ENV/jq '.[-4:] | add/length')
     # Get last results
     last=$(echo "$vals" |$RUN_ENV/jq '.[-1]')
-    OUT="$(echo "$OUT" |$RUN_ENV/jq ".[. |length] |= . + {\"instance_id\": \"$instance\", \"average\": $avg, \"last\": $last }")"
+    OUT="$(echo "$OUT" |$RUN_ENV/jq ".[. |length] |= . + {\"instance_id\": \"$instance\", \"average\": $avg|tonumber, \"last\": $last|tonumber }")"
 done
 
 echo "$OUT"
