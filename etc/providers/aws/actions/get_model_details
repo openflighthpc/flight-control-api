@@ -10,7 +10,8 @@ HW=$($RUN_ENV/aws/cli/bin/aws ec2 describe-instance-types --filter "Name=instanc
 # Get cost info 
 ## Use us-east-1 for the API call (only exists in that region) then filter the location out of the results 
 COST=$($RUN_ENV/aws/cli/bin/aws pricing get-products --service-code AmazonEC2 --filters "Type=TERM_MATCH,Field=instanceType,Value=$model" "Type=TERM_MATCH,Field=regionCode,Value=$AWS_DEFAULT_REGION" "Type=TERM_MATCH,Field=tenancy,Value=shared" "Type=TERM_MATCH,Field=capacitystatus,Value=UnusedCapacityReservation" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSW,Value=NA" --region us-east-1)
-COST_JSON=$(echo "$COST" |$RUN_ENV/jq -rc '.PriceList[]' |jq -rc '{ "financial_data": { "price_per_hour": .terms.OnDemand[].priceDimensions[].pricePerUnit.USD, "currency": "USD" } }' )
+
+COST_JSON=$(echo "$COST" |$RUN_ENV/jq -rc '.PriceList[]' | $RUN_ENV/jq -rc '{ "financial_data": { "price_per_hour": .terms.OnDemand[].priceDimensions[].pricePerUnit.USD|tonumber, "currency": "USD" } }' )
 
 # Get carbon info
 #
@@ -42,7 +43,7 @@ CARBON_COMPLEX=$(curl -s -X 'POST' -H 'accept: application/json' -H 'Content-Typ
 out=$($RUN_ENV/jq -s 'add' <(echo "$HW") <(echo "$COST_JSON"))
 
 # Add additional fields
-out=$(echo "$out"  |$RUN_ENV/jq ". += { \"provider\": \"aws\", "eco_data": {  \"perspective\": \"carbon_emission\", \"unit\": \"kgCO2e\", \"max_amount_per_hour\": \"$CARBON_COMPLEX\" } }")
+out=$(echo "$out"  |$RUN_ENV/jq ". += { \"provider\": \"aws\", "eco_data": {  \"perspective\": \"carbon_emission\", \"unit\": \"kgCO2e\", \"max_amount_per_hour\": $CARBON_COMPLEX|tonumber } }")
 
 # Set GPU to 0 if null
 out=$(echo "$out" |$RUN_ENV/jq '. |= (.gpu //= 0)')
