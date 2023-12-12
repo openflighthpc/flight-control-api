@@ -42,7 +42,7 @@ cat <<EOF > "$RUN_ENV/instance_models/mining_rig.yaml"
 model: mining_rig
 provider: example-provider
 financial_data:
-  currency: Bitcoin
+  currency: GBP
   price_per_hour: 0.000123
 eco_data:
   perspective: "carbon_emission"
