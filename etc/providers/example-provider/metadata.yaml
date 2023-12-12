@@ -4,7 +4,7 @@ required_credentials:
 result_map:
   list_instances:
     state:
-      on:
+      "on":
         - "running"
-      off:
+      "off":
         - "stopped"
