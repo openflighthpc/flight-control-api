@@ -1,6 +1,7 @@
 ---
 required_credentials:
   - PROJECT_NAME
+# Map the values of certain fields of this provider's action script results to standardized values.
 result_map:
   list_instances:
     state:
