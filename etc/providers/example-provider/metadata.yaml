@@ -1,3 +1,10 @@
 ---
 required_credentials:
   - PROJECT_NAME
+result_map:
+  list_instances:
+    state:
+      on:
+        - "running"
+      off:
+        - "stopped"
