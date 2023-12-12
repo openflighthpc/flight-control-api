@@ -272,6 +272,10 @@ responses:
                 type: string
               state:
                 type: string
+                enum:
+                  - on
+                  - off
+                  - unknown
               tags:
                 type: array
                 items:

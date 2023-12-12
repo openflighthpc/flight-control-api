@@ -64,7 +64,7 @@ This script retrieves the details of given instance models. The valid string val
 
 # Script: list_instances
 
-This script retrieves the list of all instances in a certain project.
+This script retrieves the list of all instances in a certain project. The valid string value for the `state` field are "on", "off", and "unknown".
 
 ## Environment Variables
 
