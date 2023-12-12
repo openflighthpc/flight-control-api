@@ -39,7 +39,17 @@ class Provider
 
   def list_instances(scope:, creds: {})
     env = { 'SCOPE' => scope }
-    JSON.parse(run_action('list_instances', creds:, env: env))
+    JSON.parse(run_action('list_instances', creds:, env: env)).map do |instance|
+      # result mapping
+      if @action_result_map['list_instances']['state']['on'].include?(instance['state'])
+        instance['state'] = 'on'
+      elsif @action_result_map['list_instances']['state']['off'].include?(instance['state'])
+        instance['state'] = 'off'
+      else
+        instance['state'] = 'unknown'
+      end
+      instance
+    end
   end
 
   def model_details(models, creds: {})
@@ -154,6 +164,7 @@ class Provider
     @id = File.basename(dir)
     @dir = dir
     @required_credentials = md['required_credentials']
+    @action_result_map = md['result_map']
   end
 
   def to_hash

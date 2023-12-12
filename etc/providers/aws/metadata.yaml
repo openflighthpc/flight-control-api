@@ -3,3 +3,10 @@ required_credentials:
   - AWS_ACCESS_KEY_ID
   - AWS_SECRET_ACCESS_KEY
   - AWS_DEFAULT_REGION
+result_map:
+  list_instances:
+    state:
+      on:
+        - "on"
+      off:
+        - "off"
