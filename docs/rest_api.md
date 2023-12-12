@@ -222,7 +222,6 @@ responses:
     description: Provider doesn't exist
   500:
     description: Internal server error
-
 ```
 
 # List Instances
@@ -273,9 +272,9 @@ responses:
               state:
                 type: string
               tags:
-                type: array
-                items:
-                  type: object
+                type: object
+                additionalProperties:
+                  type: string
   401:
     description: The given credentials are either invalid or are missing keys
   404:
