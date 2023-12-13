@@ -164,12 +164,14 @@ namespace '/providers' do
     end
 
     get '/models' do
+      validate_credentials
       provider.list_models(creds: credentials).to_json
     rescue SubprocessError
       halt 500, 'Error fetching list of models'
     end
 
     get '/model-details' do
+      validate_credentials
       halt 400, 'Missing model' unless params['models']
       models = params['models'].split(',').reject(&:empty?).uniq
       all_models = provider.list_models(creds: credentials)
