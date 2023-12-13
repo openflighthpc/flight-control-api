@@ -190,8 +190,7 @@ class Provider
           File.open(log_name, 'a+') { |f| f.write log }
         end
       end
-      wait_thr.value
+      File.write(File.join(dir, 'state.yaml'), { 'prepared' => true }.to_yaml) if wait_thr.value.success?
     end
-    File.write(File.join(dir, 'state.yaml'), { 'prepared' => true }.to_yaml)
   end
 end
