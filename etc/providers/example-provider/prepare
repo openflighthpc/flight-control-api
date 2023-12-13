@@ -46,7 +46,7 @@ financial_data:
   price_per_hour: 10.0123
 eco_data:
   perspective: "carbon_emission"
-  unit: kgCO2
+  unit: kgCO2e
   max_amount_per_hour: 2
 cpu: 1
 gpu: 8192
