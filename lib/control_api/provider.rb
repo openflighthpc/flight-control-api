@@ -37,12 +37,12 @@ class Provider
     end
   end
 
-  def list_instances(scope:, creds: {})
+  def list_instances(scope:, creds:)
     env = { 'SCOPE' => scope }
     JSON.parse(run_action('list_instances', creds:, env: env))
   end
 
-  def model_details(models, creds: {})
+  def model_details(models, creds:)
     env = { 'MODELS' => models.join(',') }
     JSON.parse(run_action('get_model_details', env: env, creds: creds))
   end
@@ -53,7 +53,7 @@ class Provider
     JSON.parse(run_action('authorise_credentials', creds:))['result']
   end
 
-  def instance_usages(instance_ids, start_time, end_time, creds: {})
+  def instance_usages(instance_ids, start_time, end_time, creds:)
     env = {
       'INSTANCE_IDS' => instance_ids.join(','),
       'START_TIME' => start_time,
@@ -66,7 +66,7 @@ class Provider
     }
   end
 
-  def start_instance(instance_id, creds: {})
+  def start_instance(instance_id, creds:)
     env = {
       'INSTANCE_ID' => instance_id
     }
@@ -74,7 +74,7 @@ class Provider
     run_action('start_instance', creds:, env:)
   end
 
-  def stop_instance(instance_id, creds: {})
+  def stop_instance(instance_id, creds:)
     env = {
       'INSTANCE_ID' => instance_id
     }
@@ -82,11 +82,11 @@ class Provider
     run_action('stop_instance', creds:, env:)
   end
 
-  def list_models(creds: {})
+  def list_models(creds:)
     JSON.parse(run_action('list_models', creds:))
   end
 
-  def get_historic_instance_costs(*instance_ids, start_time, end_time, creds: {})
+  def get_historic_instance_costs(*instance_ids, start_time, end_time, creds:)
     env = {
       'INSTANCE_IDS' => instance_ids.join(','),
       'START_TIME' => start_time,
@@ -116,7 +116,7 @@ class Provider
     FileUtils.mkdir_p(File.join(dir, 'log/')).first
   end
 
-  def run_action(action, creds: {}, env: {})
+  def run_action(action, creds:, env: {})
     prepare unless prepared?
     script = File.join(dir, 'actions', action)
     log_name = File.join(log_dir, "#{id}-#{File.basename(script, File.extname(script))}-#{Time.now.to_i}.log")
