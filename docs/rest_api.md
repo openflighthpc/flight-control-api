@@ -134,6 +134,11 @@ parameters:
     required: true
     schema:
       type: string
+  - in: header
+    name: Project-Credentials
+    required: true
+    schema:
+      type: object
 responses:
   200:
     description: Array of model details
@@ -175,6 +180,11 @@ parameters:
     collectionFormat: csv
     schema:
       type: string
+  - in: header
+    name: Project-Credentials
+    required: true
+    schema:
+      type: object
 responses:
   200:
     description: Array of model details
