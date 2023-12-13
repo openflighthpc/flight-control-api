@@ -205,6 +205,9 @@ responses:
                 properties:
                   currency:
                     type: string
+                    enum:
+                      - GBP
+                      - USD
                   price_per_hour:
                     type: float
               eco_data:
@@ -515,6 +518,9 @@ responses:
                   properties:
                     currency:
                       type: string
+                      enum:
+                      - GBP
+                      - USD
                     price:
                       type: float
                 eco_data:
