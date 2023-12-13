@@ -116,11 +116,8 @@ namespace '/providers' do
 
       def credentials
         creds = request.env['HTTP_PROJECT_CREDENTIALS']
-        if creds && valid_json?(creds)
-          JSON.parse(creds)
-        else
-          {}
-        end
+        return JSON.parse(creds) if creds && valid_json?(creds)
+        {}
       end
 
       def instances
