@@ -223,7 +223,7 @@ responses:
                   unit:
                     type: string
                   max_amount_per_hour:
-                      type: float
+                    type: float
               cpu:
                 description: the number of CPUs
                 type: integer
@@ -236,7 +236,7 @@ responses:
   401:
     description: The given credentials are either invalid or are missing keys
   404:
-    description: Provider doesn't exist
+    description: Provider or model doesn't exist
   500:
     description: Internal server error
 ```
