@@ -7,6 +7,9 @@ result_map:
   list_instances:
     state:
       "on":
-        - "on"
+        - "running"
       "off":
-        - "off"
+        - "shutting-down"
+        - "terminated"
+        - "stopping"
+        - "stopped"
