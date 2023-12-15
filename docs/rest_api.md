@@ -514,7 +514,7 @@ responses:
             type: long
           end_time:
             type: long
-          usages:
+          costs:
             type: array
             items:
               type: object
