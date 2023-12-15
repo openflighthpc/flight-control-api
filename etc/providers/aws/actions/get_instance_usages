@@ -10,10 +10,16 @@ OUT="[]"
 
 for instance in $(echo "$INSTANCE_IDS" |sed 's/,/ /g') ; do
     vals=$($RUN_ENV/aws/cli/bin/aws cloudwatch get-metric-statistics --namespace AWS/EC2 --metric-name CPUUtilization --start-time $START --end-time $END --period 60 --unit Percent --statistics Maximum --query 'Datapoints[].Maximum'  --dimensions "{ \"Name\": \"InstanceId\", \"Value\": \"$instance\" }")
-    # Average the last 4 results and get average
-    avg=$(echo "$vals" |$RUN_ENV/jq '.[-4:] | add/length')
-    # Get last results
-    last=$(echo "$vals" |$RUN_ENV/jq '.[-1]')
+    vals_length=$(echo "$vals" |$RUN_ENV/jq length)
+    avg=0.00
+    last=0.00
+    # Instance was in use
+    if [ "$vals_length" -gt 0 ]; then
+        # Average the last 4 results and get average
+        avg=$(echo "$vals" |$RUN_ENV/jq '.[-4:] | add/length')
+        # Get last results
+        last=$(echo "$vals" |$RUN_ENV/jq '.[-1]')
+    fi
     OUT="$(echo "$OUT" |$RUN_ENV/jq ".[. |length] |= . + {\"instance_id\": \"$instance\", \"average\": $avg|tonumber, \"last\": $last|tonumber }")"
 done
 
