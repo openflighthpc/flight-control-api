@@ -1,10 +1,12 @@
 ---
+# List the name of the required credentials of this provider.
 required_credentials:
   - PROJECT_NAME
+
 # Map the values of certain fields of this provider's action script results to standardized values.
 result_map:
   list_instances:
-    state:
+    state:  # the states not listed will be auto mapped to "unknown"
       "on":
         - "running"
       "off":
