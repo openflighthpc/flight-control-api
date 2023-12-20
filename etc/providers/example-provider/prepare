@@ -64,5 +64,17 @@ wget https://github.com/mikefarah/yq/releases/download/v4.35.2/yq_linux_amd64 -P
 chmod +x "$RUN_ENV/bin/yq_linux_amd64"
 echo "Downloaded."
 
+# Download bc for
+echo "Downloading bc..."
+curl "https://mirror.lyrahosting.com/gnu/bc/bc-1.07.1.tar.gz" -o "$RUN_ENV/bin/bc.tar.gz" -s
+tar -xf "$RUN_ENV/bin/bc.tar.gz" -C "$RUN_ENV/bin"
+cd "$RUN_ENV/bin/bc-1.07.1"
+echo "Compiling bc..."
+./configure -q
+make >/dev/null 2>&1
+echo "Removing compressed package..."
+rm -rf "$RUN_ENV/bin/bc.tar.gz"
+echo "bc prepared."
+
 sleep 3
 echo "Prepared."
