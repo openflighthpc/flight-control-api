@@ -10,9 +10,9 @@ set -e
 # PROJECT_NAME: provided credential
 
 # Calculate date range
-TIME_DIFF=$(echo "$END_TIME-$START_TIME" | bc)
-DIFF_IN_HOURS=$(echo "$TIME_DIFF/60/60" | bc -l)
-UPTIME=$(echo "$DIFF_IN_HOURS * 0.6" | bc -l) # Assume an average uptime of 60%
+TIME_DIFF=$(echo "$END_TIME-$START_TIME" | "$RUN_ENV/bin/bc-1.07.1/bc/bc")
+DIFF_IN_HOURS=$(echo "$TIME_DIFF/60/60" | "$RUN_ENV/bin/bc-1.07.1/bc/bc" -l)
+UPTIME=$(echo "$DIFF_IN_HOURS * 0.6" | "$RUN_ENV/bin/bc-1.07.1/bc/bc" -l) # Assume an average uptime of 60%
 
 IFS=',' read -ra ids_array <<< "$INSTANCE_IDS"
 
@@ -31,7 +31,7 @@ do
 
   # Fetch hourly price of instance type
   HOURLY_COST=$("$RUN_ENV/bin/yq_linux_amd64" '.financial_data.price_per_hour' "$RUN_ENV/instance_models/$TYPE.yaml")
-  INSTANCE_COST=$(printf "%.15f" "$(echo "$UPTIME * $HOURLY_COST" | bc -l)")
+  INSTANCE_COST=$(printf "%.15f" "$(echo "$UPTIME * $HOURLY_COST" | "$RUN_ENV/bin/bc-1.07.1/bc/bc" -l)")
 
   export FINANCIAL_DATA=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.financial_data; .currency = \"$CURRENCY\" | .price = $INSTANCE_COST)")
 
@@ -43,7 +43,7 @@ do
   ECO_HOURLY_AMOUNT=$("$RUN_ENV/bin/yq_linux_amd64" '.eco_data.max_amount_per_hour' "$RUN_ENV/instance_models/$TYPE.yaml")
 
   # Total cost for instance
-  ECO_TOTAL_AMOUNT=$(printf "%.15f" "$(echo "$UPTIME * $ECO_HOURLY_AMOUNT" | bc -l)")
+  ECO_TOTAL_AMOUNT=$(printf "%.15f" "$(echo "$UPTIME * $ECO_HOURLY_AMOUNT" | "$RUN_ENV/bin/bc-1.07.1/bc/bc" -l)")
 
   export ECO_DATA=$("$RUN_ENV/bin/yq_linux_amd64" -n "with(.eco_data; .perspective = \"$ECO_PERSPECTIVE\" | .unit = \"$ECO_UNIT\" | .amount = $ECO_TOTAL_AMOUNT)")
 
