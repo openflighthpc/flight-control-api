@@ -7,6 +7,7 @@ result_map:
   list_instances:
     state:
       "on":
+        - pending
         - running
       "off":
         - shutting-down
